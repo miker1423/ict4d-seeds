@@ -16,27 +16,31 @@ namespace ict4d
 {
     public static class xml_request
     {
-        private static string storedXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><vxml xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.w3.org/2001/vxml\" version=\"2.1\" application=\"http://webhosting.voxeo.net/170418/www/root.vxml\"><property name=\"inputmodes\" value=\"dtmf\"/><form scope=\"dialog\"><block><break time=\"1000\"/>Hello ";
-        private static string storedXml2 =", your certificate is ready.</block></form><catch event=\"end\"><disconnect/></catch></vxml>";
-
         private static string twilioText = "<Response><Say>Hello ";
         private static string twilioText2 = ", your certificate is ready.</Say></Response>";
 
         [FunctionName("xml_request")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            ExecutionContext context,
             ILogger log)
         {
             log.LogInformation("HTTP trigger function processed a request.");
 
-            string name = req.Query["name"];
-            if (name is null) {
+            var config = new ConfigurationBuilder()
+                .SetBasePath(context.FunctionAppDirectory)
+                .AddJsonFile("local.settings.json", true, true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            string ref_num = req.Query["reference_num"];
+            if (ref_num is null) {
                 log.LogInformation("No name found, return base xml");
                 return new OkObjectResult(new{});
             }
 
-            var twilioSid = Environment.GetEnvironmentVariable("TWILIO_SID");
-            var twilioToken = Environment.GetEnvironmentVariable("TWILIO_TOKEN");
+            var twilioSid = config["TWILIO_SID"];
+            var twilioToken = config["TWILIO_TOKEN"];
             if (twilioSid is null || twilioToken is null) {
                 log.LogInformation("Twilio config missing");
                 return new BadRequestResult();
@@ -44,13 +48,13 @@ namespace ict4d
             TwilioClient.Init(twilioSid, twilioToken);
 
 
-            var twilioCallingNumber = Environment.GetEnvironmentVariable("TWILIO_NUMBER");
+            var twilioCallingNumber = config["TWILIO_NUMBER"];
             if(twilioCallingNumber is null){
                 log.LogInformation("Twilio number missing");
                 return new BadRequestResult();
             }
             var buffer = new StringBuilder(twilioText);
-            buffer.Append(name);
+            buffer.Append(ref_num);
             buffer.Append(twilioText2);
             var call = CallResource.Create(
               twiml: new Twilio.Types.Twiml(buffer.ToString()),
@@ -58,8 +62,10 @@ namespace ict4d
               from: new Twilio.Types.PhoneNumber(twilioCallingNumber)
             );
 
-
-            return new OkObjectResult(call.Sid);
+            var res = new ContentResult();
+            res.ContentType = "application/voicexml+xml";
+            res.Content = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><vxml xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.w3.org/2001/vxml\" version=\"2.1\" application=\"http://webhosting.voxeo.net/170418/www/root.vxml\"></vxml>";
+            return res;
         }
     }
 }
