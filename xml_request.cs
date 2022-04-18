@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System.Text;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
+using Microsoft.Extensions.Configuration;
 
 namespace ict4d
 {
@@ -26,23 +27,35 @@ namespace ict4d
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            TwilioClient.Init("AC048d50f85488881f6b5b34e685141e1d", "5ad96ea44d6d55266c8112c5430556d0");
-
-
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("HTTP trigger function processed a request.");
 
             string name = req.Query["name"];
+            if (name is null) {
+                log.LogInformation("No name found, return base xml");
+                return new OkObjectResult(new{});
+            }
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+            var twilioSid = Environment.GetEnvironmentVariable("TWILIO_SID");
+            var twilioToken = Environment.GetEnvironmentVariable("TWILIO_TOKEN");
+            if (twilioSid is null || twilioToken is null) {
+                log.LogInformation("Twilio config missing");
+                return new BadRequestResult();
+            }
+            TwilioClient.Init(twilioSid, twilioToken);
+
+
+            var twilioCallingNumber = Environment.GetEnvironmentVariable("TWILIO_NUMBER");
+            if(twilioCallingNumber is null){
+                log.LogInformation("Twilio number missing");
+                return new BadRequestResult();
+            }
             var buffer = new StringBuilder(twilioText);
             buffer.Append(name);
             buffer.Append(twilioText2);
             var call = CallResource.Create(
               twiml: new Twilio.Types.Twiml(buffer.ToString()),
               to: new Twilio.Types.PhoneNumber("+31683139714"),
-              from: new Twilio.Types.PhoneNumber("+12058523434")
+              from: new Twilio.Types.PhoneNumber(twilioCallingNumber)
             );
 
 
