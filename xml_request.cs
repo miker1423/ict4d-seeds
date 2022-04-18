@@ -26,6 +26,12 @@ namespace ict4d
             ILogger log)
         {
             log.LogInformation("HTTP trigger function processed a request.");
+            
+            static bool IsVoxeo(IHeaderDictionary headers) {
+                var userAgent = headers["User-Agent"].ToString();
+                return !string.IsNullOrWhiteSpace(userAgent) &&
+                   userAgent.Contains("voxeo", StringComparison.InvariantCultureIgnoreCase);
+            }
 
             var config = new ConfigurationBuilder()
                 .SetBasePath(context.FunctionAppDirectory)
@@ -47,24 +53,25 @@ namespace ict4d
             }
             TwilioClient.Init(twilioSid, twilioToken);
 
-
             var twilioCallingNumber = config["TWILIO_NUMBER"];
             if(twilioCallingNumber is null){
                 log.LogInformation("Twilio number missing");
                 return new BadRequestResult();
             }
-            var buffer = new StringBuilder(twilioText);
-            buffer.Append(ref_num);
-            buffer.Append(twilioText2);
-            var call = CallResource.Create(
-              twiml: new Twilio.Types.Twiml(buffer.ToString()),
-              to: new Twilio.Types.PhoneNumber("+31683139714"),
-              from: new Twilio.Types.PhoneNumber(twilioCallingNumber)
-            );
+            // var buffer = new StringBuilder(twilioText);
+            // buffer.Append(ref_num);
+            // buffer.Append(twilioText2);
+            // var call = CallResource.Create(
+            //   twiml: new Twilio.Types.Twiml(buffer.ToString()),
+            //   to: new Twilio.Types.PhoneNumber("+31683139714"),
+            //   from: new Twilio.Types.PhoneNumber(twilioCallingNumber)
+            // );
 
             var res = new ContentResult();
             res.ContentType = "application/voicexml+xml";
-            res.Content = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><vxml xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.w3.org/2001/vxml\" version=\"2.1\" application=\"http://webhosting.voxeo.net/170418/www/root.vxml\"></vxml>";
+            var rnd = new Random();
+            var validity = rnd.Next(1, 5) < 3 ? "Valid" : "Invalid";
+            res.Content = $"<cert xmlns=\"test\"><valid>{validity}</valid></cert>";
             return res;
         }
     }
