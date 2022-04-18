@@ -37,14 +37,24 @@
     <!-- call php with data-->
     <form id="save">
         <block>
-            <data name="web-save" src="https://8f67-80-114-138-125.eu.ngrok.io/api/xml_request" namelist="reference_num" method="get"/>
+            <script><![CDATA[
+                function isValid(doc, ns, item){
+                    var d = doc.documentElement;
+                    var validityStr = d.getElementsByTagNameNS(ns, item).item(0).firstChild.data;
+                    return validityStr;
+                }
+            ]]>
+            </script>
+            <data name="web_response" src="https://8f67-80-114-138-125.eu.ngrok.io/" namelist="reference_num" method="get"/>
+            <var name="validity" expr="isValid(web_response, 'test', 'valid')" />
+            Your certificate is <value expr="validity" />.
             <goto next="#last"/>
         </block>
     </form>
     <!-- finish form-->
     <form id="last">
         <block>
-            You will receive a call with the status of your certificate, thank you.
+          <prompt><audio src="test.wav"><break time="1000" /></audio></prompt>
         </block>
     </form>
 </vxml>
