@@ -1,0 +1,18 @@
+@startuml "Lab union farmer sequence"
+
+actor Lab
+actor Union
+actor WebSystem as ws
+actor Farmer
+
+Farmer -> Lab : Request a certification (manual)
+Lab -> ws : Record info from farmer \n(phone number at least)
+Lab -> ws : Open cert request in system
+Lab -> Lab : Analyze sample (not our job)
+Lab -> ws : Upload analysis results
+ws -> Union : Inform the union through \n(email, sms, phone?)
+Union -> ws : Inform the farmers \n(outgoing call)
+ws -> Farmer : Call them
+
+
+@enduml
