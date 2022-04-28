@@ -4,6 +4,8 @@ import './App.css';
 import LaboSemUser from './pages/LaboSemUser';
 import LogIn from './pages/LogIn';
 import MainPage from './pages/MainPage';
+import RegisterCertificate from './pages/RegisterCertificate';
+import SeeAllCertificates from './pages/SeeAllCertificates';
 import UnionUser from './pages/UnionUser';
 
 const App = () => {
@@ -15,6 +17,11 @@ const App = () => {
           <Route path="/login" element={<LogIn />} />
           <Route path="/labosem" element={<LaboSemUser />} />
           <Route path="/union" element={<UnionUser />} />
+          <Route
+            path="/registercertificate"
+            element={<RegisterCertificate />}
+          />
+          <Route path="/seeallcertificates" element={<SeeAllCertificates />} />
         </Routes>
       </BrowserRouter>
     </div>

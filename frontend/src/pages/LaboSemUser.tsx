@@ -1,5 +1,6 @@
 import { Grid, AppBar, Typography, Button } from '@mui/material';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import React from 'react';
 
 const LaboSemUser = () => {
@@ -62,11 +63,17 @@ const LaboSemUser = () => {
                 <ButtonContainer>
                   <Grid item xs={4}>
                     <Button variant="contained">
-                      Register new certificate
+                      <Link id="link" to="registercertificate">
+                        Register new certificate
+                      </Link>
                     </Button>
                   </Grid>
                   <Grid item xs={4}>
-                    <Button variant="contained">See all certificates</Button>
+                    <Button variant="contained">
+                      <Link id="link" to="seeallcertificates">
+                        See all certificates
+                      </Link>
+                    </Button>
                   </Grid>
                 </ButtonContainer>
               </div>

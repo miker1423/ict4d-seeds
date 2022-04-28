@@ -2,7 +2,7 @@ import { Grid, AppBar, Typography, Button } from '@mui/material';
 import styled from 'styled-components';
 import React from 'react';
 
-const LaboSemUser = () => {
+const UnionUser = () => {
   return (
     <div className="App">
       <div
@@ -100,4 +100,4 @@ const ButtonContainer = styled.div`
   }
 `;
 
-export default LaboSemUser;
+export default UnionUser;
