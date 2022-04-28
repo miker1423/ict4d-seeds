@@ -1,15 +1,9 @@
-import React, { useState } from 'react';
-import { Container, Grid, Button, Modal, Typography } from '@mui/material';
+import React from 'react';
+import { Grid, Button, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 const MainPage = () => {
-  const [openModal, setOpenModal] = useState<boolean>(false);
-
-  const handleOnClick = () => {
-    setOpenModal(!openModal);
-  };
-
   return (
     <div className="App">
       <div className="body-container">
@@ -30,16 +24,8 @@ const MainPage = () => {
                     </p>
                   </p>
                 </SubTitle>
-                <Button
-                  size="large"
-                  variant="contained"
-                  onClick={handleOnClick}
-                >
-                  <Link
-                    id="link"
-                    to="login"
-                    style={{ color: 'white', textDecoration: 'none' }}
-                  >
+                <Button size="large" variant="contained">
+                  <Link id="link" to="login">
                     Log In
                   </Link>
                 </Button>
@@ -59,12 +45,12 @@ const Title = styled.span`
   animation-iteration-count: 1;
   animation-timing-function: ease-in-out;
   font-weight: bold;
-  color: white;
+  color: hsla(0, 0%, 20%);
 `;
 
 const SubTitle = styled.span`
   & > p {
-    color: white;
+    color: hsla(0, 0%, 40%);
     width: 300px;
     font-size: 18px;
   }

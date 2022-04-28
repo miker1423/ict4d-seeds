@@ -1,8 +1,7 @@
 import React from 'react';
-import './App.css';
 
 const UnionUser = () => {
-  return <div className="App"></div>;
+  return <div className="App">union</div>;
 };
 
 export default UnionUser;

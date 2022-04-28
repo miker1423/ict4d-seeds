@@ -1,11 +1,11 @@
 .App {
   text-align: center;
   
-  background: white;
+  background: rgb(231,232,130);
 }
 
 .frontpage-grid > *{ 
-  background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+  background: radial-gradient(circle, rgba(231,232,130,1) 0%, rgba(205,226,123,1) 40%, rgba(101,201,93,1) 100%);
   width: 100%;
 }
 
@@ -20,6 +20,11 @@
   width: 100%;
 }
 
+#link{
+  text-decoration: none;
+  color:white;
+}
+
 .title-container{
   animation-name: moveUp;
   animation-duration: 2s;
@@ -27,8 +32,17 @@
   animation-timing-function: ease-in-out;
   text-align: -webkit-center;
   padding-bottom: 10px;
-  background-color:  hsla(0, 0%, 0%, 0.2);
+  background-color:  hsla(0, 0%, 100%, 0.5);
   width: 90%;
+}
+
+.title-container2 {
+  animation-name: moveUp;
+  animation-duration: 2s;
+  animation-iteration-count: 1; 
+  animation-timing-function: ease-in-out;
+  text-align: -webkit-center;
+  padding-bottom: 10px;
 }
 
 .front{
@@ -41,3 +55,10 @@
   to {margin-top: 0px; opacity: 1;}
 }
 
+.MuiButton-root.MuiButton-contained {
+  background-color: green;
+}
+
+.MuiButton-root.MuiButton-contained:hover {
+  background-color: rgb(0, 69, 0);
+}
