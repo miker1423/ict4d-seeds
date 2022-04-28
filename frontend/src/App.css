@@ -4,20 +4,7 @@
   background: white;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-.signin-form > div{ 
-  width: 400px;
-}
-
-.frontpage-grid > * { 
+.frontpage-grid > *{ 
   background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
   width: 100%;
 }
@@ -38,12 +25,15 @@
   animation-duration: 2s;
   animation-iteration-count: 1; 
   animation-timing-function: ease-in-out;
+  text-align: -webkit-center;
+  padding-bottom: 10px;
+  background-color:  hsla(0, 0%, 0%, 0.2);
+  width: 90%;
 }
 
 .front{
   margin-top: 82px; height: calc(100vh - 82px); overflow: hidden;
-  text-align:left;
-  padding-left: 24px;
+  text-align: -webkit-center;
 }
 
 @keyframes moveUp {

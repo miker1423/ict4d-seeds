@@ -18,18 +18,20 @@ const MainPage = () => {
             <div className="front">
               <div className="title-container">
                 <Title>
-                  <Typography variant="h2">TéléCiden</Typography>
+                  <Typography variant="h1">TéléCiden</Typography>
                 </Title>
                 <SubTitle>
                   <p>
-                    Welcome to TéléCiden, Mali's first digital website for
-                    registration and retrieval of seed certificates.
-                    <p>Please log in</p>
+                    Welcome to TéléCiden, Mali's first website for registration
+                    and retrieval of seed certificates.
+                    <p>
+                      Are you from LaboSem or a farmer's union? <br />
+                      Please log in to access the site.
+                    </p>
                   </p>
                 </SubTitle>
                 <Button
                   size="large"
-                  sx={{ left: '10px' }}
                   variant="contained"
                   onClick={handleOnClick}
                 >
@@ -57,14 +59,13 @@ const Title = styled.span`
   animation-iteration-count: 1;
   animation-timing-function: ease-in-out;
   font-weight: bold;
-  font-size: 6em;
+  color: white;
 `;
 
 const SubTitle = styled.span`
   & > p {
     color: white;
     width: 300px;
-    padding-left: 10px;
     font-size: 18px;
   }
 `;
