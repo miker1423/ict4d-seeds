@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  
+  background: white;
 }
 
 .App-logo {
@@ -7,32 +9,45 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 .App-link {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+.signin-form > div{ 
+  width: 400px;
+}
+
+.frontpage-grid > * { 
+  background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .css-1oqqzyl-MuiContainer-root{
+    padding: 0px;
   }
 }
+
+.body-container{
+  display: inline-block;
+  width: 100%;
+}
+
+.title-container{
+  animation-name: moveUp;
+  animation-duration: 2s;
+  animation-iteration-count: 1; 
+  animation-timing-function: ease-in-out;
+}
+
+.front{
+  margin-top: 82px; height: calc(100vh - 82px); overflow: hidden;
+  text-align:left;
+  padding-left: 24px;
+}
+
+@keyframes moveUp {
+  from {margin-top: 150px; opacity: 0;}
+  to {margin-top: 0px; opacity: 1;}
+}
+
