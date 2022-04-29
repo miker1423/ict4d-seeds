@@ -1,0 +1,95 @@
+.App {
+  text-align: center;
+  
+  background: rgb(231,232,130);
+}
+
+.frontpage-grid > *{ 
+  background: radial-gradient(circle, rgba(231,232,130,1) 0%, rgba(205,226,123,1) 40%, rgba(101,201,93,1) 100%);
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .css-1oqqzyl-MuiContainer-root{
+    padding: 0px;
+  }
+}
+
+.body-container{
+  display: inline-block;
+  width: 100%;
+}
+
+#link{
+  text-decoration: none;
+  color:white;
+}
+
+.title-container{
+  animation-name: moveUp;
+  animation-duration: 2s;
+  animation-iteration-count: 1; 
+  animation-timing-function: ease-in-out;
+  text-align: -webkit-center;
+  padding-bottom: 10px;
+  background-color:  hsla(0, 0%, 100%, 0.5);
+  width: 90%;
+}
+
+#table-container{
+  
+  animation-name: moveUp;
+  animation-duration: 0.4s;
+  animation-iteration-count: 1; 
+  animation-timing-function: ease-in-out;
+}
+
+.MuiMenuItem-root.MuiMenuItem-gutters.Mui-selected{
+  background-color:green;
+}
+.MuiMenuItem-root.MuiMenuItem-gutters:hover, .MuiMenuItem-root.MuiMenuItem-gutters.Mui-selected:hover{
+  background-color: rgb(0, 69, 0);
+}
+
+.title-container2 {
+  animation-name: moveUp;
+  animation-duration: 2s;
+  animation-iteration-count: 1; 
+  animation-timing-function: ease-in-out;
+  text-align: -webkit-center;
+}
+
+#certificate-form  p{
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+
+.front-certificate{
+  margin-top: 82px; 
+  text-align: -webkit-center;
+  width:100%;
+}
+
+.front{
+  margin-top: 82px; height: calc(100vh - 82px); overflow: hidden;
+  text-align: -webkit-center;
+  width:100%;
+}
+
+@keyframes moveUp {
+  from {margin-top: 150px; opacity: 0;}
+  to {margin-top: 0px; opacity: 1;}
+}
+
+.MuiButton-root.MuiButton-contained {
+  background-color: green;
+}
+
+.MuiButton-root.MuiButton-contained:hover {
+  background-color: rgb(0, 69, 0);
+}
+
+.MuiPaper-root.MuiPaper-elevation{
+  box-shadow: inset -1px -6px 11px -1px forestgreen;  
+}
