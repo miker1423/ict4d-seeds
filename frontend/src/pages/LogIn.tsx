@@ -7,14 +7,58 @@ import {
   Button,
   Grid
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const LogIn = () => {
+  const [email, setEmail] = useState<string>();
+  const [pw, setPw] = useState<string>();
+  const [wrongCreds, setWrongCreds] = useState<boolean>(false);
+  // const [errorAnimate, setErrorAnimate] = useState<keyframes>();
+
+  /**
+   * name: labosemUser, pw = labosem
+   * name: unionUser, pw = union
+   */
+
   const handleSubmit = () => {
-    // labosem or union user?
+    const inputEmail = email;
+    const inputPw = pw;
+
+    if (inputEmail === 'labosemUser' && inputPw === 'labosem') {
+      setWrongCreds(false);
+      console.log('xx LABOSEM LOGIN!!!!!');
+      // direct to labosem homepage
+    } else if (inputEmail === 'unionUser' && inputPw === 'union') {
+      setWrongCreds(false);
+      console.log('xx UNION LOGIN!!!!!');
+      // direct to union homepage
+    } else {
+      console.log('xx try again, or ask your contact person for credentials');
+      setWrongCreds(true);
+    }
+
+    console.log('xx email %s and pw %s', email, pw);
   };
+
+  //   const errorAnimate = keyframes`
+  //   40%, 60%, 80% {
+  //     transform: translateX(8px);
+  //   }
+  //   50%,
+  //   70%,
+  //   90% {
+  //     transform: translateX(-8px);
+  //   }
+  // }
+  // `;
+
+  const SignInTextFields = styled.div`
+    animation-name: ;
+    animation-duration: 0.7s, 0.35s;
+    animation-iteration-count: 1;
+  `;
 
   return (
     <div className="App">
@@ -25,42 +69,60 @@ const LogIn = () => {
               <ContainerBox>
                 <Typography variant="h5">Sign in to TéléCiden</Typography>
                 <SignInForm
+                  id="signin-textfield"
                   component="form"
                   className="signin-form"
-                  onSubmit={handleSubmit}
                   sx={{ mt: 1 }}
                 >
-                  <TextField
-                    margin="normal"
-                    // required
-                    fullWidth
-                    label="Email Address"
-                    autoComplete="email"
-                    autoFocus
-                  />
-                  <TextField
-                    margin="normal"
-                    // required
-                    fullWidth
-                    label="Password"
-                    type="password"
-                  />
+                  <SignInTextFields>
+                    <TextField
+                      margin="normal"
+                      value={email}
+                      required
+                      fullWidth
+                      label="Email Address"
+                      autoComplete="email"
+                      autoFocus
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        console.log('xx email', e.target.value);
+                      }}
+                    />
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Password"
+                      type="password"
+                      value={pw}
+                      onChange={(e) => {
+                        setPw(e.target.value);
+                        console.log('xx pw', pw);
+                      }}
+                    />
+                  </SignInTextFields>
                   <FormControlLabel
                     control={<Checkbox value="remember" color="primary" />}
                     label="Remember me"
                   />
                   <Button
                     sx={{ marginTop: '10px' }}
-                    type="submit"
                     fullWidth
                     variant="contained"
+                    onClick={handleSubmit}
                   >
-                    <Link to="/labosem" id="link">
-                      Sign in
-                    </Link>
+                    Sign in
                   </Button>
                   <Grid container sx={{ marginTop: '10px' }}>
                     <Grid item xs>
+                      <span style={{ display: wrongCreds ? 'block' : 'none' }}>
+                        <p>
+                          The password or username you put in might be wrong.
+                        </p>
+                        <p>
+                          Try again, or ask your contact person for credentials
+                        </p>
+                      </span>
                       {/* <a href="#">Forgot password?</a> */}
                     </Grid>
                   </Grid>

@@ -57,20 +57,20 @@ const LaboSemUser = () => {
           <Grid item xs={12} style={{ paddingTop: '0px' }}>
             <div className="front">
               <div className="title-container2  ">
-                <Typography variant="h1" sx={{ color: 'hsla(0, 0%, 40%);' }}>
+                <Typography variant="h1" sx={{ color: 'hsla(0, 0%, 20%);' }}>
                   Welcome
                 </Typography>
                 <ButtonContainer>
                   <Grid item xs={4}>
                     <Button variant="contained">
-                      <Link id="link" to="registercertificate">
+                      <Link id="link" to="/registercertificate">
                         Register new certificate
                       </Link>
                     </Button>
                   </Grid>
                   <Grid item xs={4}>
                     <Button variant="contained">
-                      <Link id="link" to="seeallcertificates">
+                      <Link id="link" to="/seeallcertificates">
                         See all certificates
                       </Link>
                     </Button>

@@ -36,7 +36,7 @@ const UnionUser = () => {
                     right: '10px'
                   }}
                 >
-                  <b>Logged in as</b>: LaboSem user
+                  <b>Logged in as</b>: Union user
                 </Typography>
                 <Typography
                   align="right"
