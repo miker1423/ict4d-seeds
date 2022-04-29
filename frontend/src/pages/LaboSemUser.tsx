@@ -26,7 +26,9 @@ const LaboSemUser = () => {
             >
               <ToolbarText>
                 <Typography variant="h4" align="left" sx={{ mt: '30px' }}>
-                  TéléCiden
+                  <Link id="link" to="/labosem">
+                    TéléCiden
+                  </Link>
                 </Typography>
 
                 <Typography
@@ -39,17 +41,15 @@ const LaboSemUser = () => {
                 >
                   <b>Logged in as</b>: LaboSem user
                 </Typography>
-                <Typography
-                  align="right"
-                  sx={{
-                    mt: '12px',
-                    right: '30px',
-                    cursor: 'pointer',
-                    textDecoration: 'underline'
-                  }}
+                <Button
+                  variant="contained"
+                  size="small"
+                  sx={{ top: '5px', right: '25px', position: 'absolute' }}
                 >
-                  Log out
-                </Typography>
+                  <Link id="link" to="/">
+                    Log out
+                  </Link>
+                </Button>
               </ToolbarText>
             </AppBar>
           </Grid>
@@ -57,8 +57,13 @@ const LaboSemUser = () => {
           <Grid item xs={12} style={{ paddingTop: '0px' }}>
             <div className="front">
               <div className="title-container2  ">
-                <Typography variant="h1" sx={{ color: 'hsla(0, 0%, 20%);' }}>
+                <Typography variant="h1" sx={{ color: 'hsla(0, 0%, 15%);' }}>
                   Welcome
+                </Typography>
+                <br />
+                <Typography sx={{ width: '300px' }}>
+                  Press on a button to start registering a new certificate or to
+                  see a list of existing certificates.
                 </Typography>
                 <ButtonContainer>
                   <Grid item xs={4}>

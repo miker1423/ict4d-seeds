@@ -7,7 +7,7 @@ import {
   Button,
   Grid
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
@@ -15,7 +15,11 @@ const LogIn = () => {
   const [email, setEmail] = useState<string>();
   const [pw, setPw] = useState<string>();
   const [wrongCreds, setWrongCreds] = useState<boolean>(false);
-  const [errorAnimate, setErrorAnimate] = useState<string>('');
+  // const [animate, setAnimate] = useState<boolean>(false);
+
+  // useEffect(() => {
+  //   setAnimate(false);
+  // }, []);
 
   /**
    * name: labosemUser, pw = labosem
@@ -37,25 +41,28 @@ const LogIn = () => {
     } else {
       console.log('xx try again, or ask your contact person for credentials');
       setWrongCreds(true);
-      setErrorAnimate(`keyframes {40%, 60%, 80% {
-        transform: translateX(8px);
-      }
-      50%,
-      70%,
-      90% {
-        transform: translateX(-8px);
-      }}`);
-      console.log('xx animte', errorAnimate);
+      // setAnimate(true);
     }
 
     console.log('xx email %s and pw %s', email, pw);
   };
 
-  const SignInTextFields = styled.div`
-    animation-name: ${errorAnimate};
-    animation-duration: 0.7s, 0.35s;
-    animation-iteration-count: 1;
-  `;
+  //   const errorAnimate = keyframes`
+  //   40%, 60%, 80% {
+  //     transform: translateX(8px);
+  //   }
+  //   50%,
+  //   70%,
+  //   90% {
+  //     transform: translateX(-8px);
+  //   }
+  // }
+  // `;
+  //   const SignInTextFields = styled.div`
+  //     animation-name: ${animate ? errorAnimate : ''};
+  //     animation-duration: 0.7s, 0.35s;
+  //     animation-iteration-count: 1;
+  //   `;
 
   return (
     <div className="App">
@@ -112,7 +119,12 @@ const LogIn = () => {
                   </Button>
                   <Grid container sx={{ marginTop: '10px' }}>
                     <Grid item xs>
-                      <span style={{ display: wrongCreds ? 'block' : 'none' }}>
+                      <span
+                        style={{
+                          display: wrongCreds ? 'block' : 'none',
+                          color: 'red'
+                        }}
+                      >
                         <p>
                           The password or username you put in might be wrong.
                         </p>
@@ -163,4 +175,9 @@ const SignInForm = styled(Box)`
   z-index: 10;
 `;
 
+const SignInTextFields = styled.div`
+  animation-name: '';
+  animation-duration: 0.7s, 0.35s;
+  animation-iteration-count: 1;
+`;
 export default LogIn;

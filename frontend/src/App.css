@@ -48,6 +48,7 @@
 .front{
   margin-top: 82px; height: calc(100vh - 82px); overflow: hidden;
   text-align: -webkit-center;
+  width:100%;
 }
 
 @keyframes moveUp {
@@ -61,4 +62,8 @@
 
 .MuiButton-root.MuiButton-contained:hover {
   background-color: rgb(0, 69, 0);
+}
+
+.MuiPaper-root.MuiPaper-elevation{
+  box-shadow: inset -1px -6px 11px -1px forestgreen;  
 }

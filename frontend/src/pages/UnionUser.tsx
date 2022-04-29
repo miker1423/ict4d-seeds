@@ -1,5 +1,6 @@
 import { Grid, AppBar, Typography, Button } from '@mui/material';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import React from 'react';
 
 const UnionUser = () => {
@@ -25,7 +26,9 @@ const UnionUser = () => {
             >
               <ToolbarText>
                 <Typography variant="h4" align="left" sx={{ mt: '30px' }}>
-                  TéléCiden
+                  <Link id="link" to="/union">
+                    TéléCiden
+                  </Link>
                 </Typography>
 
                 <Typography
@@ -38,37 +41,61 @@ const UnionUser = () => {
                 >
                   <b>Logged in as</b>: Union user
                 </Typography>
-                <Typography
-                  align="right"
-                  sx={{
-                    mt: '12px',
-                    right: '30px',
-                    cursor: 'pointer',
-                    textDecoration: 'underline'
-                  }}
+                <Button
+                  variant="contained"
+                  size="small"
+                  sx={{ top: '5px', right: '25px', position: 'absolute' }}
                 >
-                  Log out
-                </Typography>
+                  <Link id="link" to="/">
+                    Log out
+                  </Link>
+                </Button>
               </ToolbarText>
             </AppBar>
           </Grid>
 
-          <Grid item xs={12} style={{ paddingTop: '0px' }}>
+          <Grid container xs={12} style={{ paddingTop: '0px' }}>
             <div className="front">
-              <div className="title-container2  ">
-                <Typography variant="h1" sx={{ color: 'hsla(0, 0%, 40%);' }}>
-                  Welcome
-                </Typography>
-                <ButtonContainer>
-                  <Grid item xs={4}>
-                    <Button variant="contained">
-                      Register new certificate
+              <div
+                className="title-container2 "
+                style={{ textAlign: 'left', marginLeft: '10px' }}
+              >
+                <Grid container sx={{ pl: '20px', pr: '10px' }}>
+                  <Grid item xs={6}>
+                    <Typography
+                      variant="h1"
+                      sx={{ color: 'hsla(0, 0%, 15%);', fontSize: '5.2em' }}
+                    >
+                      Welcome
+                    </Typography>
+                    <br />
+                    <Typography sx={{ width: '300px' }}>
+                      Press the button to see and download certificates.
+                    </Typography>
+
+                    <Button
+                      variant="contained"
+                      sx={{
+                        mt: '20px',
+                        justifyContent: 'left'
+                      }}
+                    >
+                      <Link id="link" to="#">
+                        See certificates
+                      </Link>
                     </Button>
                   </Grid>
-                  <Grid item xs={4}>
-                    <Button variant="contained">See all certificates</Button>
+                  <Grid item xs={6}>
+                    <div
+                      className="list-of-certificates"
+                      style={{
+                        backgroundColor: 'blue',
+                        width: '100px',
+                        height: '100px'
+                      }}
+                    ></div>
                   </Grid>
-                </ButtonContainer>
+                </Grid>
               </div>
             </div>
           </Grid>
