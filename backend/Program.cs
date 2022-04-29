@@ -1,9 +1,22 @@
+using Backend.Data;
+using Microsoft.EntityFrameworkCore;
+using Backend.Services;
+using Backend.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<FarmersDbContext>(
+    options => { 
+        options.UseInMemoryDatabase("MemoryDb");
+        options.EnableSensitiveDataLogging(true);
+});
+builder.Services.AddScoped<ICallerService, CallerService>();
+builder.Services.AddScoped<ICertService, CertService>();
+builder.Services.AddScoped<IFarmerService, FarmerService>();
 
 var app = builder.Build();
 
@@ -20,7 +33,6 @@ else
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
