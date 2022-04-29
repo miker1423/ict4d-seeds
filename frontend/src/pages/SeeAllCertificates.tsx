@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Certificates from './Certificates';
+import NavBar from '../components/NavBar';
 
 const SeeAllCertificates = () => {
   return (
@@ -11,43 +12,7 @@ const SeeAllCertificates = () => {
         <Grid className="frontpage-grid" container spacing={2}>
           {/* NAV BAR */}
           <Grid item xs={12}>
-            <AppBar
-              className="appbar"
-              position="static"
-              style={{
-                color: 'white',
-                backgroundColor: '#3ca341',
-                height: '15vh',
-                paddingLeft: 16,
-                alignContent: 'bottom'
-              }}
-            >
-              <ToolbarText>
-                <Typography variant="h4" align="left" sx={{ mt: '30px' }}>
-                  TéléCiden
-                </Typography>
-
-                <Typography
-                  align="right"
-                  sx={{
-                    mt: '45px',
-                    mr: '20px',
-                    right: '10px'
-                  }}
-                >
-                  <b>Signed in as</b>: LaboSem user
-                </Typography>
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{ top: '5px', right: '25px', position: 'absolute' }}
-                >
-                  <Link id="link" to="/">
-                    Sign out
-                  </Link>
-                </Button>
-              </ToolbarText>
-            </AppBar>
+            <NavBar user={'LaboSem'} />
           </Grid>
 
           <Grid item xs={12} style={{ paddingTop: '0px' }}>

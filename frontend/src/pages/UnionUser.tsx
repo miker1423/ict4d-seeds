@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import Certificates from './Certificates';
+import NavBar from '../components/NavBar';
 
 const UnionUser = () => {
   const [showTable, setShowTable] = useState<boolean>(false);
@@ -18,60 +19,21 @@ const UnionUser = () => {
         style={{ height: '100vh', overflow: 'hidden' }}
       >
         <Grid className="frontpage-grid" container spacing={2}>
-          {/* NAV BAR */}
           <Grid item xs={12}>
-            <AppBar
-              className="appbar"
-              position="static"
-              style={{
-                color: 'white',
-                backgroundColor: '#3ca341',
-                height: '15vh',
-                paddingLeft: 16,
-                alignContent: 'bottom'
-              }}
-            >
-              <ToolbarText>
-                <Typography variant="h4" align="left" sx={{ mt: '30px' }}>
-                  <Link id="link" to="/union">
-                    TéléCiden
-                  </Link>
-                </Typography>
-
-                <Typography
-                  align="right"
-                  sx={{
-                    mt: '45px',
-                    mr: '20px',
-                    right: '10px'
-                  }}
-                >
-                  <b>Signed in as</b>: Union user
-                </Typography>
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{ top: '5px', right: '25px', position: 'absolute' }}
-                >
-                  <Link id="link" to="/">
-                    Sign out
-                  </Link>
-                </Button>
-              </ToolbarText>
-            </AppBar>
+            <NavBar user={'Union'} />
           </Grid>
 
           <Grid container xs={12} style={{ paddingTop: '0px' }}>
             <div className="front">
               <div
-                className="title-container2 "
+                className="title-container2"
                 style={{ textAlign: 'left', marginLeft: '10px' }}
               >
-                <Grid container sx={{ pl: '20px', pr: '10px' }}>
-                  <Grid item xs={6}>
+                <Grid container sx={{ pl: '30px', pr: '10px' }}>
+                  <Grid item xs={4}>
                     <Typography
                       variant="h1"
-                      sx={{ color: 'hsla(0, 0%, 15%);', fontSize: '5.2em' }}
+                      sx={{ color: 'hsla(0, 0%, 15%);', fontSize: '4.6em' }}
                     >
                       Welcome
                     </Typography>
@@ -91,14 +53,10 @@ const UnionUser = () => {
                       See certificates
                     </Button>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={8}>
                     <div
                       className="list-of-certificates"
-                      style={{
-                        backgroundColor: 'blue',
-                        width: '100px',
-                        height: '100px'
-                      }}
+                      style={{ width: '100%' }}
                     >
                       {showTable && <Certificates />}
                     </div>

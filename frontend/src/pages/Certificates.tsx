@@ -62,7 +62,7 @@ const Certificates = () => {
   ];
 
   return (
-    <TableContainer sx={{ backgroundColor: 'white' }}>
+    <TableContainer id="table-container" sx={{ backgroundColor: 'white' }}>
       <Table sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow>

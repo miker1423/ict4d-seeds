@@ -1,18 +1,15 @@
 import {
   Grid,
-  AppBar,
   Typography,
   Button,
-  FormControl,
   TextField,
-  Input,
   Box,
-  InputLabel,
   Checkbox
 } from '@mui/material';
 import styled from 'styled-components';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import NavBar from '../components/NavBar';
 
 const RegisterCertificate = () => {
   const handleSubmit = () => {
@@ -28,43 +25,7 @@ const RegisterCertificate = () => {
         <Grid className="frontpage-grid" container spacing={2}>
           {/* NAV BAR */}
           <Grid item xs={12}>
-            <AppBar
-              className="appbar"
-              position="static"
-              style={{
-                color: 'white',
-                backgroundColor: '#3ca341',
-                height: '15vh',
-                paddingLeft: 16,
-                alignContent: 'bottom'
-              }}
-            >
-              <ToolbarText>
-                <Typography variant="h4" align="left" sx={{ mt: '30px' }}>
-                  TéléCiden
-                </Typography>
-
-                <Typography
-                  align="right"
-                  sx={{
-                    mt: '45px',
-                    mr: '20px',
-                    right: '10px'
-                  }}
-                >
-                  <b>Signed in as</b>: LaboSem user
-                </Typography>
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{ top: '5px', right: '25px', position: 'absolute' }}
-                >
-                  <Link id="link" to="/">
-                    Sign out
-                  </Link>
-                </Button>
-              </ToolbarText>
-            </AppBar>
+            <NavBar user={'LaboSem'} active={'regcer'} />
           </Grid>
 
           <div className="main">
@@ -107,7 +68,7 @@ const RegisterCertificate = () => {
                         <Typography>Certification Period:</Typography>
                       </Grid>
                       <Grid item xs={4}>
-                        <TextField type="date" fullWidth />
+                        <TextField type="year" fullWidth />
                       </Grid>
                     </Grid>
 
