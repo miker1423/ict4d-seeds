@@ -37,6 +37,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseCors(cors => 
+    cors.AllowAnyHeader()
+    .AllowAnyMethod()
+    .SetIsOriginAllowed(origin => true)
+    .AllowAnyOrigin()
+    .AllowCredentials()
+);
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
