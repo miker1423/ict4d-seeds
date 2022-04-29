@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Backend.Data;
 using Backend.Models;
 using Backend.Services.Interfaces;
+using Twilio.TwiML;
 
 namespace Backend.Services;
 
@@ -15,21 +16,26 @@ public class CertService : ICertService
         _callerService = callerService;
     }
 
-    public async Task<bool> CompleteRequest(Guid requestId)
+    public async Task<(bool, Certificate?)> CompleteRequest(Guid requestId, CertificateStatus status)
     {
         var cert = _context.CertRequests.FirstOrDefault(cert => cert.ID == requestId);
-        if (cert is null) return false;
+        if (cert is null) return (false, null);
         cert.Status = RequestStatus.FINISHED;
         // Call farmer
         var farmer = _context.Farmers.FirstOrDefault(farmer => farmer.ID == cert.FarmerId);
         if(farmer is null || farmer.PhoneNumber is null) {
             // no way to get to this guy/girl
-            return false;
+            return (false, null);
         }
-        await _callerService.CallNow(farmer.PhoneNumber, "Hello there");
+        var name = farmer.Name ?? "farmer";
+        await _callerService.CallNow(farmer.PhoneNumber, GetText(name, true));
+        var newCert = await _context.Certificates.AddAsync(new Certificate() {
+            FarmerId = farmer.ID,
+            Status = status
+        });
         _context.CertRequests.Update(cert);
         await _context.SaveChangesAsync();
-        return true;
+        return (true, newCert.Entity);
     }
 
     public async Task<CertRequest> CreateRequest(Guid farmerId)
@@ -43,6 +49,38 @@ public class CertService : ICertService
         return request.Entity;
     }
 
+    public List<Certificate>? GetByFarmer([Phone] string phone)
+    {
+        var farmer = _context.Farmers.FirstOrDefault(farm => farm.PhoneNumber == phone);
+        if(farmer is null)
+            return null;
+        
+        return _context.Certificates.Where(cert => cert.FarmerId == farmer.ID).ToList();
+    }
+
+    public Certificate? GetById(Guid id)
+        => _context.Certificates.FirstOrDefault(cert => cert.ID == id);
+
     public List<Certificate> HasValidCert(Guid farmerId)
         => _context.Certificates.Where(cert => cert.FarmerId == farmerId && cert.Status == CertificateStatus.VALID).ToList();
+
+    public async Task<(bool, Certificate?)> Invalidate(Guid certId)
+    {
+        var cert = _context.Certificates.FirstOrDefault(cert => cert.ID == certId);
+        if(cert is null) 
+            return (false, cert);
+        
+        cert.Status = CertificateStatus.REVOKED;
+        _context.Certificates.Update(cert);
+        await _context.SaveChangesAsync();
+        return (true, cert);
+    }
+
+    private string GetText(string name, bool isValid)
+    {
+        var response = new VoiceResponse();
+        var validStr = isValid ? "valid" : "invalid";
+        response.Say($"Hello {name}, your certificate is now {validStr}");
+        return response.ToString();
+    }
 }

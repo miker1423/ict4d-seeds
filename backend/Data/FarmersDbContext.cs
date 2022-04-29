@@ -3,6 +3,8 @@ using Backend.Models;
 
 namespace Backend.Data;
 
+#nullable disable
+
 public class FarmersDbContext : DbContext
 {
     public FarmersDbContext(DbContextOptions<FarmersDbContext> contextOptions)

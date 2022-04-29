@@ -21,7 +21,7 @@ public class FarmersController : Controller
         _certService = certService;
     }
     
-    [HttpPost(Name = "Create")]
+    [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody]FarmerVM farmer)
     {
         _logger.LogDebug("Received farmer", farmer);
@@ -29,6 +29,7 @@ public class FarmersController : Controller
         return CreatedAtAction(null, newFarmer.ID, newFarmer);
     }
 
+    [HttpGet("start/{id}")]
     public async Task<IActionResult> StartCertProcess([FromRoute]Guid id)
     {
         _logger.LogDebug("Starting cert process");

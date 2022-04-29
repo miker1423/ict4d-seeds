@@ -11,6 +11,7 @@ public class Farmer
     public string? PhoneNumber { get; set; }
     
     public string? Name { get; set; }
+    public string SelectedLang { get; set; } = "en";
 }
 
 public class FarmerVM
@@ -19,7 +20,13 @@ public class FarmerVM
     public string? PhoneNumber { get; set; }
 
     public string? Name { get; set; }
+}
 
+public class CertificateVM 
+{
+    [Phone]
+    public string? PhoneNumber { get; set; }
+    public bool IsValid { get; set; }
 }
 
 public enum RequestStatus 
