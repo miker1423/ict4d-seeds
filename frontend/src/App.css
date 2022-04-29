@@ -44,6 +44,18 @@
   text-align: -webkit-center;
 }
 
+#certificate-form  p{
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+
+.front-certificate{
+  margin-top: 82px; 
+  text-align: -webkit-center;
+  width:100%;
+}
+
 .front{
   margin-top: 82px; height: calc(100vh - 82px); overflow: hidden;
   text-align: -webkit-center;

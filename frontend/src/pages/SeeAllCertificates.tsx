@@ -2,14 +2,12 @@ import { Grid, AppBar, Typography, Button } from '@mui/material';
 import styled from 'styled-components';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Certificates from './Certificates';
 
 const SeeAllCertificates = () => {
   return (
     <div className="App">
-      <div
-        className="body-container"
-        style={{ height: '100vh', overflow: 'hidden' }}
-      >
+      <div className="body-container" style={{ height: '100vh' }}>
         <Grid className="frontpage-grid" container spacing={2}>
           {/* NAV BAR */}
           <Grid item xs={12}>
@@ -53,7 +51,18 @@ const SeeAllCertificates = () => {
           </Grid>
 
           <Grid item xs={12} style={{ paddingTop: '0px' }}>
-            <div className="front"></div>
+            <div className="main" style={{ padding: '10px' }}>
+              <Grid item xs={12} sx={{ paddingTop: '0px' }}>
+                <div className="front-certificate">
+                  <Typography variant="h5" sx={{ pb: '30px' }}>
+                    All certificates
+                  </Typography>
+                </div>
+              </Grid>
+              <Grid item xs={12}>
+                <Certificates />
+              </Grid>
+            </div>
           </Grid>
         </Grid>
       </div>

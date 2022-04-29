@@ -1,9 +1,16 @@
 import { Grid, AppBar, Typography, Button } from '@mui/material';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import React from 'react';
+import React, { useState } from 'react';
+import Certificates from './Certificates';
 
 const UnionUser = () => {
+  const [showTable, setShowTable] = useState<boolean>(false);
+
+  const handleClick = () => {
+    setShowTable(true);
+  };
+
   return (
     <div className="App">
       <div
@@ -79,10 +86,9 @@ const UnionUser = () => {
                         mt: '20px',
                         justifyContent: 'left'
                       }}
+                      onClick={handleClick}
                     >
-                      <Link id="link" to="#">
-                        See certificates
-                      </Link>
+                      See certificates
                     </Button>
                   </Grid>
                   <Grid item xs={6}>
@@ -93,7 +99,9 @@ const UnionUser = () => {
                         width: '100px',
                         height: '100px'
                       }}
-                    ></div>
+                    >
+                      {showTable && <Certificates />}
+                    </div>
                   </Grid>
                 </Grid>
               </div>
