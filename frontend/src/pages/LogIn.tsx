@@ -15,7 +15,7 @@ const LogIn = () => {
   const [email, setEmail] = useState<string>();
   const [pw, setPw] = useState<string>();
   const [wrongCreds, setWrongCreds] = useState<boolean>(false);
-  // const [errorAnimate, setErrorAnimate] = useState<keyframes>();
+  const [errorAnimate, setErrorAnimate] = useState<string>('');
 
   /**
    * name: labosemUser, pw = labosem
@@ -37,25 +37,22 @@ const LogIn = () => {
     } else {
       console.log('xx try again, or ask your contact person for credentials');
       setWrongCreds(true);
+      setErrorAnimate(`keyframes {40%, 60%, 80% {
+        transform: translateX(8px);
+      }
+      50%,
+      70%,
+      90% {
+        transform: translateX(-8px);
+      }}`);
+      console.log('xx animte', errorAnimate);
     }
 
     console.log('xx email %s and pw %s', email, pw);
   };
 
-  //   const errorAnimate = keyframes`
-  //   40%, 60%, 80% {
-  //     transform: translateX(8px);
-  //   }
-  //   50%,
-  //   70%,
-  //   90% {
-  //     transform: translateX(-8px);
-  //   }
-  // }
-  // `;
-
   const SignInTextFields = styled.div`
-    animation-name: ;
+    animation-name: ${errorAnimate};
     animation-duration: 0.7s, 0.35s;
     animation-iteration-count: 1;
   `;
