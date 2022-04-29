@@ -1,0 +1,28 @@
+Hello and welcome to TeleCiden, we are calling to inform you regarding the
+status of the certification of your seeds.
+
+Press 1 to proceed...
+Press 2 if we have called the wrong number.
+Press 3 to change language, trykk 3 for å bytte språk, 
+appuyez sur TROIS pour changer de langue.
+...
+
+Hi, we are calling to inform you regarding the status of your certification. 
+Press 1 to proceed
+Press 2 to change language
+Press 3 if we have called the wrong number
+
+Your seed sample has been approved! You can now come get the certificate at
+the closest union headquarters.
+Please remember to bring your application receipt. 
+Goodbye!
+
+Your seed sample has unfortunately been rejected by the Laboratory. You can
+visit the union headquarters to discuss the reasons and what you can do
+about it.
+
+Vil du ha samtalen på Norsk? Trykk på 1.
+Voulez-vous la conversation en Francais? Appuyez sur deux.
+
+
+

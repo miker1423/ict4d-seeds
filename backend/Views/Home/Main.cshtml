@@ -1,185 +1,179 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<vxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.w3.org/2001/vxml" version = "2.1" application="http://webhosting.voxeo.net/170418/www/root.vxml">
-    <property name="inputmodes" value="dtmf"/>
+﻿<catch event="end">
+    <disconnect/>
+</catch>
 
-    <catch event="end">
-        <disconnect/>
-    </catch>
-
-    <menu id="InitialMenuEN" scope="dialog" dtmf="true">
-        <block>
-            <prompt>
-                <audio src="Sound/IntroductionEN.wav"><break time="1000" /></audio>
-            </prompt>
-        </block>
-        
-        <!--<prompt>Are you <value expr="_"></prompt> Intention is to get the name-->
+<menu id="InitialMenuEN" scope="dialog" dtmf="true">
+    <block>
         <prompt>
-            <audio src="Sound/MenuEN.wav"><break time="7000"/></audio>
+            <audio src="http://7819-187-188-63-71.ngrok.io/audio/English/IntroductionEN.wav"><break time="1000" /></audio>
         </prompt>
-        <choice next="#StatusEN" dtmf="1"></choice>
-        <choice next="#EndCallEN" dtmf="2"></choice>
-        <choice next="#ChangeLanguageEN" dtmf="3"></choice>
-
-        <noinput>
-            <goto next="#InitialMenuEN" />
-        </noinput>
-    </menu>
+    </block>
     
-    @* <form id="statcheckerEN"> 
-        WE HIT A ROADBLOCK :(((((
-        <block>
-            <script><![CDATA[
-            function isValid(doc, ns, item){
-                var d = doc.documentElement;
-                var validityStr = d.getElementsByTagNameNS(ns, item).item(0).firstChild.data;
-                return validityStr;
-            }
-        ]]>
-            </script>
-            <data name="web_response" src="https://8f67-80-114-138-125.eu.ngrok.io/" namelist="reference_num" method="get"/>
-            <var name="validity" expr="isValid(web_response, 'test', 'valid')" />
-            <if cond="validity == false"><goto next="#StatusFailEN"/></if>
-            <if cond="validity == true"><goto next="#StatusCompleteEN"></if>
-        
-        </block>
-    </form>*@
+    <!--<prompt>Are you <value expr="_"></prompt> Intention is to get the name-->
+    <prompt>
+        <audio src="http://7819-187-188-63-71.ngrok.io/audio/English/MenuEN.wav"><break time="7000"/></audio>
+    </prompt>
+    <choice next="#StatusEN" dtmf="1"></choice>
+    <choice next="#EndCallEN" dtmf="2"></choice>
+    <choice next="#ChangeLanguageEN" dtmf="3"></choice>
 
-    <form id="StatusEN">
-        <block>
-            <!--<data name="get-status" src="-" namelist="reference_num" method="get"/>-->
-            <prompt>
-                <audio src="Sound/ApprovedCertificationEN.wav"><break time="4000" /></audio>
-            </prompt>
-            <goto next="#End"/>
-        </block>
+    <noinput>
+        <goto next="#InitialMenuEN" />
+    </noinput>
+</menu>
 
-        
-    </form>
+<!--<form id="statcheckerEN"> 
+    WE HIT A ROADBLOCK :(((((
+    <block>
+        <script><![CDATA[
+        function isValid(doc, ns, item){
+            var d = doc.documentElement;
+            var validityStr = d.getElementsByTagNameNS(ns, item).item(0).firstChild.data;
+            return validityStr;
+        }
+    ]]>
+        </script>
+        <data name="web_response" src="https://8f67-80-114-138-125.eu.ngrok.io/" namelist="reference_num" method="get"/>
+        <var name="validity" expr="isValid(web_response, 'test', 'valid')" />
+        <if cond="validity == false"><goto next="#StatusFailEN"/></if>
+        <if cond="validity == true"><goto next="#StatusCompleteEN"></if>
+    
+    </block>
+</form>-->
 
-    <menu id="ChangeLanguageEN">
+<form id="StatusEN">
+    <block>
+        <!--<data name="get-status" src="-" namelist="reference_num" method="get"/>-->
         <prompt>
-            <audio src="Sound/LanguageChangeEN.wav"><break time="4000"/></audio>
+            <audio src="http://7819-187-188-63-71.ngrok.io/audio/English/ApprovedCertificationEN.wav"><break time="4000" /></audio>
         </prompt>
-        <choice next="#InitialMenuNO" dtmf="1"></choice>
-        <choice next="#InitialMenuEN" dtmf="2"></choice>
-    </menu>
+        <goto next="#End"/>
+    </block>
 
-    <menu id="EndCallEN">
-        <prompt>
-            <audio src="Sound/WrongCallEN.wav"><break time="4000"/></audio>
+    
+</form>
+
+<menu id="ChangeLanguageEN">
+    <prompt>
+        <audio src="http://7819-187-188-63-71.ngrok.io/audio/English/LanguageChangeEN.wav"><break time="4000"/></audio>
+    </prompt>
+    <choice next="#InitialMenuNO" dtmf="1"></choice>
+    <choice next="#InitialMenuEN" dtmf="2"></choice>
+</menu>
+
+<menu id="EndCallEN">
+    <prompt>
+        <audio src="http://7819-187-188-63-71.ngrok.io/audio/English/WrongCallEN.wav"><break time="4000"/></audio>
+    </prompt>
+    <choice next="#RecordEN" dtmf="1"></choice>
+    <choice next="#End" dtmf="2"></choice>   
+</menu>
+
+<form id="RecordEN">
+    <record name="response"
+    beep="true"
+    maxtime="30s"
+    finalsilence="4s"
+    dtmfterm="false"
+    type="audio/x-wav">
+    <record>
+    <filled>
+        <prompt> <!-- Play the voiceMessage buffer -->
+            <audio src="http://7819-187-188-63-71.ngrok.io/audio/English/ResponseGratitudeEN.wav" />
+            <!-- Message POST-->
         </prompt>
-        <choice next="#RecordEN" dtmf="1"></choice>
-        <choice next="#End" dtmf="2"></choice>   
-    </menu>
+        <goto next="#End"/>
+    </filled>
+</form>
 
-    <form id="RecordEN">
-        <record name="response"
-        beep="true"
-        maxtime="30s"
-        finalsilence="4s"
-        dtmfterm="false"
-        type="audio/x-wav">
-        <record>
-        <filled>
-            <prompt> <!-- Play the voiceMessage buffer -->
-                <audio src="Sound/ResponseGratitudeEN.wav"
-                <!-- Message POST-->
-            </prompt>
-            <goto next="#End"/>
-        </filled>
-    </form>
+<form id="End">
+    <block>
 
-    <form id="End">
-        <block>
-
-        </block>
-        <disconnect/>
-    </form>
+    </block>
+    <disconnect/>
+</form>
 
 <!-- NORWEGIAN HERE -->
-    <menu id="InitialMenuNO" scope="dialog" dtmf="true">
-        <block>
-            <prompt>
-                <audio src="Sound/IntroductionNO.wav"><break time="3000" /></audio>
-            </prompt>
-        </block>
-        
-        <!--<prompt>Are you <value expr="_"></prompt> Intention is to get the name-->
+<menu id="InitialMenuNO" scope="dialog" dtmf="true">
+    <block>
         <prompt>
-            <audio src="Sound/MenuNO.wav"><break time="7000"/></audio>
+            <audio src="http://7819-187-188-63-71.ngrok.io/audio/Nowegian/IntroductionNO.wav"><break time="3000" /></audio>
         </prompt>
-        <choice next="#StatusNO" dtmf="1"></choice>
-        <choice next="#EndCallNO" dtmf="2"></choice>
-        <choice next="#ChangeLanguageNO" dtmf="3"></choice>
+    </block>
+    
+    <!--<prompt>Are you <value expr="_"></prompt> Intention is to get the name-->
+    <prompt>
+        <audio src="http://7819-187-188-63-71.ngrok.io/audio/Nowegian/MenuNO.wav"><break time="7000"/></audio>
+    </prompt>
+    <choice next="#StatusNO" dtmf="1"></choice>
+    <choice next="#EndCallNO" dtmf="2"></choice>
+    <choice next="#ChangeLanguageNO" dtmf="3"></choice>
 
-        <noinput>
-            <goto next="#InitialMenuNO" />
-        </noinput>
-    </menu>
+    <noinput>
+        <goto next="#InitialMenuNO" />
+    </noinput>
+</menu>
 
-    @* <form id="statcheckerNO"> 
-        
-        <block>
-            <script><![CDATA[
-            function isValid(doc, ns, item){
-                var d = doc.documentElement;
-                var validityStr = d.getElementsByTagNameNS(ns, item).item(0).firstChild.data;
-                return validityStr;
-            }
-        ]]>
-            </script>
-            <data name="web_response" src="https://8f67-80-114-138-125.eu.ngrok.io/" namelist="reference_num" method="get"/>
-            <var name="validity" expr="isValid(web_response, 'test', 'valid')" />
-            <if cond="validity == false"><goto next="#StatusFailNO"/></if>
-            <if cond="validity == true"><goto next="#StatusCompleteNO"></if>
-        
-        </block>
-    </form>*@
+<!-- <form id="statcheckerNO"> 
+    
+    <block>
+        <script><![CDATA[
+        function isValid(doc, ns, item){
+            var d = doc.documentElement;
+            var validityStr = d.getElementsByTagNameNS(ns, item).item(0).firstChild.data;
+            return validityStr;
+        }
+    ]]>
+        </script>
+        <data name="web_response" src="https://8f67-80-114-138-125.eu.ngrok.io/" namelist="reference_num" method="get"/>
+        <var name="validity" expr="isValid(web_response, 'test', 'valid')" />
+        <if cond="validity == false"><goto next="#StatusFailNO"/></if>
+        <if cond="validity == true"><goto next="#StatusCompleteNO"></if>
+    
+    </block>
+</form> -->
 
-    <form id="StatusNO">
-        <block>
-            <!--<data name="get-status" src="-" namelist="reference_num" method="get"/>-->
-            <prompt>
-                <audio src="Sound/ApprovedCertificationNO.wav"><break time="4000" /></audio>
-            </prompt>
-            <goto next="#End"/>
-        </block>
-
-        
-    </form>
-
-    <menu id="ChangeLanguageNO">
+<form id="StatusNO">
+    <block>
+        <!--<data name="get-status" src="-" namelist="reference_num" method="get"/>-->
         <prompt>
-            <audio src="Sound/LanguageChangeNO.wav"><break time="4000"/></audio>
+            <audio src="http://7819-187-188-63-71.ngrok.io/audio/Nowegian/ApprovedCertificationNO.wav"><break time="4000" /></audio>
         </prompt>
-        <choice next="#InitialMenuEN" dtmf="1"></choice>
-        <choice next="#InitialMenuNO" dtmf="2"></choice>
-    </menu>
+        <goto next="#End"/>
+    </block>
 
-    <menu id="EndCallNO">
-        <prompt>
-            <audio src="Sound/WrongCallNO.wav"><break time="4000"/></audio>
+    
+</form>
+
+<menu id="ChangeLanguageNO">
+    <prompt>
+        <audio src="http://7819-187-188-63-71.ngrok.io/audio/Nowegian/LanguageChangeNO.wav"><break time="4000"/></audio>
+    </prompt>
+    <choice next="#InitialMenuEN" dtmf="1"></choice>
+    <choice next="#InitialMenuNO" dtmf="2"></choice>
+</menu>
+
+<menu id="EndCallNO">
+    <prompt>
+        <audio src="http://7819-187-188-63-71.ngrok.io/audio/Nowegian/WrongCallNO.wav"><break time="4000"/></audio>
+    </prompt>
+    <choice next="#RecordNO" dtmf="1"></choice>
+    <choice next="#End" dtmf="2"></choice>   
+</menu>
+
+<form id="RecordNO">
+    <record name="response"
+    beep="true"
+    maxtime="30s"
+    finalsilence="4s"
+    dtmfterm="false"
+    type="audio/x-wav">
+    <record>
+    <filled>
+        <prompt> <!-- Play the voiceMessage buffer -->
+            <audio src="http://7819-187-188-63-71.ngrok.io/audio/Nowegian/ResponseGratitudeNO.wav" />
+            <!-- Message POST-->
         </prompt>
-        <choice next="#RecordNO" dtmf="1"></choice>
-        <choice next="#End" dtmf="2"></choice>   
-    </menu>
-
-    <form id="RecordNO">
-        <record name="response"
-        beep="true"
-        maxtime="30s"
-        finalsilence="4s"
-        dtmfterm="false"
-        type="audio/x-wav">
-        <record>
-        <filled>
-            <prompt> <!-- Play the voiceMessage buffer -->
-                <audio src="Sound/ResponseGratitudeNO.wav"
-                <!-- Message POST-->
-            </prompt>
-            <goto next="#End"/>
-        </filled>
-    </form>
-
-</vxml>
+        <goto next="#End"/>
+    </filled>
+</form>
