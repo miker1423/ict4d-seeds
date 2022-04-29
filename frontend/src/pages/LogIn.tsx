@@ -8,13 +8,16 @@ import {
   Grid
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Navigate, Link, Route } from 'react-router-dom';
+
 import styled, { keyframes } from 'styled-components';
 
 const LogIn = () => {
   const [email, setEmail] = useState<string>();
   const [pw, setPw] = useState<string>();
   const [wrongCreds, setWrongCreds] = useState<boolean>(false);
+  const [labosemUser, setLabosemUser] = useState<boolean>(false);
+  const [unionUser, setUnionUser] = useState<boolean>(false);
   // const [animate, setAnimate] = useState<boolean>(false);
 
   // useEffect(() => {
@@ -26,17 +29,23 @@ const LogIn = () => {
    * name: unionUser, pw = union
    */
 
+  if (labosemUser) return <Navigate to="/labosem" />;
+  if (unionUser) return <Navigate to="/union" />;
+
   const handleSubmit = () => {
     const inputEmail = email;
     const inputPw = pw;
 
     if (inputEmail === 'labosemUser' && inputPw === 'labosem') {
       setWrongCreds(false);
+      setLabosemUser(true);
+      //do something...
       console.log('xx LABOSEM LOGIN!!!!!');
       // direct to labosem homepage
     } else if (inputEmail === 'unionUser' && inputPw === 'union') {
       setWrongCreds(false);
       console.log('xx UNION LOGIN!!!!!');
+      setUnionUser(true);
       // direct to union homepage
     } else {
       console.log('xx try again, or ask your contact person for credentials');
