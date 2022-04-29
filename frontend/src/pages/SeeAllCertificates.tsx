@@ -1,6 +1,7 @@
 import { Grid, AppBar, Typography, Button } from '@mui/material';
 import styled from 'styled-components';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const SeeAllCertificates = () => {
   return (
@@ -36,19 +37,17 @@ const SeeAllCertificates = () => {
                     right: '10px'
                   }}
                 >
-                  <b>Logged in as</b>: LaboSem user
+                  <b>Signed in as</b>: LaboSem user
                 </Typography>
-                <Typography
-                  align="right"
-                  sx={{
-                    mt: '12px',
-                    right: '30px',
-                    cursor: 'pointer',
-                    textDecoration: 'underline'
-                  }}
+                <Button
+                  variant="contained"
+                  size="small"
+                  sx={{ top: '5px', right: '25px', position: 'absolute' }}
                 >
-                  Log out
-                </Typography>
+                  <Link id="link" to="/">
+                    Sign out
+                  </Link>
+                </Button>
               </ToolbarText>
             </AppBar>
           </Grid>

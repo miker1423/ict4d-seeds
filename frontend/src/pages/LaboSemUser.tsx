@@ -39,7 +39,7 @@ const LaboSemUser = () => {
                     right: '10px'
                   }}
                 >
-                  <b>Logged in as</b>: LaboSem user
+                  <b>Signed in as</b>: LaboSem user
                 </Typography>
                 <Button
                   variant="contained"
@@ -47,7 +47,7 @@ const LaboSemUser = () => {
                   sx={{ top: '5px', right: '25px', position: 'absolute' }}
                 >
                   <Link id="link" to="/">
-                    Log out
+                    Sign out
                   </Link>
                 </Button>
               </ToolbarText>
@@ -56,7 +56,7 @@ const LaboSemUser = () => {
 
           <Grid item xs={12} style={{ paddingTop: '0px' }}>
             <div className="front">
-              <div className="title-container2  ">
+              <div className="title-container2">
                 <Typography variant="h1" sx={{ color: 'hsla(0, 0%, 15%);' }}>
                   Welcome
                 </Typography>

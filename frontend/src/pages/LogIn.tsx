@@ -105,10 +105,7 @@ const LogIn = () => {
                       }}
                     />
                   </SignInTextFields>
-                  <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
-                    label="Remember me"
-                  />
+
                   <Button
                     sx={{ marginTop: '10px' }}
                     fullWidth
@@ -129,7 +126,7 @@ const LogIn = () => {
                           The password or username you put in might be wrong.
                         </p>
                         <p>
-                          Try again, or ask your contact person for credentials
+                          Try again, or ask your contact person for credentials.
                         </p>
                       </span>
                       {/* <a href="#">Forgot password?</a> */}

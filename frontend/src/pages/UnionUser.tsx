@@ -39,7 +39,7 @@ const UnionUser = () => {
                     right: '10px'
                   }}
                 >
-                  <b>Logged in as</b>: Union user
+                  <b>Signed in as</b>: Union user
                 </Typography>
                 <Button
                   variant="contained"
@@ -47,7 +47,7 @@ const UnionUser = () => {
                   sx={{ top: '5px', right: '25px', position: 'absolute' }}
                 >
                   <Link id="link" to="/">
-                    Log out
+                    Sign out
                   </Link>
                 </Button>
               </ToolbarText>

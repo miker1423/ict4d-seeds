@@ -20,13 +20,13 @@ const MainPage = () => {
                     and retrieval of seed certificates.
                     <p>
                       Are you from LaboSem or a farmer's union? <br />
-                      Please log in to access the site.
+                      Please sign in to access the site.
                     </p>
                   </p>
                 </SubTitle>
                 <Button size="large" variant="contained">
                   <Link id="link" to="login">
-                    Log In
+                    Sign In
                   </Link>
                 </Button>
               </div>
