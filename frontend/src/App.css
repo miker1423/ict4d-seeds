@@ -44,6 +44,9 @@
   animation-timing-function: ease-in-out;
 }
 
+.MuiMenuItem-root.MuiMenuItem-gutters{
+  border-radius: 50px;
+}
 .MuiMenuItem-root.MuiMenuItem-gutters.Mui-selected{
   background-color:green;
 }

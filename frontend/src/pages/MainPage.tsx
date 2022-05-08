@@ -24,11 +24,11 @@ const MainPage = () => {
                     </p>
                   </p>
                 </SubTitle>
-                <Button size="large" variant="contained">
-                  <Link id="link" to="login">
+                <Link id="link" to="login">
+                  <Button size="large" variant="contained">
                     Sign In
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </div>
             </div>
           </Grid>

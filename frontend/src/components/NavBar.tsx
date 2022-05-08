@@ -28,16 +28,16 @@ const NavBar = ({ user, active }: { user: string; active?: string }) => {
             display: user.toLowerCase() === 'labosem' ? 'flex' : 'none'
           }}
         >
-          <MenuItem selected={active === 'regcer' ? true : false}>
-            <Link id="link" to="/registercertificate">
+          <Link id="link" to="/registercertificate">
+            <MenuItem selected={active === 'regcer' ? true : false}>
               Register certificate
-            </Link>
-          </MenuItem>
-          <MenuItem selected={active === 'seecer' ? true : false}>
-            <Link id="link" to="/seeallcertificates">
+            </MenuItem>
+          </Link>{' '}
+          <Link id="link" to="/seeallcertificates">
+            <MenuItem selected={active === 'seecer' ? true : false}>
               See all certificates
-            </Link>
-          </MenuItem>
+            </MenuItem>
+          </Link>
         </MenuContainer>
         <Typography
           align="right"
@@ -76,13 +76,16 @@ const ToolbarText = styled.span`
 
 const MenuContainer = styled.div`
   display: flex;
-  & > li {
+  & > a {
     height: 40px;
     border-radius: 50px;
-    font-size: 0.9em;
-    top: 30px;
     margin-left: 10px;
     width: 100%;
+  }
+
+  & > a > li {
+    top: 40px;
+    font-size: 0.9em;
   }
 `;
 

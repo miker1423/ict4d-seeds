@@ -30,18 +30,16 @@ const LaboSemUser = () => {
                 </Typography>
                 <ButtonContainer>
                   <Grid item xs={4}>
-                    <Button variant="contained">
-                      <Link id="link" to="/registercertificate">
+                    <Link id="link" to="/registercertificate">
+                      <Button variant="contained">
                         Register new certificate
-                      </Link>
-                    </Button>
+                      </Button>
+                    </Link>
                   </Grid>
                   <Grid item xs={4}>
-                    <Button variant="contained">
-                      <Link id="link" to="/seeallcertificates">
-                        See all certificates
-                      </Link>
-                    </Button>
+                    <Link id="link" to="/seeallcertificates">
+                      <Button variant="contained">See all certificates</Button>
+                    </Link>
                   </Grid>
                 </ButtonContainer>
               </div>

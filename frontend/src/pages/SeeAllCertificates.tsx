@@ -12,7 +12,7 @@ const SeeAllCertificates = () => {
         <Grid className="frontpage-grid" container spacing={2}>
           {/* NAV BAR */}
           <Grid item xs={12}>
-            <NavBar user={'LaboSem'} />
+            <NavBar user={'LaboSem'} active={'seecer'} />
           </Grid>
 
           <Grid item xs={12} style={{ paddingTop: '0px' }}>

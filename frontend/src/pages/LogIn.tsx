@@ -118,7 +118,7 @@ const LogIn = () => {
                       margin="normal"
                       value={username}
                       fullWidth
-                      label="username Address"
+                      label="Username"
                       autoComplete="username"
                       autoFocus
                       onChange={(e) => {
