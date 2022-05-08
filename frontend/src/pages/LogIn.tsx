@@ -9,15 +9,31 @@ import {
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { Navigate, Link, Route } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import styled, { keyframes } from 'styled-components';
 
 const LogIn = () => {
-  const [email, setEmail] = useState<string>();
+  const [username, setusername] = useState<string>();
   const [pw, setPw] = useState<string>();
   const [wrongCreds, setWrongCreds] = useState<boolean>(false);
   const [labosemUser, setLabosemUser] = useState<boolean>(false);
   const [unionUser, setUnionUser] = useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors }
+  } = useForm({
+    defaultValues: {
+      username: '',
+      password: ''
+    }
+  });
+  // console.log('xx errors', errors);
+  // console.log(watch());
+
+  // animation
   // const [animate, setAnimate] = useState<boolean>(false);
 
   // useEffect(() => {
@@ -29,31 +45,32 @@ const LogIn = () => {
    * name: unionUser, pw = union
    */
 
+  if (watch('username') === 'labosemUser' && watch('password') === 'labosem') {
+    console.log('LABOSEM LOGIN');
+  }
+
   if (labosemUser) return <Navigate to="/labosem" />;
   if (unionUser) return <Navigate to="/union" />;
 
-  const handleSubmit = () => {
-    const inputEmail = email;
+  const handleFormSubmit = () => {
+    const inputusername = username;
     const inputPw = pw;
 
-    if (inputEmail === 'labosemUser' && inputPw === 'labosem') {
+    if (inputusername === 'labosemUser' && inputPw === 'labosem') {
       setWrongCreds(false);
       setLabosemUser(true);
-      //do something...
       console.log('xx LABOSEM LOGIN!!!!!');
-      // direct to labosem homepage
-    } else if (inputEmail === 'unionUser' && inputPw === 'union') {
+    } else if (inputusername === 'unionUser' && inputPw === 'union') {
       setWrongCreds(false);
-      console.log('xx UNION LOGIN!!!!!');
       setUnionUser(true);
-      // direct to union homepage
+      console.log('xx UNION LOGIN!!!!!');
     } else {
       console.log('xx try again, or ask your contact person for credentials');
       setWrongCreds(true);
       // setAnimate(true);
     }
 
-    console.log('xx email %s and pw %s', email, pw);
+    console.log('xx username %s and pw %s', username, pw);
   };
 
   //   const errorAnimate = keyframes`
@@ -86,40 +103,57 @@ const LogIn = () => {
                   component="form"
                   className="signin-form"
                   sx={{ mt: 1 }}
+                  onSubmit={handleSubmit((data) => {
+                    console.log(data);
+                  })}
                 >
                   <SignInTextFields>
                     <TextField
+                      {...register('username', {
+                        required: 'username is required',
+                        minLength: 5,
+                        pattern: /^[A-Za-z0-9\_\-.][5,30]$/i
+                        // message: 'Please write a valid username' more for when registering
+                      })}
                       margin="normal"
-                      value={email}
-                      required
+                      value={username}
                       fullWidth
-                      label="Email Address"
-                      autoComplete="email"
+                      label="username Address"
+                      autoComplete="username"
                       autoFocus
                       onChange={(e) => {
-                        setEmail(e.target.value);
-                        console.log('xx email', e.target.value);
+                        setusername(e.target.value);
+                        // console.log('xx username', e.target.value);
                       }}
                     />
+                    <span>{errors.username?.message}</span>
                     <TextField
+                      {...register('password', {
+                        required: 'Password is required',
+                        minLength: 8,
+                        pattern:
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+                      })}
                       margin="normal"
-                      required
+                      // required
                       fullWidth
                       label="Password"
                       type="password"
                       value={pw}
                       onChange={(e) => {
                         setPw(e.target.value);
-                        console.log('xx pw', pw);
+                        // console.log('xx pw', pw);
                       }}
                     />
+                    <span>{errors.password?.message}</span>
                   </SignInTextFields>
 
                   <Button
                     sx={{ marginTop: '10px' }}
                     fullWidth
+                    type="submit"
                     variant="contained"
-                    onClick={handleSubmit}
+                    onClick={handleFormSubmit}
                   >
                     Sign in
                   </Button>
@@ -179,6 +213,13 @@ const SignInForm = styled(Box)`
     margin-bottom: 10px;
   }
   z-index: 10;
+
+  & > * > span {
+    text-align: left;
+    float: left;
+    padding-left: 2px;
+    color: red;
+  }
 `;
 
 const SignInTextFields = styled.div`
