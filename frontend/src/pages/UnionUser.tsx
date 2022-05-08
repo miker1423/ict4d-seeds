@@ -2,7 +2,7 @@ import { Grid, AppBar, Typography, Button } from '@mui/material';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
-import Certificates from './Certificates';
+import Certificates from '../components/Certificates';
 import NavBar from '../components/NavBar';
 
 const UnionUser = () => {
