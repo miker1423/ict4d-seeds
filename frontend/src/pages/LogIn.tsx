@@ -1,17 +1,9 @@
-import {
-  Box,
-  Typography,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Button,
-  Grid
-} from '@mui/material';
+import { Box, Typography, TextField, Button, Grid } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { Navigate, Link, Route } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 const LogIn = () => {
   const [username, setusername] = useState<string>();
@@ -30,20 +22,6 @@ const LogIn = () => {
       password: ''
     }
   });
-  // console.log('xx errors', errors);
-  // console.log(watch());
-
-  // animation
-  // const [animate, setAnimate] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   setAnimate(false);
-  // }, []);
-
-  /**
-   * name: labosemUser, pw = labosem
-   * name: unionUser, pw = union
-   */
 
   if (watch('username') === 'labosemUser' && watch('password') === 'labosem') {
     console.log('LABOSEM LOGIN');
@@ -67,28 +45,9 @@ const LogIn = () => {
     } else {
       console.log('xx try again, or ask your contact person for credentials');
       setWrongCreds(true);
-      // setAnimate(true);
     }
-
     console.log('xx username %s and pw %s', username, pw);
   };
-
-  //   const errorAnimate = keyframes`
-  //   40%, 60%, 80% {
-  //     transform: translateX(8px);
-  //   }
-  //   50%,
-  //   70%,
-  //   90% {
-  //     transform: translateX(-8px);
-  //   }
-  // }
-  // `;
-  //   const SignInTextFields = styled.div`
-  //     animation-name: ${animate ? errorAnimate : ''};
-  //     animation-duration: 0.7s, 0.35s;
-  //     animation-iteration-count: 1;
-  //   `;
 
   return (
     <div className="App">
@@ -112,7 +71,7 @@ const LogIn = () => {
                       {...register('username', {
                         required: 'username is required',
                         minLength: 5,
-                        pattern: /^[A-Za-z0-9\_\-.][5,30]$/i
+                        pattern: /^[A-Za-z0-9\_\-.]{5,30}$/i
                         // message: 'Please write a valid username' more for when registering
                       })}
                       margin="normal"
@@ -123,7 +82,6 @@ const LogIn = () => {
                       autoFocus
                       onChange={(e) => {
                         setusername(e.target.value);
-                        // console.log('xx username', e.target.value);
                       }}
                     />
                     <span>{errors.username?.message}</span>
@@ -135,14 +93,12 @@ const LogIn = () => {
                           /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
                       })}
                       margin="normal"
-                      // required
                       fullWidth
                       label="Password"
                       type="password"
                       value={pw}
                       onChange={(e) => {
                         setPw(e.target.value);
-                        // console.log('xx pw', pw);
                       }}
                     />
                     <span>{errors.password?.message}</span>
@@ -222,9 +178,5 @@ const SignInForm = styled(Box)`
   }
 `;
 
-const SignInTextFields = styled.div`
-  animation-name: '';
-  animation-duration: 0.7s, 0.35s;
-  animation-iteration-count: 1;
-`;
+const SignInTextFields = styled.div``;
 export default LogIn;

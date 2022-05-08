@@ -10,15 +10,33 @@ import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
+import { useForm } from 'react-hook-form';
 
 const RegisterCertificate = () => {
   const [registered, setRegistered] = useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors }
+  } = useForm({
+    defaultValues: {
+      phoneno: '',
+      seedvar: '',
+      certper: '',
+      varpur: null,
+      gerfac: null,
+      batchno: null,
+      certified: false
+    }
+  });
 
   useEffect(() => {
+    console.log('xx watch', watch());
     setRegistered(false);
   }, []);
 
-  const handleSubmit = () => {
+  const handleOnSubmit = () => {
     setRegistered(true);
   };
 
@@ -50,6 +68,9 @@ const RegisterCertificate = () => {
                     component="form"
                     autoComplete="off"
                     sx={{ padding: '10px' }}
+                    onSubmit={handleSubmit((data) => {
+                      console.log('xx data', data);
+                    })}
                   >
                     <Grid container xs={10} spacing={2} sx={{ gap: 1 }}>
                       <Grid container>
@@ -57,7 +78,18 @@ const RegisterCertificate = () => {
                           <Typography> Farmer's phone number:</Typography>
                         </Grid>
                         <Grid item xs={6}>
-                          <TextField label="Farmer Phone Number" fullWidth />
+                          <TextField
+                            {...register('phoneno', {
+                              required: 'Phone number is required',
+                              minLength: 5,
+                              pattern: {
+                                value: /^[0-9]{5,}$/i,
+                                message: 'Please write a valid phone number'
+                              }
+                            })}
+                            label="Farmer Phone Number"
+                            fullWidth
+                          />
                         </Grid>
                       </Grid>
 
@@ -67,6 +99,14 @@ const RegisterCertificate = () => {
                         </Grid>
                         <Grid item xs={6}>
                           <TextField
+                            {...register('seedvar', {
+                              required: 'Seed variety is required',
+                              minLength: 5,
+                              pattern: {
+                                value: /^[A-Z,a-z,0-9\-/. ]+$/i,
+                                message: 'Please write a valid name'
+                              }
+                            })}
                             type="text"
                             label="Seed Variety Name"
                             fullWidth
@@ -78,13 +118,40 @@ const RegisterCertificate = () => {
                         <Grid item xs={4}>
                           <Typography>Certification Period:</Typography>
                         </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            type="year"
-                            label="Valid certificate years"
-                            fullWidth
-                          />
-                        </Grid>
+                        <div style={{ display: 'inline-flex' }}>
+                          <Grid item>
+                            <span>From</span>
+                            <TextField
+                              {...register('certper', {
+                                required: 'Certification period is required',
+                                pattern: {
+                                  value: /^[0-9\- ]+$/i,
+                                  message: 'Please write a period'
+                                }
+                              })}
+                              type="date"
+                              label="From"
+                              InputLabelProps={{ shrink: true }}
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid item sx={{ pl: 1 }}>
+                            <span>To</span>
+                            <TextField
+                              {...register('certper', {
+                                required: 'Certification period is required',
+                                pattern: {
+                                  value: /^[0-9\- ]+$/i,
+                                  message: 'Please write a period'
+                                }
+                              })}
+                              type="date"
+                              label="To"
+                              InputLabelProps={{ shrink: true }}
+                              fullWidth
+                            />
+                          </Grid>
+                        </div>
                       </Grid>
 
                       <Grid container>
@@ -93,6 +160,13 @@ const RegisterCertificate = () => {
                         </Grid>
                         <Grid item xs={4}>
                           <TextField
+                            {...register('varpur', {
+                              required: 'Varietal Purity is required',
+                              pattern: {
+                                value: /^[0-9]+$/i,
+                                message: 'Please input a percentage number'
+                              }
+                            })}
                             type="number"
                             label="Percentage %"
                             fullWidth
@@ -106,6 +180,13 @@ const RegisterCertificate = () => {
                         </Grid>
                         <Grid item xs={4}>
                           <TextField
+                            {...register('gerfac', {
+                              required: 'Germinative faculty is required',
+                              pattern: {
+                                value: /^[0-9]+$/i,
+                                message: 'Please input a percentage number'
+                              }
+                            })}
                             type="number"
                             label="Percentage %"
                             fullWidth
@@ -119,6 +200,13 @@ const RegisterCertificate = () => {
                         </Grid>
                         <Grid item xs={4}>
                           <TextField
+                            {...register('batchno', {
+                              required: 'Batch number is required',
+                              pattern: {
+                                value: /^[0-9]+$/i,
+                                message: 'Please input a percentage number'
+                              }
+                            })}
                             type="number"
                             label="Batch number"
                             fullWidth
@@ -133,12 +221,17 @@ const RegisterCertificate = () => {
                           </Typography>
                         </Grid>
                         <Grid item xs={2} sx={{ textAlign: 'left' }}>
-                          <Checkbox sx={{ padding: '0px', pt: '8px' }} />
+                          <Checkbox
+                            {...register('certified', {
+                              required: 'Certification is required'
+                            })}
+                            sx={{ padding: '0px', pt: '8px' }}
+                          />
                         </Grid>
                       </Grid>
                     </Grid>
 
-                    <Button variant="contained" onClick={handleSubmit}>
+                    <Button variant="contained" type="submit">
                       Register
                     </Button>
                   </Box>
