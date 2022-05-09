@@ -34,7 +34,7 @@ const RegisterCertificate = () => {
   useEffect(() => {
     console.log('xx watch', watch());
     setRegistered(false);
-  }, []);
+  }, [watch()]);
 
   const handleOnSubmit = () => {
     setRegistered(true);
@@ -58,6 +58,7 @@ const RegisterCertificate = () => {
                   </Typography>
                 </div>
               )}
+
               {!registered && (
                 <div className="front-certificate">
                   <Typography variant="h5" sx={{ pb: '50px' }}>
@@ -67,7 +68,10 @@ const RegisterCertificate = () => {
                     id="certificate-form"
                     component="form"
                     autoComplete="off"
-                    sx={{ padding: '10px' }}
+                    sx={{
+                      padding: '10px',
+                      '& span': { float: 'left', mb: 1 }
+                    }}
                     onSubmit={handleSubmit((data) => {
                       console.log('xx data', data);
                     })}
@@ -81,15 +85,20 @@ const RegisterCertificate = () => {
                           <TextField
                             {...register('phoneno', {
                               required: 'Phone number is required',
-                              minLength: 5,
+                              // minLength: 5,
                               pattern: {
-                                value: /^[0-9]{5,}$/i,
+                                value: /^[0-9]+$/i,
                                 message: 'Please write a valid phone number'
                               }
                             })}
                             label="Farmer Phone Number"
                             fullWidth
                           />
+                          <ErrorMsg>
+                            {errors.phoneno?.message ||
+                              (errors.phoneno?.type === 'pattern' &&
+                                errors.phoneno?.message)}
+                          </ErrorMsg>
                         </Grid>
                       </Grid>
 
@@ -111,6 +120,11 @@ const RegisterCertificate = () => {
                             label="Seed Variety Name"
                             fullWidth
                           />
+                          <ErrorMsg>
+                            {errors.seedvar?.message ||
+                              (errors.seedvar?.type === 'pattern' &&
+                                errors.seedvar?.message)}
+                          </ErrorMsg>
                         </Grid>
                       </Grid>
 
@@ -119,8 +133,8 @@ const RegisterCertificate = () => {
                           <Typography>Certification Period:</Typography>
                         </Grid>
                         <div style={{ display: 'inline-flex' }}>
-                          <Grid item>
-                            <span>From</span>
+                          <Grid item xs={6}>
+                            <ToandFrom>From</ToandFrom>
                             <TextField
                               {...register('certper', {
                                 required: 'Certification period is required',
@@ -135,8 +149,9 @@ const RegisterCertificate = () => {
                               fullWidth
                             />
                           </Grid>
-                          <Grid item sx={{ pl: 1 }}>
-                            <span>To</span>
+
+                          <Grid item xs={6} sx={{ pl: 1 }}>
+                            <ToandFrom>To</ToandFrom>
                             <TextField
                               {...register('certper', {
                                 required: 'Certification period is required',
@@ -152,6 +167,14 @@ const RegisterCertificate = () => {
                             />
                           </Grid>
                         </div>
+                        {/* <div>
+                          {' '}
+                          <ErrorMsg>
+                            {errors.certper?.message ||
+                              (errors.certper?.type === 'pattern' &&
+                                errors.certper?.message)}
+                          </ErrorMsg>
+                        </div> */}
                       </Grid>
 
                       <Grid container>
@@ -171,6 +194,11 @@ const RegisterCertificate = () => {
                             label="Percentage %"
                             fullWidth
                           />
+                          <ErrorMsg>
+                            {errors.varpur?.message ||
+                              (errors.varpur?.type === 'pattern' &&
+                                errors.varpur?.message)}
+                          </ErrorMsg>
                         </Grid>
                       </Grid>
 
@@ -191,6 +219,11 @@ const RegisterCertificate = () => {
                             label="Percentage %"
                             fullWidth
                           />
+                          <ErrorMsg>
+                            {errors.gerfac?.message ||
+                              (errors.gerfac?.type === 'pattern' &&
+                                errors.gerfac?.message)}
+                          </ErrorMsg>
                         </Grid>
                       </Grid>
 
@@ -211,6 +244,11 @@ const RegisterCertificate = () => {
                             label="Batch number"
                             fullWidth
                           />
+                          <ErrorMsg>
+                            {errors.batchno?.message ||
+                              (errors.batchno?.type === 'pattern' &&
+                                errors.batchno?.message)}
+                          </ErrorMsg>
                         </Grid>
                       </Grid>
 
@@ -227,6 +265,7 @@ const RegisterCertificate = () => {
                             })}
                             sx={{ padding: '0px', pt: '8px' }}
                           />
+                          <ErrorMsg>{errors.certified?.message}</ErrorMsg>
                         </Grid>
                       </Grid>
                     </Grid>
@@ -245,15 +284,16 @@ const RegisterCertificate = () => {
   );
 };
 
-const ToolbarText = styled.span`
-  width: 100%;
-  height: 100%;
-  display: inline-flex;
+const ErrorMsg = styled.span`
+  color: red;
+  font-size: 0.8em;
+`;
 
-  & > p {
-    position: absolute;
-    font-size: 0.9em;
-  }
+const ToandFrom = styled.p`
+  font-weight: 400;
+  font-size: 0.9em;
+  float: left;
+  margin-top: 2px;
 `;
 
 export default RegisterCertificate;
