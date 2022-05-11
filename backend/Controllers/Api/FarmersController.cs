@@ -2,10 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Backend.Models;
 using Backend.Services.Interfaces;
 
-namespace Backend.Controllers;
+namespace Backend.Controllers.Api;
 
-[Route("Farmers")]
-public class FarmersController : Controller
+[Route("api/[controller]")]
+[ApiController]
+public class FarmersController : ControllerBase
 {
     private readonly ILogger<FarmersController> _logger;
     private readonly IFarmerService _farmerService;
@@ -19,6 +20,13 @@ public class FarmersController : Controller
         _logger = logger;
         _farmerService = farmerService;
         _certService = certService;
+    }
+
+    [HttpGet]
+    public IActionResult Get() 
+    {
+        var farmers = _farmerService.GetFarmers();
+        return Ok(farmers);
     }
     
     [HttpPost("create")]

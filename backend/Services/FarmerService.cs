@@ -30,4 +30,7 @@ public class FarmerService : IFarmerService
 
     public Farmer? FindByPhone([Phone] string phone)
         => _context.Farmers.FirstOrDefault(farmer => farmer.PhoneNumber == phone);
+
+    public List<Farmer> GetFarmers()
+        => _context.Farmers.ToList();
 }

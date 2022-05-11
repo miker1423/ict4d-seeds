@@ -5,6 +5,7 @@ namespace Backend.Services.Interfaces;
 
 public interface ICertService 
 {
+    public List<Certificate> GetCertificates();    
     public Task<CertRequest> CreateRequest(Guid farmerId);
 
     public Task<(bool, Certificate?)> CompleteRequest(Guid requestId, CertificateStatus status);

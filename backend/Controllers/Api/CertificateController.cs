@@ -3,10 +3,11 @@ using Backend.Models;
 using Backend.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
-namespace Backend.Controllers;
+namespace Backend.Controllers.Api;
 
-[Route("Certificate")]
-public class CertificateController : Controller 
+[Route("api/[controller]")]
+[ApiController]
+public class CertificateController : ControllerBase
 {
     private readonly ILogger<CertificateController> _logger;
     private readonly ICertService _certService;
@@ -20,6 +21,13 @@ public class CertificateController : Controller
         _logger = logger;
         _certService = certService;
         _farmerService = farmerService;
+    }
+
+    [HttpGet]
+    public IActionResult Get() 
+    {
+        var certificates = _certService.GetCertificates();
+        return Ok(certificates);
     }
 
 

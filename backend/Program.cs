@@ -2,6 +2,7 @@ using Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Backend.Services;
 using Backend.Services.Interfaces;
+using Backend.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,9 +46,8 @@ app.UseCors(cors =>
 );
 
 app.UseAuthorization();
+app.UseMiddleware<ContentTypeSwitchMiddleware>();
+app.MapControllers();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
