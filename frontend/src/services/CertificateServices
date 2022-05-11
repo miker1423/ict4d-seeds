@@ -1,0 +1,17 @@
+import React from 'react';
+import ICertificate from '../interfaces/ICertificate';
+import http from '../http-common';
+
+// APIs endpoints
+
+export const create = (certificateData: ICertificate) => {
+  http
+    .post('/Certificate/create', certificateData)
+    .then((res) => console.log('xx create res', res));
+};
+
+const CertificateServices = {
+  create
+};
+
+export default CertificateServices;
