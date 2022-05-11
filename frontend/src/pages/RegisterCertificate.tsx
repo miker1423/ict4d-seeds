@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import { useForm } from 'react-hook-form';
 import ICertificate from '../interfaces/ICertificate';
-import CertificateServices from '../services/CertificateServices';
+import CertificateServices from '../backendServices/CertificateServices';
 
 const RegisterCertificate = () => {
   const [registered, setRegistered] = useState<boolean>(false);
