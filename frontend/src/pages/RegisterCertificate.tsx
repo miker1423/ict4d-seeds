@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import { useForm } from 'react-hook-form';
 import ICertificate from '../interfaces/ICertificate';
-import FarmerServices, { create } from '../services/FarmerServices';
+import CertificateServices from '../services/CertificateServices';
 
 const RegisterCertificate = () => {
   const [registered, setRegistered] = useState<boolean>(false);
@@ -44,7 +44,7 @@ const RegisterCertificate = () => {
     console.log('xx data', data);
     setRegistered(true);
 
-    const newCertificate = {
+    const newCertificate: ICertificate = {
       phoneno: data.phoneno
     };
 
