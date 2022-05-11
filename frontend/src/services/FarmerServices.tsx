@@ -1,17 +1,52 @@
 import React from 'react';
 import IFarmer from '../interfaces/IFarmer';
-import http from '../http-common';
+import axios from '../http-common';
 
 // APIs endpoints
-
 export const create = (farmerData: IFarmer) => {
-  http
-    .post('/Farmers/create', farmerData)
+  const json = `{
+    "phoneNumber": ${farmerData.phoneno}
+  }`;
+
+  const data = JSON.parse(json);
+
+  axios
+    .post('/Farmers/create', data, {
+      headers: { 'content-type': 'application/json' }
+    })
+    .catch((e) => console.log('xx error', e.response))
+    .then((res) => console.log('xx create res', res));
+};
+
+// Get a farmer
+export const getFarmer = (phoneno: IFarmer['phoneno']) => {
+  axios
+    .get(`/Farmers/getFarmer/${phoneno}`)
+    .catch((e) => console.log('xx error', e.response))
+    .then((res) => console.log('xx create res', res));
+};
+
+// Get all Farmers
+export const getAllFarmers = () => {
+  axios
+    .get(`/Farmers/getAllFarmers`)
+    .catch((e) => console.log('xx error', e.response))
+    .then((res) => console.log('xx create res', res));
+};
+
+// delete Farmers
+export const deleteFarmer = (phoneno: IFarmer['phoneno']) => {
+  axios
+    .delete(`/Farmers/delete/${phoneno}`)
+    .catch((e) => console.log('xx error', e.response))
     .then((res) => console.log('xx create res', res));
 };
 
 const FarmerServices = {
-  create
+  create,
+  deleteFarmer,
+  getAllFarmers,
+  getFarmer
 };
 
 export default FarmerServices;

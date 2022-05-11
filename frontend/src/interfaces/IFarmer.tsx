@@ -1,5 +1,5 @@
 export default interface IFarmer {
   id?: number;
-  phone: string;
+  phoneno: string;
   name: string;
 }

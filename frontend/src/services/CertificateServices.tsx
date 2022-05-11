@@ -4,6 +4,7 @@ import axios from '../http-common';
 
 // APIs endpoints
 
+// create certificate
 export const create = (certificateData: ICertificate) => {
   const json = `{
     "phoneNumber": ${certificateData.phoneno}
@@ -19,8 +20,44 @@ export const create = (certificateData: ICertificate) => {
     .then((res) => console.log('xx create res', res));
 };
 
+// Get users certificate
+export const getUserCerts = (phoneno: ICertificate['phoneno']) => {
+  axios
+    .get(`/Certificate/getUserCerts/${phoneno}`)
+    .catch((e) => console.log('xx error', e.response))
+    .then((res) => console.log('xx create res', res));
+};
+
+// Get all certificates
+export const getAllCerts = () => {
+  axios
+    .get(`/Certificate/getAllCerts`)
+    .catch((e) => console.log('xx error', e.response))
+    .then((res) => console.log('xx create res', res));
+};
+
+//  what does this do..
+export const getPhoneNo = (phoneno: ICertificate['phoneno']) => {
+  axios
+    .get(`/Certificate/get_phone/${phoneno}`)
+    .catch((e) => console.log('xx error', e.response))
+    .then((res) => console.log('xx create res', res));
+};
+
+// delete certificate
+export const deleteCert = (id: ICertificate['id']) => {
+  axios
+    .delete(`/Certificate/delete/${id}`)
+    .catch((e) => console.log('xx error', e.response))
+    .then((res) => console.log('xx create res', res));
+};
+
 const CertificateServices = {
-  create
+  create,
+  getPhoneNo,
+  getAllCerts,
+  getUserCerts,
+  deleteCert
 };
 
 export default CertificateServices;
