@@ -28,7 +28,7 @@ public class CertService : ICertService
             return (false, null);
         }
         var name = farmer.Name ?? "farmer";
-        await _callerService.CallNow(farmer.PhoneNumber, GetText(name, true));
+        //await _callerService.CallNow(farmer.PhoneNumber, GetText(name, true));
         var newCert = await _context.Certificates.AddAsync(new Certificate() {
             FarmerId = farmer.ID,
             Status = status

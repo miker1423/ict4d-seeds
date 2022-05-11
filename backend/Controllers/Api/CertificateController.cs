@@ -45,7 +45,7 @@ public class CertificateController : ControllerBase
         var (success, newCert) = await _certService.CompleteRequest(cert.ID, status);
         if(!success)
             return BadRequest("The farmer does not have a phone number");
-        return CreatedAtAction("", newCert);
+        return CreatedAtAction(null, newCert);
     }
 
     [HttpGet("get_phone/{phone}")]
