@@ -61,6 +61,9 @@ public class CertService : ICertService
     public Certificate? GetById(Guid id)
         => _context.Certificates.FirstOrDefault(cert => cert.ID == id);
 
+    public List<Certificate> GetCertificates()
+        => _context.Certificates.ToList();
+
     public List<Certificate> HasValidCert(Guid farmerId)
         => _context.Certificates.Where(cert => cert.FarmerId == farmerId && cert.Status == CertificateStatus.VALID).ToList();
 
