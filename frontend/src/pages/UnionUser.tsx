@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import Certificates from '../components/Certificates';
 import PdfCreator from '../components/PdfCreator';
 import NavBar from '../components/NavBar';
-import { PDFViewer } from '@react-pdf/renderer';
 
 const UnionUser = () => {
   const [showTable, setShowTable] = useState<boolean>(false);
@@ -73,11 +72,14 @@ const UnionUser = () => {
                   </Grid>
                   <Grid item xs={8}>
                     <div className="document" style={{ width: '100%' }}>
-                      {showDocument && (
-                        <PDFViewer>
-                          <PdfCreator />
-                        </PDFViewer>
-                      )}
+                      {
+                        showDocument
+                        //  && (
+                        //   <PDFViewer>
+                        //     <PdfCreator />
+                        //   </PDFViewer>
+                        // )
+                      }
                     </div>
                   </Grid>
                 </Grid>

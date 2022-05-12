@@ -9,7 +9,6 @@ import RegisterUser from './pages/RegisterUser';
 import SeeAllCertificates from './pages/SeeAllCertificates';
 import UnionUser from './pages/UnionUser';
 import { AuthProvider } from 'react-oidc-context';
-import { PDFViewer } from '@react-pdf/renderer';
 
 const oidcConfig = {
   authority: 'https://bcdf-145-108-81-4.eu.ngrok.io/api/',
@@ -24,29 +23,23 @@ const oidcConfig = {
 const App = () => {
   return (
     // <AuthProvider {...oidcConfig}>
-    <PDFViewer>
-      <div className="App">
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<MainPage />} />
-            <Route path="/login" element={<LogIn />} />
-            <Route path="/labosem" element={<LaboSemUser />} />
-            <Route path="/union" element={<UnionUser />} />
-            <Route
-              path="/registercertificate"
-              element={<RegisterCertificate />}
-            />
-            <Route
-              path="/seeallcertificates"
-              element={<SeeAllCertificates />}
-            />
+    <div className="App">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/labosem" element={<LaboSemUser />} />
+          <Route path="/union" element={<UnionUser />} />
+          <Route
+            path="/registercertificate"
+            element={<RegisterCertificate />}
+          />
+          <Route path="/seeallcertificates" element={<SeeAllCertificates />} />
 
-            <Route path="/registeruser" element={<RegisterUser />} />
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </PDFViewer>
-
+          <Route path="/registeruser" element={<RegisterUser />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
     // </AuthProvider>
   );
 };
