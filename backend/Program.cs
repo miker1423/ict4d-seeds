@@ -5,6 +5,8 @@ using Backend.Services.Interfaces;
 using Backend.Middleware;
 using Microsoft.AspNetCore.Identity;
 using IdentityServer4.Models;
+using IdentityServer4;
+using IdentityServer4.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,16 +29,30 @@ builder.Services.AddIdentityServer(options => {
 })
 .AddInMemoryApiResources(new List<ApiResource>())
 .AddInMemoryApiScopes(new List<ApiScope>() {
-    new ApiScope("api")
+    new ApiScope("api"),
 })
 .AddInMemoryClients(new List<Client>() { 
     new Client() {
         ClientId = "default_client",
         ClientSecrets = { new Secret("secret".Sha256()) },
         AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-        AllowedScopes =  { "api" }
+        AllowedScopes =  { 
+            "api", 
+            IdentityServerConstants.StandardScopes.OpenId,
+            IdentityServerConstants.StandardScopes.Profile,
+        },
+        AllowedCorsOrigins = { 
+            "https://bcdf-145-108-81-4.eu.ngrok.io",
+            "https://eu.ngrok.io",
+            "https://ngrok.io",
+            "bcdf-145-108-81-4.eu.ngrok.io",
+            "eu.ngrok.io",
+            "ngrok.io",
+            "*",
+        },
     }
 })
+.AddCorsPolicyService<CorsPolicyService>()
 .AddDeveloperSigningCredential()
 .AddAspNetIdentity<AppUser>();
 builder.Services.Configure<IdentityOptions>(options => {
@@ -117,3 +133,9 @@ app.MapControllers();
 
 
 app.Run();
+
+public class CorsPolicyService : ICorsPolicyService
+{
+    public Task<bool> IsOriginAllowedAsync(string origin)
+        =>  Task.FromResult(true);
+}
