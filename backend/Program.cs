@@ -62,7 +62,10 @@ var farmer = context.Farmers.Add(new Backend.Models.Farmer() {
 });
 context.Certificates.Add(new Backend.Models.Certificate() {
     FarmerId = farmer.Entity.ID,
-    Status = Backend.Models.CertificateStatus.VALID
+    Status = Backend.Models.CertificateStatus.VALID,
+    DateCreate = DateTime.UtcNow,
+    LastChanged = DateTime.UtcNow,
+    SeedVariety = "Variety",
 });
 
 JUMP_SEED:
