@@ -3,7 +3,15 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 import styled from 'styled-components';
 
-const NavBar = ({ user, active }: { user: string; active?: string }) => {
+const NavBar = ({
+  user,
+  active,
+  admin
+}: {
+  user: string;
+  active?: string;
+  admin?: boolean;
+}) => {
   return (
     <AppBar
       className="appbar"
@@ -38,6 +46,13 @@ const NavBar = ({ user, active }: { user: string; active?: string }) => {
               See all certificates
             </MenuItem>
           </Link>
+          {admin && (
+            <Link id="link" to="/registeruser">
+              <MenuItem selected={active === 'reguser' ? true : false}>
+                Register user
+              </MenuItem>
+            </Link>
+          )}
         </MenuContainer>
         <Typography
           align="right"

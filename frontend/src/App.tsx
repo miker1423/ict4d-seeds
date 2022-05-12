@@ -5,6 +5,7 @@ import LaboSemUser from './pages/LaboSemUser';
 import LogIn from './pages/LogIn';
 import MainPage from './pages/MainPage';
 import RegisterCertificate from './pages/RegisterCertificate';
+import RegisterUser from './pages/RegisterUser';
 import SeeAllCertificates from './pages/SeeAllCertificates';
 import UnionUser from './pages/UnionUser';
 
@@ -22,6 +23,8 @@ const App = () => {
             element={<RegisterCertificate />}
           />
           <Route path="/seeallcertificates" element={<SeeAllCertificates />} />
+
+          <Route path="/registeruser" element={<RegisterUser />} />
         </Routes>
       </BrowserRouter>
     </div>

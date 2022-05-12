@@ -20,10 +20,10 @@ export const create = (certificateData: ICertificate) => {
     .then((res) => console.log('xx create res', res));
 };
 
-// Get users certificate
-export const getUserCerts = (phoneno: ICertificate['phoneno']) => {
+// Get users certificate by phone
+export const getCertByPhone = (phoneno: ICertificate['phoneno']) => {
   axios
-    .get(`/Certificate/getUserCerts/${phoneno}`)
+    .get(`/Certificate/get_phone/${phoneno}`)
     .catch((e) => console.log('xx error', e.response))
     .then((res) => console.log('xx create res', res));
 };
@@ -32,14 +32,6 @@ export const getUserCerts = (phoneno: ICertificate['phoneno']) => {
 export const getAllCerts = () => {
   axios
     .get(`/Certificate/getAllCerts`)
-    .catch((e) => console.log('xx error', e.response))
-    .then((res) => console.log('xx create res', res));
-};
-
-//  what does this do..
-export const getPhoneNo = (phoneno: ICertificate['phoneno']) => {
-  axios
-    .get(`/Certificate/get_phone/${phoneno}`)
     .catch((e) => console.log('xx error', e.response))
     .then((res) => console.log('xx create res', res));
 };
@@ -54,9 +46,8 @@ export const deleteCert = (id: ICertificate['id']) => {
 
 const CertificateServices = {
   create,
-  getPhoneNo,
   getAllCerts,
-  getUserCerts,
+  getCertByPhone,
   deleteCert
 };
 

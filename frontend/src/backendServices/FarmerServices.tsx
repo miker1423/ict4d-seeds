@@ -18,7 +18,7 @@ export const create = (farmerData: IFarmer) => {
     .then((res) => console.log('xx create res', res));
 };
 
-// Get a farmer
+// Get a farmer by phone
 export const getFarmer = (phoneno: IFarmer['phoneno']) => {
   axios
     .get(`/Farmers/getFarmer/${phoneno}`)
@@ -29,7 +29,7 @@ export const getFarmer = (phoneno: IFarmer['phoneno']) => {
 // Get all Farmers
 export const getAllFarmers = () => {
   axios
-    .get(`/Farmers/getAllFarmers`)
+    .get(`/Farmers`)
     .catch((e) => console.log('xx error', e.response))
     .then((res) => console.log('xx create res', res));
 };
