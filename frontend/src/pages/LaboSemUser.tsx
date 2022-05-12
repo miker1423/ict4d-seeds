@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import React from 'react';
 
-const LaboSemUser = (labosemLogin: boolean) => {
+const LaboSemUser = () => {
   return (
     <div className="App">
       <div
