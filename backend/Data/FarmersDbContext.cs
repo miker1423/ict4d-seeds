@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Backend.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Backend.Data;
 
 #nullable disable
 
-public class FarmersDbContext : DbContext
+public class FarmersDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 {
     public FarmersDbContext(DbContextOptions<FarmersDbContext> contextOptions)
         : base(contextOptions) {}
@@ -15,6 +17,4 @@ public class FarmersDbContext : DbContext
     public DbSet<CertRequest> CertRequests { get; set; }
 
     public DbSet<Certificate> Certificates { get; set; }
-
-    
 }

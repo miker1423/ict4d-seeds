@@ -31,7 +31,10 @@ public class CertService : ICertService
         //await _callerService.CallNow(farmer.PhoneNumber, GetText(name, true));
         var newCert = await _context.Certificates.AddAsync(new Certificate() {
             FarmerId = farmer.ID,
-            Status = status
+            Status = status,
+            DateCreate = DateTime.UtcNow,
+            LastChanged = DateTime.UtcNow,
+            
         });
         _context.CertRequests.Update(cert);
         await _context.SaveChangesAsync();
@@ -77,6 +80,13 @@ public class CertService : ICertService
         _context.Certificates.Update(cert);
         await _context.SaveChangesAsync();
         return (true, cert);
+    }
+
+    public async Task<bool> Update(Certificate certificate)
+    {
+        var _ = _context.Certificates.Update(certificate);
+        var updated = await _context.SaveChangesAsync();
+        return updated > 0;
     }
 
     private string GetText(string name, bool isValid)

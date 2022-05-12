@@ -30,8 +30,7 @@ public class CertificateController : ControllerBase
         return Ok(certificates);
     }
 
-
-    [HttpPost("create")]
+    [HttpPost("[action]")]
     public async Task<IActionResult> Create([FromBody]CertificateVM certVM)
     {
         if(certVM.PhoneNumber is null)
@@ -48,21 +47,34 @@ public class CertificateController : ControllerBase
         return CreatedAtAction(null, newCert);
     }
 
-    [HttpGet("get_phone/{phone}")]
-    public IActionResult Get([FromRoute][Phone]string phone)
+    [HttpPut]
+    public async Task<IActionResult> Put([FromBody]Certificate certificate)
     {
-        var certs = _certService.GetByFarmer(phone);
-        if(certs is null)
-            return BadRequest("No farmer with this number");
-        return Ok(certs);
+        certificate.LastChanged = DateTime.UtcNow;
+        var success = await  _certService.Update(certificate);
+        if(!success)
+            return BadRequest("I don't know, shit happens");
+        return Ok(certificate);
     }
 
-
-    [HttpGet("get_id/{id}")]
-    public IActionResult Get([FromRoute]Guid id)
+    [HttpGet("[action]")]
+    public IActionResult Find([FromQuery][Phone]string? phone, [FromRoute]Guid? id) 
     {
-        var cert = _certService.GetById(id);
-        return Ok(cert);
+        if(phone is not null && !string.IsNullOrWhiteSpace(phone))
+        {
+            var certificates = _certService.GetByFarmer(phone);
+            if(certificates is null)
+                return BadRequest("No farmer with this number");
+            return Ok(certificates);
+        }
+        else if (id is not null && id != Guid.Empty)
+        {
+            var certificate = _certService.GetById(id.Value);
+            if(certificate is null)
+                return BadRequest("No certificate with the provided ID");
+            return Ok(certificate);
+        }
+        return BadRequest("No parameter found");
     }
 
     [HttpDelete("delete/{id}")]

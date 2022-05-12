@@ -17,4 +17,6 @@ public interface ICertService
     public List<Certificate>? GetByFarmer([Phone]string phone);
 
     public Certificate? GetById(Guid id);
+
+    public Task<bool> Update(Certificate certificate);
 }

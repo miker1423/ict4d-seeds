@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Backend.Services;
 using Backend.Services.Interfaces;
 using Backend.Middleware;
+using Microsoft.AspNetCore.Identity;
+using IdentityServer4.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +17,66 @@ builder.Services.AddDbContext<FarmersDbContext>(
         options.UseInMemoryDatabase("MemoryDb");
         options.EnableSensitiveDataLogging(true);
 });
+builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options => { 
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedAccount = false;
+    options.User.RequireUniqueEmail = false;
+}).AddEntityFrameworkStores<FarmersDbContext>();
+builder.Services.AddIdentityServer(options => {
+    options.IssuerUri = "http://localhost:5031/";
+})
+.AddInMemoryApiResources(new List<ApiResource>())
+.AddInMemoryApiScopes(new List<ApiScope>() {
+    new ApiScope("api")
+})
+.AddInMemoryClients(new List<Client>() { 
+    new Client() {
+        ClientId = "default_client",
+        ClientSecrets = { new Secret("secret".Sha256()) },
+        AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
+        AllowedScopes =  { "api" }
+    }
+})
+.AddDeveloperSigningCredential()
+.AddAspNetIdentity<AppUser>();
+builder.Services.Configure<IdentityOptions>(options => {
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireDigit = false;
+});
 builder.Services.AddScoped<ICallerService, CallerService>();
 builder.Services.AddScoped<ICertService, CertService>();
 builder.Services.AddScoped<IFarmerService, FarmerService>();
 
 var app = builder.Build();
+
+using var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetService<FarmersDbContext>();
+if(context is null) 
+    goto JUMP_SEED;
+context.Database.EnsureCreated();
+var farmer = context.Farmers.Add(new Backend.Models.Farmer() {
+    Name = "Adrian",
+    PhoneNumber = "123456789",
+});
+context.Certificates.Add(new Backend.Models.Certificate() {
+    FarmerId = farmer.Entity.ID,
+    Status = Backend.Models.CertificateStatus.VALID
+});
+
+JUMP_SEED:
+using var manager = scope.ServiceProvider.GetService<UserManager<AppUser>>();
+if (manager is null || context is null) goto JUMP_USER;
+_ = manager.CreateAsync(new AppUser() {
+    Email ="basic@email.com",
+    UserName = "fatima",
+    PhoneNumber = "234567890",
+}, "whatever").ConfigureAwait(false);
+
+context.SaveChanges();
+
+JUMP_USER:
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -48,7 +105,10 @@ app.UseCors(cors =>
     .AllowCredentials()
 );
 
+app.UseIdentityServer();
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseMiddleware<ContentTypeSwitchMiddleware>();
 app.MapControllers();
 
