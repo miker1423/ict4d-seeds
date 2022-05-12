@@ -23,10 +23,6 @@ const LogIn = () => {
     }
   });
 
-  if (watch('username') === 'labosemUser' && watch('password') === 'labosem') {
-    console.log('LABOSEM LOGIN');
-  }
-
   if (labosemUser) return <Navigate to="/labosem" />;
   if (unionUser) return <Navigate to="/union" />;
 

@@ -24,13 +24,13 @@ const RegisterUser = () => {
     formState: { errors }
   } = useForm({
     defaultValues: {
+      firstname: '',
+      middlename: '',
+      lastname: '',
       phoneno: '',
-      seedvar: '',
-      certper: '',
-      varpur: null,
-      gerfac: null,
-      batchno: null,
-      certified: false
+      username: '',
+      password: '',
+      organization: ''
     }
   });
 
@@ -77,197 +77,150 @@ const RegisterUser = () => {
                     handleOnSubmit(data);
                   })}
                 >
-                  <Grid container xs={10} spacing={2} sx={{ gap: 1 }}>
-                    <Grid container>
+                  <Grid container xs={10} spacing={2} sx={{ gap: 1, mb: 2 }}>
+                    <Grid container sx={{ gap: 1 }}>
                       <Grid item xs={4}>
-                        <Typography> Farmer's phone number:</Typography>
+                        {/* First name */}
+                        <Typography> First name:</Typography>
                       </Grid>
                       <Grid item xs={6}>
                         <TextField
-                          {...register('phoneno', {
-                            required: 'Phone number is required',
+                          {...register('firstname', {
+                            // required: 'Firstname is required',
                             pattern: {
-                              value: /^[0-9]+$/i,
-                              message: 'Please write a valid phone number'
+                              value:
+                                /^[A-Za-zÁÀÈÉÊÂÒÖÏÌÍÓéèêëäâáàîïíìôöóò\- .]{2,}$/i,
+                              message: 'Please write a valid firstname'
                             }
                           })}
-                          label="Farmer Phone Number"
+                          label="First Name"
                           fullWidth
                         />
                         <ErrorMsg>
-                          {errors.phoneno?.message ||
-                            (errors.phoneno?.type === 'pattern' &&
-                              errors.phoneno?.message)}
+                          {errors.firstname?.message ||
+                            (errors.firstname?.type === 'pattern' &&
+                              errors.firstname?.message)}
+                        </ErrorMsg>
+                      </Grid>
+                      {/* Middle name */}
+                      <Grid item xs={4}>
+                        <Typography> Middle name:</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          {...register('middlename', {
+                            pattern: {
+                              value:
+                                /^[A-Za-zÁÀÈÉÊÂÒÖÏÌÍÓéèêëäâáàîïíìôöóò\- .]{2,}$/i,
+                              message: 'Please write a valid middlename'
+                            }
+                          })}
+                          label="Middle Name"
+                          fullWidth
+                        />
+                        <ErrorMsg>
+                          {errors.middlename?.type === 'pattern' &&
+                            errors.middlename?.message}
+                        </ErrorMsg>
+                      </Grid>
+                      {/* lastname */}
+                      <Grid item xs={4}>
+                        {/* Last Name */}
+                        <Typography> Last Name:</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          {...register('lastname', {
+                            // required: 'Lastname is required',
+                            pattern: {
+                              value:
+                                /^[A-Za-zÁÀÈÉÊÂÒÖÏÌÍÓéèêëäâáàîïíìôöóò\- .]{2,}$/i,
+                              message: 'Please write a valid lastname'
+                            }
+                          })}
+                          label="Last Name"
+                          fullWidth
+                        />
+                        <ErrorMsg>
+                          {errors.lastname?.message ||
+                            (errors.lastname?.type === 'pattern' &&
+                              errors.lastname?.message)}
+                        </ErrorMsg>
+                      </Grid>{' '}
+                      {/* Username */}{' '}
+                      <Grid item xs={4}>
+                        <Typography> Username:</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          {...register('username', {
+                            required: 'Username is required',
+                            pattern: {
+                              value: /^[A-Za-z0-9\-\_.]{4,}$/i,
+                              message:
+                                'Please write a valid username. It must be at least 4 characters and can contain only letters, numbers and the characters -, _ and .'
+                            }
+                          })}
+                          label="Username"
+                          fullWidth
+                        />
+                        <ErrorMsg>
+                          {errors.username?.message ||
+                            (errors.username?.type === 'pattern' &&
+                              errors.username?.message)}
+                        </ErrorMsg>
+                      </Grid>
+                      {/* Password */}{' '}
+                      <Grid item xs={4}>
+                        <Typography> Password:</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          {...register('password', {
+                            required: 'Password is required',
+                            pattern: {
+                              value:
+                                /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\_\W]).{8,}/i,
+                              message:
+                                'Passoword must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one special character and one number'
+                            }
+                          })}
+                          type="password"
+                          label="Password"
+                          fullWidth
+                        />
+                        <ErrorMsg>
+                          {errors.password?.message ||
+                            (errors.password?.type === 'pattern' &&
+                              errors.password?.message)}
+                        </ErrorMsg>
+                      </Grid>
+                      {/* Organization */}
+                      {/* Any checks for existing organizations? */}
+                      <Grid item xs={4}>
+                        <Typography> Organization:</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          {...register('organization', {
+                            // required: 'Organization is required',
+                            pattern: {
+                              value:
+                                /^[A-Za-z0-9ÁÀÈÉÊÂÒÖÏÌÍÓéèêëäâáàîïíìôöóò\- .]{5,}$/i,
+                              message: 'Please enter a valid Organization'
+                            }
+                          })}
+                          label="Organization"
+                          fullWidth
+                        />
+                        <ErrorMsg>
+                          {errors.organization?.message ||
+                            (errors.organization?.type === 'pattern' &&
+                              errors.organization?.message)}
                         </ErrorMsg>
                       </Grid>
                     </Grid>
-
-                    {/* <Grid container>
-                        <Grid item xs={4}>
-                          <Typography>Seed Variety:</Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <TextField
-                            {...register('seedvar', {
-                              required: 'Seed variety is required',
-                              minLength: 5,
-                              pattern: {
-                                value: /^[A-Z,a-z,0-9\-/. ]+$/i,
-                                message: 'Please write a valid name'
-                              }
-                            })}
-                            type="text"
-                            label="Seed Variety Name"
-                            fullWidth
-                          />
-                          <ErrorMsg>
-                            {errors.seedvar?.message ||
-                              (errors.seedvar?.type === 'pattern' &&
-                                errors.seedvar?.message)}
-                          </ErrorMsg>
-                        </Grid>
-                      </Grid>
-  
-                      <Grid container>
-                        <Grid item xs={4}>
-                          <Typography>Certification Period:</Typography>
-                        </Grid>
-                        <div style={{ display: 'inline-flex' }}>
-                          <Grid item xs={6}>
-                            <ToandFrom>From</ToandFrom>
-                            <TextField
-                              {...register('certper', {
-                                required: 'Certification period is required',
-                                pattern: {
-                                  value: /^[0-9\- ]+$/i,
-                                  message: 'Please write a period'
-                                }
-                              })}
-                              type="date"
-                              label="From"
-                              InputLabelProps={{ shrink: true }}
-                              fullWidth
-                            />
-                          </Grid>
-  
-                          <Grid item xs={6} sx={{ pl: 1 }}>
-                            <ToandFrom>To</ToandFrom>
-                            <TextField
-                              {...register('certper', {
-                                required: 'Certification period is required',
-                                pattern: {
-                                  value: /^[0-9\- ]+$/i,
-                                  message: 'Please write a period'
-                                }
-                              })}
-                              type="date"
-                              label="To"
-                              InputLabelProps={{ shrink: true }}
-                              fullWidth
-                            />
-                          </Grid>
-                        </div>
-                        {/* <div>
-                            {' '}
-                            <ErrorMsg>
-                              {errors.certper?.message ||
-                                (errors.certper?.type === 'pattern' &&
-                                  errors.certper?.message)}
-                            </ErrorMsg>
-                          </div> */}
-                    {/* </Grid>
-  
-                      <Grid container>
-                        <Grid item xs={4}>
-                          <Typography>Varietal Purity:</Typography>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('varpur', {
-                              required: 'Varietal Purity is required',
-                              pattern: {
-                                value: /^[0-9]+$/i,
-                                message: 'Please input a percentage number'
-                              }
-                            })}
-                            type="number"
-                            label="Percentage %"
-                            fullWidth
-                          />
-                          <ErrorMsg>
-                            {errors.varpur?.message ||
-                              (errors.varpur?.type === 'pattern' &&
-                                errors.varpur?.message)}
-                          </ErrorMsg>
-                        </Grid>
-                      </Grid>
-  
-                      <Grid container>
-                        <Grid item xs={4}>
-                          <Typography>Germinative Faculty:</Typography>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('gerfac', {
-                              required: 'Germinative faculty is required',
-                              pattern: {
-                                value: /^[0-9]+$/i,
-                                message: 'Please input a percentage number'
-                              }
-                            })}
-                            type="number"
-                            label="Percentage %"
-                            fullWidth
-                          />
-                          <ErrorMsg>
-                            {errors.gerfac?.message ||
-                              (errors.gerfac?.type === 'pattern' &&
-                                errors.gerfac?.message)}
-                          </ErrorMsg>
-                        </Grid>
-                      </Grid>
-  
-                      <Grid container>
-                        <Grid item xs={4}>
-                          <Typography>Batch Number:</Typography>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('batchno', {
-                              required: 'Batch number is required',
-                              pattern: {
-                                value: /^[0-9]+$/i,
-                                message: 'Please input a percentage number'
-                              }
-                            })}
-                            type="number"
-                            label="Batch number"
-                            fullWidth
-                          />
-                          <ErrorMsg>
-                            {errors.batchno?.message ||
-                              (errors.batchno?.type === 'pattern' &&
-                                errors.batchno?.message)}
-                          </ErrorMsg>
-                        </Grid>
-                      </Grid>
-  
-                      <Grid container>
-                        <Grid item xs={4}>
-                          <Typography sx={{ marginTop: '0px' }}>
-                            Certified:
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={2} sx={{ textAlign: 'left' }}>
-                          <Checkbox
-                            {...register('certified', {
-                              required: 'Certification is required'
-                            })}
-                            sx={{ padding: '0px', pt: '8px' }}
-                          />
-                          <ErrorMsg>{errors.certified?.message}</ErrorMsg>
-                        </Grid>
-                      </Grid>  */}
+                    {/* grid container */}
                   </Grid>
 
                   <Button variant="contained" type="submit">
@@ -286,13 +239,6 @@ const RegisterUser = () => {
 const ErrorMsg = styled.span`
   color: red;
   font-size: 0.8em;
-`;
-
-const ToandFrom = styled.p`
-  font-weight: 400;
-  font-size: 0.9em;
-  float: left;
-  margin-top: 2px;
 `;
 
 export default RegisterUser;
