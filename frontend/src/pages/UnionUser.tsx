@@ -3,10 +3,17 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import Certificates from '../components/Certificates';
+import PdfCreator from '../components/PdfCreator';
 import NavBar from '../components/NavBar';
+import { PDFViewer } from '@react-pdf/renderer';
 
 const UnionUser = () => {
   const [showTable, setShowTable] = useState<boolean>(false);
+  const [showDocument, setShowDocument] = useState<boolean>(false);
+
+  const handleDocument = () => {
+    setShowDocument(true);
+  };
 
   const handleClick = () => {
     setShowTable(true);
@@ -52,6 +59,9 @@ const UnionUser = () => {
                     >
                       See certificates
                     </Button>
+                    <Button variant="contained" onClick={handleDocument}>
+                      See Document
+                    </Button>
                   </Grid>
                   <Grid item xs={8}>
                     <div
@@ -59,6 +69,15 @@ const UnionUser = () => {
                       style={{ width: '100%' }}
                     >
                       {showTable && <Certificates />}
+                    </div>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <div className="document" style={{ width: '100%' }}>
+                      {showDocument && (
+                        <PDFViewer>
+                          <PdfCreator />
+                        </PDFViewer>
+                      )}
                     </div>
                   </Grid>
                 </Grid>

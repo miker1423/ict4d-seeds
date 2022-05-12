@@ -9,6 +9,7 @@ import RegisterUser from './pages/RegisterUser';
 import SeeAllCertificates from './pages/SeeAllCertificates';
 import UnionUser from './pages/UnionUser';
 import { AuthProvider } from 'react-oidc-context';
+import { PDFViewer } from '@react-pdf/renderer';
 
 const oidcConfig = {
   authority: 'https://bcdf-145-108-81-4.eu.ngrok.io/api/',
@@ -22,7 +23,8 @@ const oidcConfig = {
 
 const App = () => {
   return (
-    <AuthProvider {...oidcConfig}>
+    // <AuthProvider {...oidcConfig}>
+    <PDFViewer>
       <div className="App">
         <BrowserRouter>
           <Routes>
@@ -43,7 +45,9 @@ const App = () => {
           </Routes>
         </BrowserRouter>
       </div>
-    </AuthProvider>
+    </PDFViewer>
+
+    // </AuthProvider>
   );
 };
 
