@@ -1,0 +1,5 @@
+﻿@{
+    var layout = Context.Response.ContentType == "application/xml" ?
+                 "_VxmlBase" : "_Layout";
+    Layout = layout;
+}
