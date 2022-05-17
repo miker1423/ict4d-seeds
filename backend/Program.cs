@@ -25,11 +25,13 @@ builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options => {
     options.User.RequireUniqueEmail = false;
 }).AddEntityFrameworkStores<FarmersDbContext>();
 builder.Services.AddIdentityServer(options => {
-    options.IssuerUri = "http://localhost:5031/";
+    options.IssuerUri = "https://seed-cert.azurewebsites.net/";
 })
 .AddInMemoryApiResources(new List<ApiResource>())
 .AddInMemoryApiScopes(new List<ApiScope>() {
     new ApiScope("api"),
+    new ApiScope(IdentityServerConstants.StandardScopes.OpenId),
+    new ApiScope(IdentityServerConstants.StandardScopes.Profile),
 })
 .AddInMemoryClients(new List<Client>() { 
     new Client() {
@@ -41,18 +43,13 @@ builder.Services.AddIdentityServer(options => {
             IdentityServerConstants.StandardScopes.OpenId,
             IdentityServerConstants.StandardScopes.Profile,
         },
-        AllowedCorsOrigins = { 
-            "https://bcdf-145-108-81-4.eu.ngrok.io",
-            "https://eu.ngrok.io",
-            "https://ngrok.io",
-            "bcdf-145-108-81-4.eu.ngrok.io",
-            "eu.ngrok.io",
-            "ngrok.io",
-            "*",
-        },
+        AllowedCorsOrigins =
+        {
+            "https://seed-cert.azurewebsites.net/",
+        }
     }
 })
-.AddCorsPolicyService<CorsPolicyService>()
+//.AddCorsPolicyService<CorsPolicyService>()
 .AddDeveloperSigningCredential()
 .AddAspNetIdentity<AppUser>();
 builder.Services.Configure<IdentityOptions>(options => {

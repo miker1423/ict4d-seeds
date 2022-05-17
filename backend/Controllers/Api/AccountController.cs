@@ -30,15 +30,15 @@ public class AccountController : ControllerBase
         var password = loginInfo.Password;
         var userName = loginInfo.UserName;
         var request = new HttpClient();
-        _logger.LogDebug(HttpContext.Request.Host.Value);
         var discover = await request.GetDiscoveryDocumentAsync($"https://{HttpContext.Request.Host.Value}");
+        //var discover = await request.GetDiscoveryDocumentAsync($"http://localhost:5031/");
         var token = await request.RequestPasswordTokenAsync(new PasswordTokenRequest() {
             Address = discover.TokenEndpoint,
             UserName = userName,
             Password = password,
             ClientSecret = "secret",
             ClientId = "default_client",
-            Scope = "api",
+            Scope = "api openid",
         });
 
         return Ok(new { token = token.AccessToken});
