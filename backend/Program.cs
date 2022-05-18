@@ -45,8 +45,6 @@ builder.Services.AddIdentityServer(options => {
 .AddInMemoryApiResources(new List<ApiResource>())
 .AddInMemoryApiScopes(new List<ApiScope>() {
     new ApiScope("api"),
-    new ApiScope(IdentityServerConstants.StandardScopes.OpenId),
-    new ApiScope(IdentityServerConstants.StandardScopes.Profile),
 })
 .AddInMemoryClients(new List<Client>() { 
     new Client() {
