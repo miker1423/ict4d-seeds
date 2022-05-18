@@ -13,11 +13,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddCors();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<FarmersDbContext>(
     options => { 
         options.UseInMemoryDatabase("MemoryDb");
         options.EnableSensitiveDataLogging(true);
+});
+builder.Services.AddSingleton<ICorsPolicyService>((container) =>
+{
+    var logger = container.GetRequiredService<ILogger<DefaultCorsPolicyService>>();
+    return new DefaultCorsPolicyService(logger)
+    {
+        AllowAll = true
+    };
 });
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options => { 
     options.SignIn.RequireConfirmedEmail = false;
@@ -27,6 +36,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options => {
 builder.Services.AddIdentityServer(options => {
     options.IssuerUri = "https://seed-cert.azurewebsites.net/";
 })
+.AddCorsPolicyService<CorsPolicy>()
 .AddInMemoryApiResources(new List<ApiResource>())
 .AddInMemoryApiScopes(new List<ApiScope>() {
     new ApiScope("api"),
@@ -46,10 +56,10 @@ builder.Services.AddIdentityServer(options => {
         AllowedCorsOrigins =
         {
             "https://seed-cert.azurewebsites.net",
+            "https://a4de-80-114-138-125.eu.ngrok.io",
         }
     }
 })
-//.AddCorsPolicyService<CorsPolicyService>()
 .AddDeveloperSigningCredential()
 .AddAspNetIdentity<AppUser>();
 builder.Services.Configure<IdentityOptions>(options => {
@@ -111,15 +121,15 @@ else
 }
 
 app.UseStaticFiles();
-
+app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseCors(cors => 
-    cors.AllowAnyHeader()
-    .AllowAnyMethod()
-    .SetIsOriginAllowed(origin => true)
-    .AllowCredentials()
-);
+//app.UseCors(cors => 
+//    cors.AllowAnyHeader()
+//    .AllowAnyMethod()
+//    .SetIsOriginAllowed(origin => true)
+//    .AllowCredentials()
+//);
 
 app.UseIdentityServer();
 app.UseAuthentication();
@@ -131,8 +141,8 @@ app.MapControllers();
 
 app.Run();
 
-public class CorsPolicyService : ICorsPolicyService
+public class CorsPolicy : ICorsPolicyService
 {
-    public Task<bool> IsOriginAllowedAsync(string origin)
-        =>  Task.FromResult(true);
+    public Task<bool> IsOriginAllowedAsync(string origin) 
+        => Task.FromResult(true);
 }
