@@ -45,7 +45,7 @@ builder.Services.AddIdentityServer(options => {
         },
         AllowedCorsOrigins =
         {
-            "https://seed-cert.azurewebsites.net/",
+            "https://seed-cert.azurewebsites.net",
         }
     }
 })

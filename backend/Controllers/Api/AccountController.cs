@@ -13,15 +13,15 @@ public class AccountController : ControllerBase
 {
     private readonly ILogger<AccountController> _logger;
     private readonly UserManager<AppUser> _userManager;
-    private readonly IdentityServerTools _tools;
+    private readonly IHttpClientFactory _httpClientFactory;
     public AccountController(
         ILogger<AccountController> logger,
-        IdentityServerTools tools,
+        IHttpClientFactory httpClientFactory,
         UserManager<AppUser> userManager)
     {
         _logger = logger;
         _userManager = userManager;
-        _tools = tools;
+        _httpClientFactory = httpClientFactory;
     }
 
     [HttpPost("[action]")]
@@ -29,8 +29,8 @@ public class AccountController : ControllerBase
     {
         var password = loginInfo.Password;
         var userName = loginInfo.UserName;
-        var request = new HttpClient();
-        var discover = await request.GetDiscoveryDocumentAsync($"https://{HttpContext.Request.Host.Value}");
+        var request = _httpClientFactory.CreateClient();
+        var discover = await request.GetDiscoveryDocumentAsync($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}");
         //var discover = await request.GetDiscoveryDocumentAsync($"http://localhost:5031/");
         var token = await request.RequestPasswordTokenAsync(new PasswordTokenRequest() {
             Address = discover.TokenEndpoint,

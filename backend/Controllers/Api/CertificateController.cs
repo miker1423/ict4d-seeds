@@ -24,10 +24,18 @@ public class CertificateController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Get() 
+    public IActionResult Get()
     {
         var certificates = _certService.GetCertificates();
         return Ok(certificates);
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult Get([FromRoute]Guid? id)
+    {
+        if (id is null) return BadRequest("No ID provided");
+        var certificate = _certService.GetById(id.Value);
+        return Ok(certificate);
     }
 
     [HttpPost("[action]")]
@@ -58,7 +66,7 @@ public class CertificateController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    public IActionResult Find([FromQuery][Phone]string? phone, [FromRoute]Guid? id) 
+    public IActionResult Find([FromQuery][Phone]string? phone, [FromQuery]Guid? id) 
     {
         if(phone is not null && !string.IsNullOrWhiteSpace(phone))
         {
@@ -77,7 +85,7 @@ public class CertificateController : ControllerBase
         return BadRequest("No parameter found");
     }
 
-    [HttpDelete("delete/{id}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Remove([FromRoute]Guid id)
     {
         var invalidCert = await _certService.Invalidate(id);
