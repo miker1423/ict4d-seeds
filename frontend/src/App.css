@@ -94,5 +94,17 @@
 }
 
 .MuiPaper-root.MuiPaper-elevation{
+  height: 15vh;
   box-shadow: inset -1px -6px 11px -1px forestgreen;  
+}
+
+@media screen and (max-width: 615px) {
+  .MuiPaper-root.MuiPaper-elevation.MuiAppBar-root.MuiAppBar-colorPrimary{
+    height: 20vh;
+  }
+
+}
+
+header{
+  background-color: pink;
 }
