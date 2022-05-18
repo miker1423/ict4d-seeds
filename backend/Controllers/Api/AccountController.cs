@@ -38,7 +38,7 @@ public class AccountController : ControllerBase
             Password = password,
             ClientSecret = "secret",
             ClientId = "default_client",
-            Scope = "api openid",
+            Scope = "api openid profile",
         });
 
         return Ok(new { token = token.AccessToken});
