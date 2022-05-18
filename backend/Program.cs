@@ -36,6 +36,11 @@ builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options => {
 builder.Services.AddIdentityServer(options => {
     options.IssuerUri = "https://seed-cert.azurewebsites.net/";
 })
+.AddInMemoryIdentityResources(new List<IdentityResource>
+{
+    new IdentityResources.OpenId(),
+    new IdentityResources.Profile(),
+})
 .AddCorsPolicyService<CorsPolicy>()
 .AddInMemoryApiResources(new List<ApiResource>())
 .AddInMemoryApiScopes(new List<ApiScope>() {
@@ -124,12 +129,12 @@ app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
 
-//app.UseCors(cors => 
-//    cors.AllowAnyHeader()
-//    .AllowAnyMethod()
-//    .SetIsOriginAllowed(origin => true)
-//    .AllowCredentials()
-//);
+app.UseCors(cors =>
+    cors.AllowAnyHeader()
+    .AllowAnyMethod()
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials()
+);
 
 app.UseIdentityServer();
 app.UseAuthentication();
