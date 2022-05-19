@@ -1,11 +1,9 @@
 import { Box, Typography, TextField, Button, Grid } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { Navigate, Link, Route } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useAuth } from 'react-oidc-context';
-
+import LaboSemUser from './LaboSemUser';
 import styled from 'styled-components';
-import IUser from '../interfaces/IUser';
 import IAccount from '../interfaces/IAccount';
 import UserServices from '../backendServices/UserService';
 
@@ -13,14 +11,25 @@ const LogIn = () => {
   const [username, setusername] = useState<string>();
   const [pw, setPw] = useState<string>();
   const [wrongCreds, setWrongCreds] = useState<boolean>(false);
-  const [labosemUser, setLabosemUser] = useState<boolean>(false);
   const [unionUser, setUnionUser] = useState<boolean>(false);
   const [loginToken, setLoginToken] = useState<string>('');
+  const [isLoggedIn, setisLoggedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    sessionStorage.setItem('token', loginToken);
+  }, [loginToken]);
+
+  useEffect(() => {
+    if (loginToken !== null && loginToken !== '' && loginToken.length > 10)
+      setisLoggedIn(true);
+    else {
+      setisLoggedIn(false);
+    }
+  }, [loginToken]);
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors }
   } = useForm({
     defaultValues: {
@@ -29,129 +38,140 @@ const LogIn = () => {
     }
   });
 
-  if (labosemUser) return <Navigate to="/labosem" />;
   if (unionUser) return <Navigate to="/union" />;
+
+  const regExCheck = () => {
+    const usernameRegex = /^[A-Za-z0-9\-\_.]{4,}$/i;
+    const pwRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\_\W]).{8,}/i;
+
+    console.log('xx credentials:', username, pw);
+
+    if (username?.match(usernameRegex) && pw?.match(pwRegex)) {
+      setWrongCreds(false);
+    } else {
+      setWrongCreds(true);
+    }
+  };
 
   const handleFormSubmit = () => {
     const inputusername = username;
     const inputPw = pw;
-
-    if (inputusername === 'labosemUser' && inputPw === 'labosem') {
-      setWrongCreds(false);
-      setLabosemUser(true);
-    } else if (inputusername === 'unionUser' && inputPw === 'union') {
+    if (inputusername === 'unionUser' && inputPw === 'union') {
       setWrongCreds(false);
       setUnionUser(true);
-    } else {
-      console.log('xx try again, or ask your contact person for credentials');
-      setWrongCreds(true);
     }
-    console.log('xx username %s and pw %s', username, pw);
+    regExCheck();
+    const credentials: IAccount = {
+      username: username ? username : '',
+      password: pw ? pw : ''
+    };
 
-    if (inputusername === 'fatima' && inputPw === 'whatever') {
-      setWrongCreds(false);
-      const credentials: IAccount = {
-        username: username ? username : '',
-        password: pw ? pw : ''
-      };
-
-      UserServices.login(credentials).then((data) =>
-        setLoginToken(data.userToken)
-      );
-    }
-    // console.log('xx token?', loginToken);
+    UserServices.login(credentials).then((data) => {
+      setLoginToken(data.userToken);
+    });
   };
 
   return (
     <div className="App">
-      <div className="body-container">
-        <Grid className="frontpage-grid" container spacing={2}>
-          <Grid item xs={12}>
-            <div className="front">
-              <ContainerBox>
-                <Typography variant="h5">Sign in to TéléCiden</Typography>
-                <SignInForm
-                  id="signin-textfield"
-                  component="form"
-                  className="signin-form"
-                  sx={{ mt: 1 }}
-                  onSubmit={handleSubmit((data) => {
-                    console.log(data);
-                    setusername(data.username);
-                    setPw(data.password);
-                  })}
-                >
-                  <SignInTextFields>
-                    <TextField
-                      {...register('username', {
-                        required: 'username is required',
-                        minLength: 5,
-                        pattern: /^[A-Za-z0-9\_\-.]{5,30}$/i
-                        // message: 'Please write a valid username' more for when registering
-                      })}
-                      margin="normal"
-                      value={username}
-                      fullWidth
-                      label="Username"
-                      autoComplete="username"
-                      autoFocus
-                      onChange={(e) => {
-                        setusername(e.target.value);
-                      }}
-                    />
-                    <span>{errors.username?.message}</span>
-                    <TextField
-                      {...register('password', {
-                        required: 'Password is required',
-                        minLength: 8,
-                        pattern:
-                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-                      })}
-                      margin="normal"
-                      fullWidth
-                      label="Password"
-                      type="password"
-                      value={pw}
-                      onChange={(e) => {
-                        setPw(e.target.value);
-                      }}
-                    />
-                    <span>{errors.password?.message}</span>
-                  </SignInTextFields>
-
-                  <Button
-                    sx={{ marginTop: '10px' }}
-                    fullWidth
-                    type="submit"
-                    variant="contained"
-                    onClick={handleFormSubmit}
+      {loginToken && isLoggedIn && <LaboSemUser userToken={loginToken} />}
+      {/* {loginToken && <Navigate to="/labosem" />} */}
+      {!loginToken && (
+        <div className="body-container">
+          <Grid className="frontpage-grid" container spacing={2}>
+            <Grid item xs={12}>
+              <div className="front">
+                <ContainerBox>
+                  <Typography variant="h5">Sign in to TéléCiden</Typography>
+                  <SignInForm
+                    id="signin-textfield"
+                    component="form"
+                    className="signin-form"
+                    sx={{ mt: 1 }}
+                    onSubmit={handleSubmit((data) => {
+                      console.log(data);
+                      setusername(data.username);
+                      setPw(data.password);
+                    })}
                   >
-                    Sign in
-                  </Button>
-                  <Grid container sx={{ marginTop: '10px' }}>
-                    <Grid item xs>
-                      <span
-                        style={{
-                          display: wrongCreds ? 'block' : 'none',
-                          color: 'red'
+                    <SignInTextFields>
+                      <TextField
+                        {...register('username', {
+                          required: 'username is required',
+                          minLength: 5,
+                          pattern: /^[A-Za-z0-9\_\-.]{5,30}$/i
+                          // message: 'Please write a valid username' more for when registering
+                        })}
+                        margin="normal"
+                        value={username}
+                        fullWidth
+                        label="Username"
+                        autoComplete="username"
+                        autoFocus
+                        onChange={(e) => {
+                          setusername(e.target.value);
                         }}
-                      >
-                        <p>
-                          The password or username you put in might be wrong.
-                        </p>
-                        <p>
-                          Try again, or ask your contact person for credentials.
-                        </p>
+                      />
+                      <span>
+                        {errors.username?.type === 'required' &&
+                          errors.username?.message}
                       </span>
-                      {/* <a href="#">Forgot password?</a> */}
+                      <TextField
+                        {...register('password', {
+                          required: 'Password is required',
+                          minLength: 8,
+                          pattern:
+                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{70}$/
+                        })}
+                        margin="normal"
+                        fullWidth
+                        label="Password"
+                        type="password"
+                        value={pw}
+                        onChange={(e) => {
+                          setPw(e.target.value);
+                        }}
+                      />
+                      <span>
+                        {errors.password?.type === 'required' &&
+                          errors.password?.message}
+                      </span>
+                    </SignInTextFields>
+
+                    <Button
+                      sx={{ marginTop: '10px' }}
+                      fullWidth
+                      type="submit"
+                      variant="contained"
+                      onClick={handleFormSubmit}
+                    >
+                      Sign in
+                    </Button>
+                    <Grid container sx={{ marginTop: '10px' }}>
+                      <Grid item xs>
+                        <span
+                          style={{
+                            display: wrongCreds ? 'block' : 'none',
+                            color: 'red'
+                          }}
+                        >
+                          <p>
+                            The password or username you put in might be wrong.
+                          </p>
+                          <p>
+                            Try again, or ask your contact person for
+                            credentials.
+                          </p>
+                        </span>
+                        {/* <a href="#">Forgot password?</a> */}
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </SignInForm>
-              </ContainerBox>
-            </div>
+                  </SignInForm>
+                </ContainerBox>
+              </div>
+            </Grid>
           </Grid>
-        </Grid>
-      </div>
+        </div>
+      )}
     </div>
   );
 };

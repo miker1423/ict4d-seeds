@@ -8,27 +8,15 @@ import RegisterCertificate from './pages/RegisterCertificate';
 import RegisterUser from './pages/RegisterUser';
 import SeeAllCertificates from './pages/SeeAllCertificates';
 import UnionUser from './pages/UnionUser';
-import { AuthProvider } from 'react-oidc-context';
-
-const oidcConfig = {
-  authority: 'https://bcdf-145-108-81-4.eu.ngrok.io/api/',
-  UserName: 'fatima',
-  Password: 'whatever',
-  client_secret: 'secret',
-  client_id: 'default_client',
-  Scope: 'api',
-  redirect_uri: 'http://localhost:3000'
-};
 
 const App = () => {
   return (
-    // <AuthProvider {...oidcConfig}>
     <div className="App">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LogIn />} />
-          <Route path="/labosem" element={<LaboSemUser />} />
+          <Route path="/labosem" element={<LaboSemUser userToken={''} />} />
           <Route path="/union" element={<UnionUser />} />
           <Route
             path="/registercertificate"
@@ -39,8 +27,14 @@ const App = () => {
           <Route path="/registeruser" element={<RegisterUser />} />
         </Routes>
       </BrowserRouter>
+
+      {/* <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/login" element={<LogIn />} />
+        </Routes>
+      </BrowserRouter> */}
     </div>
-    // </AuthProvider>
   );
 };
 

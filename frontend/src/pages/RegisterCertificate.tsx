@@ -8,14 +8,25 @@ import {
 } from '@mui/material';
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import { useForm } from 'react-hook-form';
 import ICertificate from '../interfaces/ICertificate';
 import CertificateServices from '../backendServices/CertificateServices';
+import LoadingComp from '../components/LoadingComp';
 
 const RegisterCertificate = () => {
   const [registered, setRegistered] = useState<boolean>(false);
+  const [validToken, setValidToken] = useState<boolean>(false);
+  const [login, setLogin] = useState<boolean>(false);
+  const [token, setToken] = useState<string>('');
+
+  useEffect(() => {
+    const currToken = sessionStorage.getItem('token');
+    if (currToken !== '' && currToken !== null) setToken(currToken);
+    if (token !== '' && token !== null) setValidToken(true);
+  }, [token]);
+
   const {
     register,
     handleSubmit,
@@ -40,6 +51,23 @@ const RegisterCertificate = () => {
     console.log('xx registered?', registered);
   }, [registered]);
 
+  useEffect(() => {
+    const currToken = sessionStorage.getItem('token');
+    if (currToken !== '' && currToken !== null) setToken(currToken);
+    if (token !== '' && token !== null) setValidToken(true);
+
+    if (!validToken) {
+      const timer = setTimeout(() => {
+        setLogin(true);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [validToken, token]);
+
+  if (login) {
+    return <Navigate to="/login" />;
+  }
+
   const handleOnSubmit = (data: { phoneno: string }) => {
     console.log('xx data', data);
     setRegistered(true);
@@ -56,64 +84,67 @@ const RegisterCertificate = () => {
   };
 
   return (
-    <div className="App">
-      <div className="body-container" style={{ height: '100vh' }}>
-        <Grid className="frontpage-grid" container spacing={2}>
-          {/* NAV BAR */}
-          <Grid item xs={12}>
-            <NavBar user={'LaboSem'} active={'regcer'} />
-          </Grid>
-          <div className="main">
-            <Grid item xs={12} sx={{ paddingTop: '0px' }}>
-              {registered && (
+    // <div className="App">
+    <>
+      {!validToken && <LoadingComp />}
+      {validToken && (
+        <div className="body-container" style={{ height: '100vh' }}>
+          <Grid className="frontpage-grid" container spacing={2}>
+            {/* NAV BAR */}
+            <Grid item xs={12}>
+              <NavBar user={'LaboSem'} active={'regcer'} />
+            </Grid>
+            <div className="main">
+              <Grid item xs={12} sx={{ paddingTop: '0px' }}>
+                {registered && (
+                  <div className="front-certificate">
+                    <Typography variant="h5">
+                      Certificate has been registered
+                    </Typography>
+                  </div>
+                )}
                 <div className="front-certificate">
-                  <Typography variant="h5">
-                    Certificate has been registered
+                  <Typography variant="h5" sx={{ pb: '50px' }}>
+                    Register new certificate{' '}
                   </Typography>
-                </div>
-              )}
-              <div className="front-certificate">
-                <Typography variant="h5" sx={{ pb: '50px' }}>
-                  Register new certificate{' '}
-                </Typography>
-                <Box
-                  id="certificate-form"
-                  component="form"
-                  autoComplete="off"
-                  sx={{
-                    padding: '10px',
-                    '& span': { float: 'left', mb: 1 }
-                  }}
-                  onSubmit={handleSubmit((data) => {
-                    handleOnSubmit(data);
-                  })}
-                >
-                  <Grid container xs={10} spacing={2} sx={{ gap: 1 }}>
-                    <Grid container>
-                      <Grid item xs={4}>
-                        <Typography> Farmer's phone number:</Typography>
+                  <Box
+                    id="certificate-form"
+                    component="form"
+                    autoComplete="off"
+                    sx={{
+                      padding: '10px',
+                      '& span': { float: 'left', mb: 1 }
+                    }}
+                    onSubmit={handleSubmit((data) => {
+                      handleOnSubmit(data);
+                    })}
+                  >
+                    <Grid container xs={10} spacing={2} sx={{ gap: 1 }}>
+                      <Grid container>
+                        <Grid item xs={4}>
+                          <Typography> Farmer's phone number:</Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField
+                            {...register('phoneno', {
+                              required: 'Phone number is required',
+                              pattern: {
+                                value: /^[0-9]+$/i,
+                                message: 'Please write a valid phone number'
+                              }
+                            })}
+                            label="Farmer Phone Number"
+                            fullWidth
+                          />
+                          <ErrorMsg>
+                            {errors.phoneno?.message ||
+                              (errors.phoneno?.type === 'pattern' &&
+                                errors.phoneno?.message)}
+                          </ErrorMsg>
+                        </Grid>
                       </Grid>
-                      <Grid item xs={6}>
-                        <TextField
-                          {...register('phoneno', {
-                            required: 'Phone number is required',
-                            pattern: {
-                              value: /^[0-9]+$/i,
-                              message: 'Please write a valid phone number'
-                            }
-                          })}
-                          label="Farmer Phone Number"
-                          fullWidth
-                        />
-                        <ErrorMsg>
-                          {errors.phoneno?.message ||
-                            (errors.phoneno?.type === 'pattern' &&
-                              errors.phoneno?.message)}
-                        </ErrorMsg>
-                      </Grid>
-                    </Grid>
 
-                    {/* <Grid container>
+                      {/* <Grid container>
                       <Grid item xs={4}>
                         <Typography>Seed Variety:</Typography>
                       </Grid>
@@ -186,7 +217,7 @@ const RegisterCertificate = () => {
                                 errors.certper?.message)}
                           </ErrorMsg>
                         </div> */}
-                    {/* </Grid>
+                      {/* </Grid>
 
                     <Grid container>
                       <Grid item xs={4}>
@@ -279,18 +310,20 @@ const RegisterCertificate = () => {
                         <ErrorMsg>{errors.certified?.message}</ErrorMsg>
                       </Grid>
                     </Grid>  */}
-                  </Grid>
+                    </Grid>
 
-                  <Button variant="contained" type="submit">
-                    Register
-                  </Button>
-                </Box>
-              </div>
-            </Grid>
-          </div>
-        </Grid>
-      </div>
-    </div>
+                    <Button variant="contained" type="submit">
+                      Register
+                    </Button>
+                  </Box>
+                </div>
+              </Grid>
+            </div>
+          </Grid>
+        </div>
+      )}
+    </>
+    // </div>
   );
 };
 

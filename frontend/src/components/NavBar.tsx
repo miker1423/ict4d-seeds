@@ -1,5 +1,5 @@
 import { AppBar, Typography, Button, MenuItem } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -12,6 +12,11 @@ const NavBar = ({
   active?: string;
   admin?: boolean;
 }) => {
+  const logOut = () => {
+    console.log('xx log out button click!');
+    if (sessionStorage.getItem('token')) sessionStorage.removeItem('token');
+  };
+
   return (
     <AppBar
       className="appbar"
@@ -69,7 +74,7 @@ const NavBar = ({
             size="small"
             sx={{ top: '5px', right: '25px', position: 'absolute' }}
           >
-            <Link id="link" to="/">
+            <Link id="link" to="/" onClick={() => logOut()}>
               Sign out
             </Link>
           </Button>
