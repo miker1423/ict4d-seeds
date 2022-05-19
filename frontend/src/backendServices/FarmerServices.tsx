@@ -11,7 +11,7 @@ export const create = (farmerData: IFarmer) => {
   const data = JSON.parse(json);
 
   axios
-    .post('/Farmers/create', data, {
+    .post('/Farmers/Create', data, {
       headers: { 'content-type': 'application/json' }
     })
     .catch((e) => console.log('xx error', e.response))
@@ -21,7 +21,7 @@ export const create = (farmerData: IFarmer) => {
 // Get a farmer by phone
 export const getFarmer = (phoneno: IFarmer['phoneno']) => {
   axios
-    .get(`/Farmers/getFarmer/${phoneno}`)
+    .get(`/Farmers/Find/${phoneno}`)
     .catch((e) => console.log('xx error', e.response))
     .then((res) => console.log('xx create res', res));
 };
@@ -35,16 +35,16 @@ export const getAllFarmers = () => {
 };
 
 // delete Farmers
-export const deleteFarmer = (phoneno: IFarmer['phoneno']) => {
-  axios
-    .delete(`/Farmers/delete/${phoneno}`)
-    .catch((e) => console.log('xx error', e.response))
-    .then((res) => console.log('xx create res', res));
-};
+// export const deleteFarmer = (phoneno: IFarmer['phoneno']) => {
+//   axios
+//     .delete(`/Farmers/delete/${phoneno}`)
+//     .catch((e) => console.log('xx error', e.response))
+//     .then((res) => console.log('xx create res', res));
+// };
 
 const FarmerServices = {
   create,
-  deleteFarmer,
+  // deleteFarmer,
   getAllFarmers,
   getFarmer
 };

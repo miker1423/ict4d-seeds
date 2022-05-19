@@ -44,11 +44,15 @@ const RegisterCertificate = () => {
     console.log('xx data', data);
     setRegistered(true);
 
-    const newCertificate: ICertificate = {
-      phoneno: data.phoneno
-    };
+    // const newCertificate: ICertificate = {
+    //   phoneno: data.phoneno,
+    //   dateCreated: data.dateCreated; // manually create
+    //   lastChanged: data.lastChanged; // manually create
+    //   status: data.status;
+    //   farmerId: data.farmerId; // manually GET from logged in user
+    // };
 
-    CertificateServices.create(newCertificate);
+    // CertificateServices.create(newCertificate);
   };
 
   return (

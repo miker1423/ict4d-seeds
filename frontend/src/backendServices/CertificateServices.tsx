@@ -5,25 +5,36 @@ import axios from '../http-common';
 // APIs endpoints
 
 // create certificate
-export const create = (certificateData: ICertificate) => {
+export const create = (certData: ICertificate) => {
   const json = `{
-    "phoneNumber": ${certificateData.phoneno}
+    "farmerId": ${certData.farmerId},
+    "status": ${certData.status},
+    "dateCreate": ${certData.dateCreated},
+    "lastChanged": ${certData.lastChanged},
+    "seedvar": ${certData.seedvar},
   }`;
   const data = JSON.parse(json);
 
-  console.log('xx inside create certificate!', data);
   axios
-    .post('/Certificate/create', data, {
+    .put('/Certificate', data, {
       headers: { 'content-type': 'application/json' }
     })
     .catch((e) => console.log('xx error', e.response))
     .then((res) => console.log('xx create res', res));
 };
 
-// Get users certificate by phone
-export const getCertByPhone = (phoneno: ICertificate['phoneno']) => {
+// Get a users certificate by phone
+// export const getCertByPhone = (phoneno: ICertificate['phoneno']) => {
+//   axios
+//     .get(`/Certificate/get_phone/${phoneno}`)
+//     .catch((e) => console.log('xx error', e.response))
+//     .then((res) => console.log('xx create res', res));
+// };
+
+// Get a users certificate by id
+export const getCertById = (id: ICertificate['farmerId']) => {
   axios
-    .get(`/Certificate/get_phone/${phoneno}`)
+    .get(`/Certificate/${id}`)
     .catch((e) => console.log('xx error', e.response))
     .then((res) => console.log('xx create res', res));
 };
@@ -31,7 +42,7 @@ export const getCertByPhone = (phoneno: ICertificate['phoneno']) => {
 // Get all certificates
 export const getAllCerts = () => {
   axios
-    .get(`/Certificate/getAllCerts`)
+    .get(`/Certificate`)
     .catch((e) => console.log('xx error', e.response))
     .then((res) => console.log('xx create res', res));
 };
@@ -39,7 +50,7 @@ export const getAllCerts = () => {
 // delete certificate
 export const deleteCert = (id: ICertificate['id']) => {
   axios
-    .delete(`/Certificate/delete/${id}`)
+    .delete(`/Certificate/${id}`)
     .catch((e) => console.log('xx error', e.response))
     .then((res) => console.log('xx create res', res));
 };
@@ -47,7 +58,7 @@ export const deleteCert = (id: ICertificate['id']) => {
 const CertificateServices = {
   create,
   getAllCerts,
-  getCertByPhone,
+  getCertById,
   deleteCert
 };
 

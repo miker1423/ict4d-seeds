@@ -5,6 +5,9 @@ import { useForm } from 'react-hook-form';
 import { useAuth } from 'react-oidc-context';
 
 import styled from 'styled-components';
+import IUser from '../interfaces/IUser';
+import IAccount from '../interfaces/IAccount';
+import UserServices from '../backendServices/UserService';
 
 const LogIn = () => {
   const [username, setusername] = useState<string>();
@@ -12,6 +15,8 @@ const LogIn = () => {
   const [wrongCreds, setWrongCreds] = useState<boolean>(false);
   const [labosemUser, setLabosemUser] = useState<boolean>(false);
   const [unionUser, setUnionUser] = useState<boolean>(false);
+  const [loginToken, setLoginToken] = useState<string>('');
+
   const {
     register,
     handleSubmit,
@@ -34,16 +39,27 @@ const LogIn = () => {
     if (inputusername === 'labosemUser' && inputPw === 'labosem') {
       setWrongCreds(false);
       setLabosemUser(true);
-      console.log('xx LABOSEM LOGIN!!!!!');
     } else if (inputusername === 'unionUser' && inputPw === 'union') {
       setWrongCreds(false);
       setUnionUser(true);
-      console.log('xx UNION LOGIN!!!!!');
     } else {
       console.log('xx try again, or ask your contact person for credentials');
       setWrongCreds(true);
     }
     console.log('xx username %s and pw %s', username, pw);
+
+    if (inputusername === 'fatima' && inputPw === 'whatever') {
+      setWrongCreds(false);
+      const credentials: IAccount = {
+        username: username ? username : '',
+        password: pw ? pw : ''
+      };
+
+      UserServices.login(credentials).then((data) =>
+        setLoginToken(data.userToken)
+      );
+    }
+    // console.log('xx token?', loginToken);
   };
 
   return (
@@ -61,6 +77,8 @@ const LogIn = () => {
                   sx={{ mt: 1 }}
                   onSubmit={handleSubmit((data) => {
                     console.log(data);
+                    setusername(data.username);
+                    setPw(data.password);
                   })}
                 >
                   <SignInTextFields>

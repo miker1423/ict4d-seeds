@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: 'https://bcdf-145-108-81-4.eu.ngrok.io/api/',
+  baseURL: 'https://seed-cert.azurewebsites.net/api/',
   headers: {
     'Content-type': 'application/json'
   }

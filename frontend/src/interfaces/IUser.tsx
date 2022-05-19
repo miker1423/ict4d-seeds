@@ -1,4 +1,4 @@
-export default interface IFarmer {
+export default interface IUser {
   id?: number;
   phoneno: string;
   firstname?: string;
@@ -6,5 +6,5 @@ export default interface IFarmer {
   lastname?: string;
   username: string;
   password: string;
-  organization?: string; // THE ONLY UNION AVAILABLE SHOULD JUST BE THE ADMINS UNION/ THIS SHOULD BE STATIC
+  organization: string; // THE ONLY UNION AVAILABLE SHOULD JUST BE THE ADMINS UNION/ THIS SHOULD BE STATIC
 }

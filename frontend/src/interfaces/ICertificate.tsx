@@ -7,4 +7,8 @@ export default interface ICertificate {
   gerfac?: number;
   batchno?: number;
   isValid?: boolean;
+  dateCreated: Date;
+  lastChanged: Date;
+  status: string;
+  farmerId: string;
 }
