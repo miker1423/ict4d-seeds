@@ -30,9 +30,10 @@ public class AccountController : ControllerBase
         var password = loginInfo.Password;
         var userName = loginInfo.UserName;
         var request = _httpClientFactory.CreateClient();
+        //HttpContext.SignInAsync(new IdentityServerUser())
         var discover = await request.GetDiscoveryDocumentAsync($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}");
         //var discover = await request.GetDiscoveryDocumentAsync($"http://localhost:5031/");
-        var token = await request.RequestPasswordTokenAsync(new PasswordTokenRequest() {
+        var tokenTask = request.RequestPasswordTokenAsync(new PasswordTokenRequest() {
             Address = discover.TokenEndpoint,
             UserName = userName,
             Password = password,
@@ -41,16 +42,30 @@ public class AccountController : ControllerBase
             Scope = "api openid profile",
         });
 
-        return Ok(new { token = token.AccessToken});
+        var user = await _userManager.FindByNameAsync(loginInfo.UserName);
+        var outputUser = new OutUserVM
+        {
+            Name = user.Name,
+            UserName = user.UserName,
+            ID = user.Id,
+            Organization = user.Organization,
+            Role = user.Role,
+            PhoneNumber = user.PhoneNumber
+        };
+        var token = await tokenTask;
+
+        return Ok(new { token = token.AccessToken, user = outputUser });
     }
 
     [HttpPost]
     public async Task<IActionResult> Post(UserVM user)
     {
-        var appUser = new AppUser{
+        var appUser = new AppUser {
             Organization = user.Organization,
             PhoneNumber = user.PhoneNumber,
             UserName = user.UserName,
+            Name = user.Name,
+            Role = user.Role,
         };
         var result = await _userManager.CreateAsync(appUser, user.Password);
         if(!result.Succeeded)

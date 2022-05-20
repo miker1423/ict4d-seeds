@@ -101,6 +101,9 @@ _ = manager.CreateAsync(new AppUser() {
     Email ="basic@email.com",
     UserName = "fatima",
     PhoneNumber = "234567890",
+    Name = "Fatima",
+    Role = "admin",
+    Organization = "VU",
 }, "whatever").ConfigureAwait(false);
 
 context.SaveChanges();
