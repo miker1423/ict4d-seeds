@@ -4,9 +4,9 @@ import './App.css';
 import LaboSemUser from './pages/LaboSemUser';
 import LogIn from './pages/LogIn';
 import MainPage from './pages/MainPage';
-import RegisterCertificate from './pages/RegisterCertificate';
+import RegisterCertificate from './components/RegisterCertificate';
 import RegisterUser from './pages/RegisterUser';
-import SeeAllCertificates from './pages/SeeAllCertificates';
+import SeeAllCertificates from './components/SeeAllCertificates';
 import UnionUser from './pages/UnionUser';
 
 const App = () => {
@@ -20,10 +20,10 @@ const App = () => {
             path="/labosem"
             element={<LaboSemUser userData={undefined} />}
           />
-          <Route path="/union" element={<UnionUser />} />
+          <Route path="/union" element={<UnionUser userData={undefined} />} />
           <Route
             path="/registercertificate"
-            element={<RegisterCertificate userData={undefined} />}
+            element={<RegisterCertificate />}
           />
           <Route path="/seeallcertificates" element={<SeeAllCertificates />} />
 

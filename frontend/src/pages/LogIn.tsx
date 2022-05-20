@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import IAccount from '../interfaces/IAccount';
 import IUser from '../interfaces/IUser';
 import UserServices from '../backendServices/UserService';
+import UnionUser from './UnionUser';
 
 const LogIn = () => {
   const [username, setusername] = useState<string>();
@@ -16,6 +17,8 @@ const LogIn = () => {
   const [loginToken, setLoginToken] = useState<string>('');
   const [isLoggedIn, setisLoggedIn] = useState<boolean>(false);
   const [userData, setUserData] = useState<IUser>();
+
+  // Either user is logged in as labosem user, any union user, or is not a valid login
 
   useEffect(() => {
     sessionStorage.setItem('token', loginToken);
@@ -77,9 +80,18 @@ const LogIn = () => {
 
   return (
     <div className="App">
-      {loginToken && isLoggedIn && userData && (
-        <LaboSemUser userData={userData} />
-      )}
+      {loginToken &&
+        isLoggedIn &&
+        userData &&
+        userData.org.toLowerCase() === 'labosem' && (
+          <LaboSemUser userData={userData} />
+        )}
+
+      {loginToken &&
+        isLoggedIn &&
+        userData &&
+        userData.org.toLowerCase() !== 'labosem' &&
+        userData.org !== '' && <UnionUser userData={userData} />}
       {!loginToken && (
         <div className="body-container">
           <Grid className="frontpage-grid" container spacing={2}>

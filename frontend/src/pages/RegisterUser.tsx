@@ -52,7 +52,7 @@ const RegisterUser = () => {
             {/* ADMIN USER REGISTERATION... BUT LABOSEM OR UNION?? */}
             {/* MAYBE ADMIN NEEDS TO BE A STATE... slik at man alltid kan sjekke om admin finnes eller ikke */}
             {/* //////////////////////////--HUSK--////////////////////////////// */}
-            <NavBar user={'labosem'} active={'reguser'} admin={true} />
+            <NavBar user={'labosem'} role={'admin'} />
           </Grid>
           <div className="main">
             <Grid item xs={12} sx={{ paddingTop: '0px' }}>

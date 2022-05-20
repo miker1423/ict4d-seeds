@@ -5,11 +5,15 @@ import NavBar from '../components/NavBar';
 import React, { useState, useEffect } from 'react';
 import LoadingComp from '../components/LoadingComp';
 import IUser from '../interfaces/IUser';
+import RegisterCertificate from '../components/RegisterCertificate';
+import SeeAllCertificates from '../components/SeeAllCertificates';
 
 const LaboSemUser = ({ userData }: { userData: IUser | undefined }) => {
   const [validToken, setValidToken] = useState<boolean>(false);
   const [token, setToken] = useState(userData ? userData.token : '');
   const [login, setLogin] = useState<boolean>(false);
+  const [currPage, setCurrPage] = useState<string>('labosemHome');
+  // const [labosemUser, setLabosemUser] = useState<boolean>(false);
 
   useEffect(() => {
     const currToken = sessionStorage.getItem('token');
@@ -19,17 +23,23 @@ const LaboSemUser = ({ userData }: { userData: IUser | undefined }) => {
     if (!validToken) {
       const timer = setTimeout(() => {
         setLogin(true);
-      }, 5000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [validToken, token]);
 
-  if (login) {
-    return <Navigate to="/login" />;
-  }
+  // useEffect(() => {
+  //   if (userData && userData.org.toLowerCase() === 'labosem')
+  //     setLabosemUser(true);
+  // }, [userData, currPage]);
+
+  const setPage = (page: string) => {
+    setCurrPage(page);
+  };
 
   return (
     <>
+      {login && <Navigate to="/login" />}
       {!validToken && <LoadingComp />}
       {validToken && (
         <div
@@ -39,39 +49,54 @@ const LaboSemUser = ({ userData }: { userData: IUser | undefined }) => {
           <Grid className="frontpage-grid" container spacing={2}>
             {/* NAV BAR */}
             <Grid item xs={12}>
-              <NavBar user={userData?.org || ''} />
+              <NavBar user={userData?.org || ''} setPage={setPage} />
             </Grid>
 
-            <Grid item xs={12} style={{ paddingTop: '0px' }}>
-              <div className="front">
-                <div className="title-container2">
-                  <Typography variant="h1" sx={{ color: 'hsla(0, 0%, 15%);' }}>
-                    Welcome
-                  </Typography>
-                  <br />
-                  <Typography sx={{ width: '300px' }}>
-                    Press on a button to start registering a new certificate or
-                    to see a list of existing certificates.
-                  </Typography>
-                  <ButtonContainer>
-                    <Grid item xs={4}>
-                      <Link id="link" to="/registercertificate">
-                        <Button variant="contained">
-                          Register new certificate
-                        </Button>
-                      </Link>
-                    </Grid>
-                    <Grid item xs={4}>
-                      <Link id="link" to="/seeallcertificates">
-                        <Button variant="contained">
-                          See all certificates
-                        </Button>
-                      </Link>
-                    </Grid>
-                  </ButtonContainer>
+            {currPage === 'regcer' && <RegisterCertificate />}
+            {currPage === 'seecer' && <SeeAllCertificates />}
+            {currPage === 'labosemHome' && (
+              <Grid item xs={12} style={{ paddingTop: '0px' }}>
+                <div className="front">
+                  <div className="title-container2">
+                    <Typography
+                      variant="h1"
+                      sx={{ color: 'hsla(0, 0%, 15%);' }}
+                    >
+                      Welcome
+                    </Typography>
+                    <br />
+                    <Typography sx={{ width: '300px' }}>
+                      Press on a button to start registering a new certificate
+                      or to see a list of existing certificates.
+                    </Typography>
+                    <ButtonContainer>
+                      <Grid item xs={4}>
+                        <Link
+                          id="link"
+                          to="#"
+                          onClick={() => setCurrPage('regcer')}
+                        >
+                          <Button variant="contained">
+                            Register new certificate
+                          </Button>
+                        </Link>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Link
+                          id="link"
+                          to="#"
+                          onClick={() => setCurrPage('seecer')}
+                        >
+                          <Button variant="contained">
+                            See all certificates
+                          </Button>
+                        </Link>
+                      </Grid>
+                    </ButtonContainer>
+                  </div>
                 </div>
-              </div>
-            </Grid>
+              </Grid>
+            )}
           </Grid>
         </div>
       )}

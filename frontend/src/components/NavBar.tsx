@@ -1,20 +1,39 @@
 import { AppBar, Typography, Button, MenuItem } from '@mui/material';
 import { Link, Navigate } from 'react-router-dom';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const NavBar = ({
   user,
-  active,
-  admin
+  // active,
+  role,
+  setPage
 }: {
   user: string;
-  active?: string;
-  admin?: boolean;
+  // active?: string;
+  role?: string;
+  setPage?: (page: string) => void;
 }) => {
+  const [admin, setAdmin] = useState<boolean>(false);
+  const [activePage, setActivePage] = useState<string>('');
+
+  useEffect(() => {
+    if (role && role === 'admin') setAdmin(true);
+    if (!role || (role && role !== 'admin')) setAdmin(false);
+    console.log('xx active page', activePage);
+    console.log('xx setPage?', setPage);
+  }, [role, activePage, setPage]);
+
   const logOut = () => {
     console.log('xx log out button click!');
     if (sessionStorage.getItem('token')) sessionStorage.removeItem('token');
+  };
+
+  const handlePage = (page: string) => {
+    if (setPage) {
+      setPage(page);
+    }
+    setActivePage(page);
   };
 
   return (
@@ -30,30 +49,37 @@ const NavBar = ({
     >
       <ToolbarText className="toolbartext">
         <Typography variant="h4" align="left" sx={{ mt: '30px' }}>
-          {/* <Link id="link" to={user === 'labosem' ? '/labosem' : '/union'}> */}
-          <Link id="link" to={`/${user.toLowerCase()}`}>
+          <Link
+            id="link"
+            to={'#'}
+            onClick={() => {
+              handlePage(
+                user.toLowerCase() === 'labosem' ? 'labosemHome' : 'unionHome'
+              );
+            }}
+          >
             TéléCiden
           </Link>
         </Typography>
         <MenuContainer
           className="menu-container"
           style={{
-            display: user.toLowerCase() === 'labosem' || 'VU' ? 'flex' : 'none'
+            display: user.toLowerCase() === 'labosem' ? 'flex' : 'none'
           }}
         >
-          <Link id="link" to="/registercertificate">
-            <MenuItem selected={active === 'regcer' ? true : false}>
+          <Link id="link" to="#" onClick={() => handlePage('regcer')}>
+            <MenuItem selected={activePage === 'regcer' ? true : false}>
               Register certificate
             </MenuItem>
-          </Link>{' '}
-          <Link id="link" to="/seeallcertificates">
-            <MenuItem selected={active === 'seecer' ? true : false}>
+          </Link>
+          <Link id="link" to="#" onClick={() => handlePage('seecer')}>
+            <MenuItem selected={activePage === 'seecer' ? true : false}>
               See all certificates
             </MenuItem>
           </Link>
           {admin && (
-            <Link id="link" to="/registeruser">
-              <MenuItem selected={active === 'reguser' ? true : false}>
+            <Link id="link" to="#">
+              <MenuItem selected={activePage === 'reguser' ? true : false}>
                 Register user
               </MenuItem>
             </Link>

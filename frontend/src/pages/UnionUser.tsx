@@ -1,14 +1,35 @@
 import { Grid, AppBar, Typography, Button } from '@mui/material';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Certificates from '../components/Certificates';
 import PdfCreator from '../components/PdfCreator';
 import NavBar from '../components/NavBar';
+import IUser from '../interfaces/IUser';
 
-const UnionUser = () => {
+const UnionUser = ({ userData }: { userData: IUser | undefined }) => {
   const [showTable, setShowTable] = useState<boolean>(false);
   const [showDocument, setShowDocument] = useState<boolean>(false);
+
+  const [validToken, setValidToken] = useState<boolean>(false);
+  const [token, setToken] = useState(userData ? userData.token : '');
+  const [login, setLogin] = useState<boolean>(false);
+  // const [currPage, setCurrPage] = useState<string>('unionHome');
+
+  useEffect(() => {
+    const currToken = sessionStorage.getItem('token');
+    if (currToken !== '' && currToken !== null) setToken(currToken);
+    if (token !== '' && token !== null) setValidToken(true);
+
+    console.log('xx validtoken?', validToken);
+    if (!validToken) {
+      const timer = setTimeout(() => {
+        console.log('xx You will now be logged out');
+        setLogin(true);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [validToken, token]);
 
   const handleDocument = () => {
     setShowDocument(true);
@@ -26,7 +47,7 @@ const UnionUser = () => {
       >
         <Grid className="frontpage-grid" container spacing={2}>
           <Grid item xs={12}>
-            <NavBar user={'Union'} />
+            <NavBar user={userData?.org || ''} />
           </Grid>
 
           <Grid container xs={12} style={{ paddingTop: '0px' }}>

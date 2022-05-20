@@ -1,32 +1,14 @@
-import {
-  Grid,
-  Typography,
-  Button,
-  TextField,
-  Box,
-  Checkbox
-} from '@mui/material';
+import { Grid, Typography, Button, TextField, Box } from '@mui/material';
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
-import NavBar from '../components/NavBar';
 import { useForm } from 'react-hook-form';
 import ICertificate from '../interfaces/ICertificate';
 import CertificateServices from '../backendServices/CertificateServices';
-import LoadingComp from '../components/LoadingComp';
-import IUser from '../interfaces/IUser';
 
-const RegisterCertificate = ({ userData }: { userData: IUser | undefined }) => {
+const RegisterCertificate = () => {
   const [registered, setRegistered] = useState<boolean>(false);
   const [validToken, setValidToken] = useState<boolean>(false);
-  const [login, setLogin] = useState<boolean>(false);
-  const [token, setToken] = useState(userData?.token);
-
-  useEffect(() => {
-    const currToken = sessionStorage.getItem('token');
-    if (currToken !== '' && currToken !== null) setToken(currToken);
-    if (token !== '' && token !== null) setValidToken(true);
-  }, [token]);
+  const [token, setToken] = useState<string>('');
 
   const {
     register,
@@ -45,25 +27,14 @@ const RegisterCertificate = ({ userData }: { userData: IUser | undefined }) => {
   });
 
   useEffect(() => {
-    console.log('xx registered?', registered);
+    // console.log('xx registered?', registered);
   }, [registered]);
 
   useEffect(() => {
     const currToken = sessionStorage.getItem('token');
     if (currToken !== '' && currToken !== null) setToken(currToken);
     if (token !== '' && token !== null) setValidToken(true);
-
-    if (!validToken) {
-      const timer = setTimeout(() => {
-        setLogin(true);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
   }, [validToken, token]);
-
-  if (login) {
-    return <Navigate to="/login" />;
-  }
 
   const handleOnSubmit = (data: { phoneno: string }) => {
     console.log('xx data', data);
@@ -82,17 +53,16 @@ const RegisterCertificate = ({ userData }: { userData: IUser | undefined }) => {
 
   return (
     <>
-      {!validToken && <LoadingComp />}
       {validToken && (
-        <div className="body-container" style={{ height: '100vh' }}>
+        <div
+          className="body-container"
+          style={{ height: '100vh', overflow: 'hidden' }}
+        >
           <Grid className="frontpage-grid" container spacing={2}>
             {/* NAV BAR */}
-            <Grid item xs={12}>
-              <NavBar user={'LaboSem'} active={'regcer'} />
-              {/*
-                Sende 
-               */}
-            </Grid>
+            {/* <Grid item xs={12}>
+              <NavBar user={'LaboSem'} />
+            </Grid> */}
             <div className="main">
               <Grid item xs={12} sx={{ paddingTop: '0px' }}>
                 {registered && (
