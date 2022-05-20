@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import LaboSemUser from './LaboSemUser';
 import styled from 'styled-components';
 import IAccount from '../interfaces/IAccount';
+import IUser from '../interfaces/IUser';
 import UserServices from '../backendServices/UserService';
 
 const LogIn = () => {
@@ -14,8 +15,10 @@ const LogIn = () => {
   const [unionUser, setUnionUser] = useState<boolean>(false);
   const [loginToken, setLoginToken] = useState<string>('');
   const [isLoggedIn, setisLoggedIn] = useState<boolean>(false);
+  const [userData, setUserData] = useState<IUser>();
 
   useEffect(() => {
+    // SAVE TOKEN IN SESSION STORAGE
     sessionStorage.setItem('token', loginToken);
   }, [loginToken]);
 
@@ -66,14 +69,19 @@ const LogIn = () => {
       password: pw ? pw : ''
     };
 
-    UserServices.login(credentials).then((data) => {
-      setLoginToken(data.userToken);
+    UserServices.Login(credentials).then((data) => {
+      console.log('xx userdata', data);
+      // console.log('xx userdata', data);
+      setUserData(data.data);
+      setLoginToken(data.data.token);
     });
   };
 
   return (
     <div className="App">
-      {loginToken && isLoggedIn && <LaboSemUser userToken={loginToken} />}
+      {loginToken && isLoggedIn && userData && (
+        <LaboSemUser userData={userData} />
+      )}
       {/* {loginToken && <Navigate to="/labosem" />} */}
       {!loginToken && (
         <div className="body-container">

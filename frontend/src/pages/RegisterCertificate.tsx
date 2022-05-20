@@ -14,8 +14,9 @@ import { useForm } from 'react-hook-form';
 import ICertificate from '../interfaces/ICertificate';
 import CertificateServices from '../backendServices/CertificateServices';
 import LoadingComp from '../components/LoadingComp';
+import IUser from '../interfaces/IUser';
 
-const RegisterCertificate = () => {
+const RegisterCertificate = ({ userData }: { userData: IUser | undefined }) => {
   const [registered, setRegistered] = useState<boolean>(false);
   const [validToken, setValidToken] = useState<boolean>(false);
   const [login, setLogin] = useState<boolean>(false);

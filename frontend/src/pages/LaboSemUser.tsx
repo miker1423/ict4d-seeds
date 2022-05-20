@@ -4,10 +4,11 @@ import { Link, Navigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import React, { useState, useEffect } from 'react';
 import LoadingComp from '../components/LoadingComp';
+import IUser from '../interfaces/IUser';
 
-const LaboSemUser = ({ userToken }: { userToken: string }) => {
+const LaboSemUser = ({ userData }: { userData: IUser | undefined }) => {
   const [validToken, setValidToken] = useState<boolean>(false);
-  const [token, setToken] = useState(userToken);
+  const [token, setToken] = useState(userData?.token);
   const [login, setLogin] = useState<boolean>(false);
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const LaboSemUser = ({ userToken }: { userToken: string }) => {
           <Grid className="frontpage-grid" container spacing={2}>
             {/* NAV BAR */}
             <Grid item xs={12}>
-              <NavBar user={'LaboSem'} />
+              <NavBar user={userData?.org || 'LaboSem'} />
             </Grid>
 
             <Grid item xs={12} style={{ paddingTop: '0px' }}>

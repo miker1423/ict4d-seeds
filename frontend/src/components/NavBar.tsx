@@ -30,14 +30,15 @@ const NavBar = ({
     >
       <ToolbarText className="toolbartext">
         <Typography variant="h4" align="left" sx={{ mt: '30px' }}>
-          <Link id="link" to={user === 'LaboSem' ? '/labosem' : '/union'}>
+          {/* <Link id="link" to={user === 'labosem' ? '/labosem' : '/union'}> */}
+          <Link id="link" to={`/${user.toLowerCase()}`}>
             TéléCiden
           </Link>
         </Typography>
         <MenuContainer
           className="menu-container"
           style={{
-            display: user.toLowerCase() === 'labosem' ? 'flex' : 'none'
+            display: user.toLowerCase() === 'labosem' || 'VU' ? 'flex' : 'none'
           }}
         >
           <Link id="link" to="/registercertificate">

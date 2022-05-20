@@ -16,7 +16,10 @@ const App = () => {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LogIn />} />
-          <Route path="/labosem" element={<LaboSemUser userToken={''} />} />
+          <Route
+            path="/labosem"
+            element={<LaboSemUser userData={undefined} />}
+          />
           <Route path="/union" element={<UnionUser />} />
           <Route
             path="/registercertificate"
