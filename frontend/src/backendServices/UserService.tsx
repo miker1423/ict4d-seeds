@@ -40,8 +40,8 @@ export const Login = async (userData: IAccount) => {
   let org = '';
   let role = '';
 
-  console.log('xx json', json.charAt(19));
   const data = JSON.parse(json);
+  console.log('xx data', data);
 
   await axios
     .post('/Account/login', data, {

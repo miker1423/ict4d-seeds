@@ -18,9 +18,8 @@ const LogIn = () => {
   const [userData, setUserData] = useState<IUser>();
 
   useEffect(() => {
-    // SAVE TOKEN IN SESSION STORAGE
     sessionStorage.setItem('token', loginToken);
-  }, [loginToken]);
+  }, [loginToken, userData]);
 
   useEffect(() => {
     if (loginToken !== null && loginToken !== '' && loginToken.length > 10)
@@ -71,7 +70,6 @@ const LogIn = () => {
 
     UserServices.Login(credentials).then((data) => {
       console.log('xx userdata', data);
-      // console.log('xx userdata', data);
       setUserData(data.data);
       setLoginToken(data.data.token);
     });
@@ -82,7 +80,6 @@ const LogIn = () => {
       {loginToken && isLoggedIn && userData && (
         <LaboSemUser userData={userData} />
       )}
-      {/* {loginToken && <Navigate to="/labosem" />} */}
       {!loginToken && (
         <div className="body-container">
           <Grid className="frontpage-grid" container spacing={2}>

@@ -23,7 +23,7 @@ const App = () => {
           <Route path="/union" element={<UnionUser />} />
           <Route
             path="/registercertificate"
-            element={<RegisterCertificate />}
+            element={<RegisterCertificate userData={undefined} />}
           />
           <Route path="/seeallcertificates" element={<SeeAllCertificates />} />
 

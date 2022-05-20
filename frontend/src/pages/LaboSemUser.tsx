@@ -8,7 +8,7 @@ import IUser from '../interfaces/IUser';
 
 const LaboSemUser = ({ userData }: { userData: IUser | undefined }) => {
   const [validToken, setValidToken] = useState<boolean>(false);
-  const [token, setToken] = useState(userData?.token);
+  const [token, setToken] = useState(userData ? userData.token : '');
   const [login, setLogin] = useState<boolean>(false);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const LaboSemUser = ({ userData }: { userData: IUser | undefined }) => {
           <Grid className="frontpage-grid" container spacing={2}>
             {/* NAV BAR */}
             <Grid item xs={12}>
-              <NavBar user={userData?.org || 'LaboSem'} />
+              <NavBar user={userData?.org || ''} />
             </Grid>
 
             <Grid item xs={12} style={{ paddingTop: '0px' }}>

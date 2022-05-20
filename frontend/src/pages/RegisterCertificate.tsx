@@ -20,7 +20,7 @@ const RegisterCertificate = ({ userData }: { userData: IUser | undefined }) => {
   const [registered, setRegistered] = useState<boolean>(false);
   const [validToken, setValidToken] = useState<boolean>(false);
   const [login, setLogin] = useState<boolean>(false);
-  const [token, setToken] = useState<string>('');
+  const [token, setToken] = useState(userData?.token);
 
   useEffect(() => {
     const currToken = sessionStorage.getItem('token');
@@ -31,8 +31,6 @@ const RegisterCertificate = ({ userData }: { userData: IUser | undefined }) => {
   const {
     register,
     handleSubmit,
-    watch,
-    setError,
     formState: { errors }
   } = useForm({
     defaultValues: {
@@ -47,8 +45,6 @@ const RegisterCertificate = ({ userData }: { userData: IUser | undefined }) => {
   });
 
   useEffect(() => {
-    // console.log('xx watch', watch());
-    // if (errors) setRegistered(false);
     console.log('xx registered?', registered);
   }, [registered]);
 
@@ -85,7 +81,6 @@ const RegisterCertificate = ({ userData }: { userData: IUser | undefined }) => {
   };
 
   return (
-    // <div className="App">
     <>
       {!validToken && <LoadingComp />}
       {validToken && (
@@ -94,6 +89,9 @@ const RegisterCertificate = ({ userData }: { userData: IUser | undefined }) => {
             {/* NAV BAR */}
             <Grid item xs={12}>
               <NavBar user={'LaboSem'} active={'regcer'} />
+              {/*
+                Sende 
+               */}
             </Grid>
             <div className="main">
               <Grid item xs={12} sx={{ paddingTop: '0px' }}>
