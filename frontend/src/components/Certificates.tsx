@@ -6,6 +6,7 @@ import {
   TableCell,
   TableBody
 } from '@mui/material';
+import { Link, Navigate } from 'react-router-dom';
 
 const Certificates = () => {
   const createData = (
@@ -45,7 +46,7 @@ const Certificates = () => {
       '97%',
       '24/04/2022',
       'Corn',
-      true
+      true,
     ),
     createData(
       1,
@@ -75,6 +76,7 @@ const Certificates = () => {
             <TableCell align="right">Date created</TableCell>
             <TableCell align="right">Last Changed</TableCell>
             <TableCell align="right">Certified</TableCell>
+            <TableCell align="right">PDFlinks</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -98,6 +100,7 @@ const Certificates = () => {
               <TableCell align="right">
                 {row.certified ? 'Yes' : 'No'}
               </TableCell>
+              <TableCell align="right"><Link id="pdfGen" to="PdfCreator">pog</Link></TableCell>
             </TableRow>
           ))}
         </TableBody>

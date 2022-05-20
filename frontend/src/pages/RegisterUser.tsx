@@ -17,7 +17,7 @@ import CertificateServices from '../backendServices/CertificateServices';
 const RegisterUser = () => {
   const [registered, setRegistered] = useState<boolean>(false);
   const {
-    register,
+    register, 
     handleSubmit,
     watch,
     setError,
