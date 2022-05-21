@@ -5,12 +5,10 @@ import styled from 'styled-components';
 
 const NavBar = ({
   user,
-  // active,
   role,
   setPage
 }: {
   user: string;
-  // active?: string;
   role?: string;
   setPage?: (page: string) => void;
 }) => {
@@ -19,21 +17,24 @@ const NavBar = ({
 
   useEffect(() => {
     if (role && role === 'admin') setAdmin(true);
-    if (!role || (role && role !== 'admin')) setAdmin(false);
-    console.log('xx active page', activePage);
-    console.log('xx setPage?', setPage);
-  }, [role, activePage, setPage]);
+    else setAdmin(false);
+    // setActivePage(page);
+  }, [role]);
 
   const logOut = () => {
     console.log('xx log out button click!');
-    if (sessionStorage.getItem('token')) sessionStorage.removeItem('token');
+    if (sessionStorage.getItem('token')) {
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('organization');
+      sessionStorage.removeItem('role');
+    }
   };
 
   const handlePage = (page: string) => {
     if (setPage) {
       setPage(page);
     }
-    setActivePage(page);
+    // setActivePage(page);
   };
 
   return (

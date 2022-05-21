@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ICertificate from '../interfaces/ICertificate';
 import axios from '../http-common';
 
@@ -40,11 +40,32 @@ export const getCertById = (id: ICertificate['farmerId']) => {
 };
 
 // Get all certificates
-export const getAllCerts = () => {
-  axios
+export const GetAllCerts = async () => {
+  let certList: ICertificate[];
+  certList = [];
+
+  await axios
     .get(`/Certificate`)
-    .catch((e) => console.log('xx error', e.response))
-    .then((res) => console.log('xx create res', res));
+    .then((res) => {
+      for (let cert of res.data) {
+        console.log('xx res.data', res.data);
+        const aCert: ICertificate = {
+          id: cert.id,
+          dateCreated: cert.dateCreate,
+          seedvar: cert.seedvar,
+          status: cert.status,
+          lastChanged: cert.lastChanged,
+          farmerId: cert.farmerId
+        };
+        certList.push(aCert);
+      }
+    })
+    .catch((e) => console.log('xx error', e.response));
+
+  console.log('xx certlist', certList[0]);
+  return {
+    data: certList
+  };
 };
 
 // delete certificate
@@ -57,7 +78,7 @@ export const deleteCert = (id: ICertificate['id']) => {
 
 const CertificateServices = {
   create,
-  getAllCerts,
+  GetAllCerts,
   getCertById,
   deleteCert
 };

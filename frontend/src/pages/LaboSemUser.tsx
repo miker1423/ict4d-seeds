@@ -13,7 +13,6 @@ const LaboSemUser = ({ userData }: { userData: IUser | undefined }) => {
   const [token, setToken] = useState(userData ? userData.token : '');
   const [login, setLogin] = useState<boolean>(false);
   const [currPage, setCurrPage] = useState<string>('labosemHome');
-  // const [labosemUser, setLabosemUser] = useState<boolean>(false);
 
   useEffect(() => {
     const currToken = sessionStorage.getItem('token');
@@ -27,11 +26,6 @@ const LaboSemUser = ({ userData }: { userData: IUser | undefined }) => {
       return () => clearTimeout(timer);
     }
   }, [validToken, token]);
-
-  // useEffect(() => {
-  //   if (userData && userData.org.toLowerCase() === 'labosem')
-  //     setLabosemUser(true);
-  // }, [userData, currPage]);
 
   const setPage = (page: string) => {
     setCurrPage(page);

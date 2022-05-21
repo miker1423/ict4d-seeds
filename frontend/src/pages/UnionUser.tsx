@@ -6,6 +6,8 @@ import Certificates from '../components/Certificates';
 import PdfCreator from '../components/PdfCreator';
 import NavBar from '../components/NavBar';
 import IUser from '../interfaces/IUser';
+import { GetAllCerts } from '../backendServices/CertificateServices';
+import ICertificate from '../interfaces/ICertificate';
 
 const UnionUser = ({ userData }: { userData: IUser | undefined }) => {
   const [showTable, setShowTable] = useState<boolean>(false);
@@ -14,14 +16,14 @@ const UnionUser = ({ userData }: { userData: IUser | undefined }) => {
   const [validToken, setValidToken] = useState<boolean>(false);
   const [token, setToken] = useState(userData ? userData.token : '');
   const [login, setLogin] = useState<boolean>(false);
-  // const [currPage, setCurrPage] = useState<string>('unionHome');
+  const [certificates, setCertificates] = useState<ICertificate[]>();
 
   useEffect(() => {
     const currToken = sessionStorage.getItem('token');
     if (currToken !== '' && currToken !== null) setToken(currToken);
     if (token !== '' && token !== null) setValidToken(true);
 
-    console.log('xx validtoken?', validToken);
+    console.log('xx validtoken in Union?', validToken);
     if (!validToken) {
       const timer = setTimeout(() => {
         console.log('xx You will now be logged out');
@@ -31,12 +33,15 @@ const UnionUser = ({ userData }: { userData: IUser | undefined }) => {
     }
   }, [validToken, token]);
 
-  const handleDocument = () => {
-    setShowDocument(true);
+  const getCertificates = () => {
+    GetAllCerts().then((data) => {
+      setCertificates(data.data);
+      console.log('xx gotte certs', data.data);
+    });
   };
 
   const handleClick = () => {
-    setShowTable(true);
+    setShowTable(!showTable);
   };
 
   return (
@@ -75,20 +80,25 @@ const UnionUser = ({ userData }: { userData: IUser | undefined }) => {
                         mt: '20px',
                         justifyContent: 'left'
                       }}
-                      onClick={handleClick}
+                      onClick={() => {
+                        handleClick();
+                        getCertificates();
+                      }}
                     >
-                      See certificates
+                      {showTable ? 'Hide' : 'See'} certificates
                     </Button>
-                    <Button variant="contained" onClick={handleDocument}>
+                    {/* <Button variant="contained" onClick={handleDocument}>
                       See Document
-                    </Button>
+                    </Button> */}
                   </Grid>
                   <Grid item xs={8}>
                     <div
                       className="list-of-certificates"
                       style={{ width: '100%' }}
                     >
-                      {showTable && <Certificates />}
+                      {showTable && certificates && (
+                        <Certificates certList={certificates} />
+                      )}
                     </div>
                   </Grid>
                   <Grid item xs={8}>

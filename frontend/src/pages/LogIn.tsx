@@ -1,5 +1,5 @@
 import { Box, Typography, TextField, Button, Grid } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import LaboSemUser from './LaboSemUser';
@@ -18,11 +18,50 @@ const LogIn = () => {
   const [isLoggedIn, setisLoggedIn] = useState<boolean>(false);
   const [userData, setUserData] = useState<IUser>();
 
+  // const [sessionToken, setSessionToken] = useState<string>('');
+  // const [sessionRole, setSessionRole] = useState<string>('');
+  // const [sessionOrg, setSessionOrg] = useState<string>('');
+
+  // const token = sessionStorage.getItem('token');
+  // const role = sessionStorage.getItem('role');
+  // const org = sessionStorage.getItem('organization');
+
   // Either user is logged in as labosem user, any union user, or is not a valid login
 
   useEffect(() => {
-    sessionStorage.setItem('token', loginToken);
-  }, [loginToken, userData]);
+    const token = sessionStorage.getItem('token');
+    const role = sessionStorage.getItem('role');
+    const org = sessionStorage.getItem('organization');
+
+    if (token && role && org && (token && role && org) !== '') {
+      // setSessionToken(token);
+      // setSessionOrg(org);
+      // setSessionRole(role);
+      setUserData({
+        token: token,
+        org: org,
+        role: role
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    // if (
+    //   userData
+    // )
+    //   setLoginToken(userData.token);
+    //   setisLoggedIn(true);
+    // } else {
+
+    if (userData && userData.token) {
+      sessionStorage.setItem('token', userData.token);
+      sessionStorage.setItem('role', userData.role);
+      sessionStorage.setItem('organization', userData.org);
+      setisLoggedIn(true);
+      setLoginToken(userData.token);
+    }
+    // }
+  }, [userData]);
 
   useEffect(() => {
     if (loginToken !== null && loginToken !== '' && loginToken.length > 10)
@@ -47,7 +86,8 @@ const LogIn = () => {
 
   const regExCheck = () => {
     const usernameRegex = /^[A-Za-z0-9\-\_.]{4,}$/i;
-    const pwRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\_\W]).{8,}/i;
+    // const pwRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\_\W]).{8,}/i;
+    const pwRegex = /[A-Za-z0-9]+/i;
 
     console.log('xx credentials:', username, pw);
 
@@ -66,16 +106,19 @@ const LogIn = () => {
       setUnionUser(true);
     }
     regExCheck();
-    const credentials: IAccount = {
-      username: username ? username : '',
-      password: pw ? pw : ''
-    };
 
-    UserServices.Login(credentials).then((data) => {
-      console.log('xx userdata', data);
-      setUserData(data.data);
-      setLoginToken(data.data.token);
-    });
+    if (!wrongCreds) {
+      const credentials: IAccount = {
+        username: username ? username : '',
+        password: pw ? pw : ''
+      };
+
+      UserServices.Login(credentials).then((data) => {
+        console.log('xx userdata', data);
+        setUserData(data.data);
+        setLoginToken(data.data.token);
+      });
+    }
   };
 
   return (
@@ -92,7 +135,7 @@ const LogIn = () => {
         userData &&
         userData.org.toLowerCase() !== 'labosem' &&
         userData.org !== '' && <UnionUser userData={userData} />}
-      {!loginToken && (
+      {!loginToken && !userData && (
         <div className="body-container">
           <Grid className="frontpage-grid" container spacing={2}>
             <Grid item xs={12}>
