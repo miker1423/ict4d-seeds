@@ -18,6 +18,7 @@ const LogIn = () => {
   const [userData, setUserData] = useState<IUser>();
   // Either user is logged in as labosem user, any union user, or is not a valid login
 
+  // get session items
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     const role = sessionStorage.getItem('role');
@@ -32,6 +33,20 @@ const LogIn = () => {
     }
   }, []);
 
+  useEffect(() => {
+    console.log('xx userdata?!?!', userData);
+    if (userData) {
+      if (!userData.org || userData.org === undefined || userData.org === '') {
+        setUserData({
+          token: userData.token,
+          org: 'org',
+          role: userData.role
+        });
+      }
+    }
+  }, [userData]);
+
+  // set session items
   useEffect(() => {
     if (userData && userData && loginToken && loginToken !== '') {
       sessionStorage.setItem('token', loginToken);
@@ -82,14 +97,22 @@ const LogIn = () => {
         password: pw ? pw : ''
       };
 
-      UserServices.Login(credentials).then((data) => {
+      UserServices.Login({
+        userData: credentials,
+        setUserData: setUserData
+      }).then((data) => {
+        let userinf: IUser = { token: '', org: 'org', role: '' };
         if (data.data.token === '') {
           setWrongCreds(true);
         } else {
-          setWrongCreds(false);
-          console.log('xx userdata', data);
-          setUserData(data.data);
-          setLoginToken(data.data.token);
+          userinf = data.data;
+          // setWrongCreds(false);
+          // console.log('xx userdata', data);
+          // setUserData(() => data.data);
+          // setLoginToken(() => data.data.token);
+        }
+        if (userinf) {
+          console.log('xx userinf', userinf);
         }
       });
     }
@@ -97,18 +120,11 @@ const LogIn = () => {
 
   return (
     <div className="App">
-      {loginToken &&
-        isLoggedIn &&
-        userData &&
-        userData.org.toLowerCase() === 'labosem' && (
-          <LaboSemUser userData={userData} />
-        )}
+      {userData && userData.org.toLowerCase() === 'labosem' && (
+        <LaboSemUser userData={userData} />
+      )}
 
-      {loginToken &&
-        isLoggedIn &&
-        userData &&
-        userData.org.toLowerCase() !== 'labosem' &&
-        userData.org !== '' && <UnionUser userData={userData} />}
+      {userData && <UnionUser userData={userData} />}
       {!loginToken && !userData && (
         <div className="body-container">
           <Grid className="frontpage-grid" container spacing={2}>
