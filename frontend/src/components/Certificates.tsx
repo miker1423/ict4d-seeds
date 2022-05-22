@@ -62,8 +62,9 @@ const Certificates = ({
                     }}
                   >
                     <TableCell align="right">{row.phoneno}</TableCell>
-                    <TableCell align="right">{row.dateCreated}</TableCell>
-                    <TableCell align="right">{row.lastChanged}</TableCell>
+                    <TableCell align="right">
+                      {row.dateCreated?.split('T')[0]}
+                    </TableCell>
                     <TableCell align="right">{row.seedvar}</TableCell>
                     <TableCell align="right">
                       {row.status === 0 ? 'Yes' : 'No'}

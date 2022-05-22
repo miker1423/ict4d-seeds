@@ -6,11 +6,11 @@ export default interface ICertificate {
   varpur?: number;
   gerfac?: number;
   batchno?: number;
-  isValid?: boolean;
+  // isValid?: boolean;
   // dateCreated: Date;
   // lastChanged?: Date;
-  dateCreated: string;
+  dateCreated?: string;
   lastChanged?: string;
   status?: number;
-  farmerId: string;
+  organization?: string;
 }

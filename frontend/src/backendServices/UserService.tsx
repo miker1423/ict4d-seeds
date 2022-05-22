@@ -2,32 +2,36 @@ import React, { useState } from 'react';
 import IUser from '../interfaces/IUser';
 import axios from '../http-common';
 import IAccount from '../interfaces/IAccount';
-import { AxiosResponse } from 'axios';
 
 // APIs endpoints
 // Create account
-export const create = ({
+export const create = async ({
   userData,
   userCreds
 }: {
   userData: IUser;
   userCreds: IAccount;
 }) => {
-  const json = `{
-    "userName": ${userCreds.username},
-    "password":  ${userCreds.password},
-    "organization":  ${userData.org},
-    "phoneNumber":  ${userData.phoneno}
-  }`;
+  const json = {
+    userName: userCreds.username,
+    password: userCreds.password,
+    organization: userData.org,
+    phoneNumber: userData.phoneno,
+    role: userData.role
+  };
 
-  const data = JSON.parse(json);
+  const data = json;
 
-  axios
+  await axios
     .post('/Account', data, {
       headers: { 'content-type': 'application/json' }
     })
-    .catch((e) => console.log('xx error', e.response))
-    .then((res) => console.log('xx create res', res));
+    .then((res) => {
+      console.log('xx create res', res);
+    })
+    .catch((e) => console.log('xx error', e.response));
+
+  return {};
 };
 
 export const Login = async (userData: IAccount) => {
@@ -41,18 +45,18 @@ export const Login = async (userData: IAccount) => {
   let role = '';
 
   const data = JSON.parse(json);
-  console.log('xx data', data);
 
   await axios
     .post('/Account/login', data, {
       headers: { 'content-type': 'application/json' }
     })
     .then((res) => {
-      // console.log('xx create res', res.data.token);
       token = res.data.token;
       org = res.data.user.organization;
       role = res.data.user.role;
-    });
+      console.log('xx res status', res.statusText);
+    })
+    .catch((e) => console.log('xx error', e.response));
 
   return {
     data: {

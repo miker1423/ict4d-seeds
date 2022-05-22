@@ -6,54 +6,54 @@ import axios from '../http-common';
 
 // create certificate
 export const create = async (certData: ICertificate) => {
-  const json = `{
-    "farmerId": ${certData.farmerId},
-    "status": ${certData.status},
-    "dateCreate": ${certData.dateCreated},
-    "lastChanged": ${certData.lastChanged},
-    "seedvar": ${certData.seedvar},
-  }`;
-  const data = JSON.parse(json);
+  // create needs phoneno
+  const json = {
+    status: certData.status,
+    dateCreate: certData.dateCreated,
+    lastChanged: certData.lastChanged,
+    seedvar: certData.seedvar
+  };
 
+  const data = json;
+
+  let response = undefined;
   await axios
     .put('/Certificate', data, {
       headers: { 'content-type': 'application/json' }
     })
-    .catch((e) => console.log('xx error', e.response))
-    .then((res) => console.log('xx create res', res));
+    .then((res) => {
+      console.log('xx create cert', res);
+      if (res) response = res.status;
+    })
+    .catch((e) => {
+      console.log('xx error', e.response);
+      response = e.response;
+    });
+
+  return { data: response };
 };
 
-// Get a users certificate by phone
-// export const getCertByPhone = (phoneno: ICertificate['phoneno']) => {
-//   axios
-//     .get(`/Certificate/get_phone/${phoneno}`)
-//     .catch((e) => console.log('xx error', e.response))
-//     .then((res) => console.log('xx create res', res));
-// };
-
 // Get a users certificate by id
-export const getCertById = async (id: ICertificate['farmerId']) => {
+export const getCertById = async (phone: ICertificate['phoneno']) => {
   let certificate: ICertificate = {
     id: 0,
     dateCreated: '',
     seedvar: '',
     status: 1,
-    lastChanged: '',
-    farmerId: ''
+    lastChanged: ''
+    // phone
   };
 
   await axios
-    .get(`/Certificate/${id}`)
+    .get(`/Certificate/${phone}`)
     .then((res) => {
-      console.log('xx create res', res);
+      console.log('xx get cert by phone', res);
       const cert = res.data;
       certificate = {
         id: cert.id,
         dateCreated: cert.dateCreate,
         seedvar: cert.seedvar,
-        status: cert.status,
-        lastChanged: cert.lastChanged,
-        farmerId: cert.farmerId
+        status: cert.status
       };
     })
     .catch((e) => console.log('xx error', e.response));
@@ -76,9 +76,8 @@ export const GetAllCerts = async () => {
           id: cert.id,
           dateCreated: cert.dateCreate,
           seedvar: cert.seedvar,
-          status: cert.status,
-          lastChanged: cert.lastChanged,
-          farmerId: cert.farmerId
+          status: cert.status
+          // lastChanged: cert.lastChanged,
         };
         certList.push(aCert);
       }
@@ -94,7 +93,7 @@ export const GetAllCerts = async () => {
 export const deleteCert = async (id: ICertificate['id']) => {
   await axios
     .delete(`/Certificate/${id}`)
-    .then((res) => console.log('xx delete', res))
+    .then((res) => console.log('xx deleteq', res))
     .catch((e) => console.log('xx error', e.response));
 };
 

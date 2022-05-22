@@ -14,14 +14,25 @@ import { useForm } from 'react-hook-form';
 import ICertificate from '../interfaces/ICertificate';
 import IUser from '../interfaces/IUser';
 import CertificateServices from '../backendServices/CertificateServices';
+import UserServices from '../backendServices/UserService';
+import IAccount from '../interfaces/IAccount';
+
+interface InputUser {
+  firstname: string;
+  middlename: string;
+  lastname: string;
+  phoneno: string;
+  username: string;
+  password: string;
+  admin: boolean;
+  organization: string;
+}
 
 const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
   const [registered, setRegistered] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
-    watch,
-    setError,
     formState: { errors }
   } = useForm({
     defaultValues: {
@@ -31,17 +42,30 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
       phoneno: '',
       username: '',
       password: '',
+      admin: false,
       organization: ''
     }
   });
 
-  useEffect(() => {
-    console.log('xx registered?', registered);
-  }, [registered]);
+  useEffect(() => {}, [registered]);
 
-  const handleOnSubmit = (data: { phoneno: string }) => {
+  const handleOnSubmit = (data: InputUser) => {
     console.log('xx data', data);
-    setRegistered(true);
+
+    const role = data.admin ? 'admin' : '';
+    const user: IUser = {
+      phoneno: data.phoneno,
+      role: role,
+      org: data.organization
+    };
+    const account: IAccount = {
+      username: data.username,
+      password: data.password
+    };
+
+    UserServices.create({ userData: user, userCreds: account }).then((data) => {
+      setRegistered(true);
+    });
   };
 
   return (
@@ -82,7 +106,7 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
                     <Grid item xs={6}>
                       <TextField
                         {...register('firstname', {
-                          // required: 'Firstname is required',
+                          required: 'Firstname is required',
                           pattern: {
                             value:
                               /^[A-Za-zÁÀÈÉÊÂÒÖÏÌÍÓéèêëäâáàîïíìôöóò\- .]{2,}$/i,
@@ -209,6 +233,25 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
                           (errors.organization?.type === 'pattern' &&
                             errors.organization?.message)}
                       </ErrorMsg>
+                    </Grid>
+                  </Grid>
+
+                  {/* Admin? */}
+                  <Grid container>
+                    <Grid item xs={4}>
+                      <Typography sx={{ marginTop: '0px' }}>Admin?</Typography>
+                    </Grid>
+                    <Grid item sx={{ textAlign: 'right', pt: 1, pr: 2 }}>
+                      Yes
+                    </Grid>
+                    <Grid item xs={2} sx={{ textAlign: 'left' }}>
+                      <Checkbox
+                        {...register('admin', {
+                          required: 'Role is required'
+                        })}
+                        sx={{ padding: '0px', pt: '8px' }}
+                      />
+                      <ErrorMsg>{errors.admin?.message}</ErrorMsg>
                     </Grid>
                   </Grid>
                   {/* grid container */}

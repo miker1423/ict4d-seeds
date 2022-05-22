@@ -13,7 +13,6 @@ const LogIn = () => {
   const [username, setusername] = useState<string>();
   const [pw, setPw] = useState<string>();
   const [wrongCreds, setWrongCreds] = useState<boolean>(false);
-  const [unionUser, setUnionUser] = useState<boolean>(false);
   const [loginToken, setLoginToken] = useState<string>('');
   const [isLoggedIn, setisLoggedIn] = useState<boolean>(false);
   const [userData, setUserData] = useState<IUser>();
@@ -25,8 +24,8 @@ const LogIn = () => {
     const org = sessionStorage.getItem('organization');
 
     if (token && role && org && (token && role && org) !== '') {
+      setLoginToken(token);
       setUserData({
-        token: token,
         org: org,
         role: role
       });
@@ -34,14 +33,13 @@ const LogIn = () => {
   }, []);
 
   useEffect(() => {
-    if (userData && userData.token) {
-      sessionStorage.setItem('token', userData.token);
+    if (userData && userData && loginToken && loginToken !== '') {
+      sessionStorage.setItem('token', loginToken);
       sessionStorage.setItem('role', userData.role);
       sessionStorage.setItem('organization', userData.org);
       setisLoggedIn(true);
-      setLoginToken(userData.token);
     }
-  }, [userData]);
+  }, [userData, loginToken]);
 
   useEffect(() => {
     if (loginToken !== null && loginToken !== '' && loginToken.length > 10)
@@ -85,9 +83,14 @@ const LogIn = () => {
       };
 
       UserServices.Login(credentials).then((data) => {
-        console.log('xx userdata', data);
-        setUserData(data.data);
-        setLoginToken(data.data.token);
+        if (data.data.token === '') {
+          setWrongCreds(true);
+        } else {
+          setWrongCreds(false);
+          console.log('xx userdata', data);
+          setUserData(data.data);
+          setLoginToken(data.data.token);
+        }
       });
     }
   };
@@ -193,7 +196,6 @@ const LogIn = () => {
                             credentials.
                           </p>
                         </span>
-                        {/* <a href="#">Forgot password?</a> */}
                       </Grid>
                     </Grid>
                   </SignInForm>

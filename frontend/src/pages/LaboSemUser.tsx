@@ -11,7 +11,7 @@ import RegisterUser from './RegisterUser';
 
 const LaboSemUser = ({ userData }: { userData: IUser | undefined }) => {
   const [validToken, setValidToken] = useState<boolean>(false);
-  const [token, setToken] = useState(userData ? userData.token : '');
+  const [token, setToken] = useState('');
   const [login, setLogin] = useState<boolean>(false);
   const [currPage, setCurrPage] = useState<string>('labosemHome');
 

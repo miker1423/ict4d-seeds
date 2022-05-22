@@ -15,7 +15,7 @@ const UnionUser = ({ userData }: { userData: IUser | undefined }) => {
   const [showDocument, setShowDocument] = useState<boolean>(false);
 
   const [validToken, setValidToken] = useState<boolean>(false);
-  const [token, setToken] = useState(userData ? userData.token : '');
+  const [token, setToken] = useState('');
   const [login, setLogin] = useState<boolean>(false);
   const [certificates, setCertificates] = useState<ICertificate[]>();
   const [currPage, setCurrPage] = useState<string>('unionHome');
