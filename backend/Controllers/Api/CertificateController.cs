@@ -12,15 +12,18 @@ public class CertificateController : ControllerBase
     private readonly ILogger<CertificateController> _logger;
     private readonly ICertService _certService;
     private readonly IFarmerService _farmerService;
+    private readonly ICallerService _callerService;
 
     public CertificateController(
         ILogger<CertificateController> logger,
         ICertService certService,
-        IFarmerService farmerService)
+        IFarmerService farmerService,
+        ICallerService callerService)
     {
         _logger = logger;
         _certService = certService;
         _farmerService = farmerService;
+        _callerService = callerService;
     }
 
     [HttpGet]
@@ -49,7 +52,10 @@ public class CertificateController : ControllerBase
 
         var cert = await _certService.CreateRequest(farmer.ID);
         var status = certVM.IsValid ? CertificateStatus.VALID : CertificateStatus.INVALID;
+        
+        var callTask = _callerService.CallNow(certVM.PhoneNumber, "", certVM.IsValid);
         var (success, newCert) = await _certService.CompleteRequest(cert.ID, status);
+        await callTask;
         if(!success)
             return BadRequest("The farmer does not have a phone number");
         return CreatedAtAction(null, newCert);
@@ -58,7 +64,6 @@ public class CertificateController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> Put([FromBody]Certificate certificate)
     {
-        certificate.LastChanged = DateTime.UtcNow;
         var success = await  _certService.Update(certificate);
         if(!success)
             return BadRequest("I don't know, shit happens");

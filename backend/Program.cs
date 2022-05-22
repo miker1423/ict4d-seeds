@@ -28,6 +28,7 @@ builder.Services.AddSingleton<ICorsPolicyService>((container) =>
         AllowAll = true
     };
 });
+builder.Services.AddMemoryCache();
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options => { 
     options.SignIn.RequireConfirmedEmail = false;
     options.SignIn.RequireConfirmedAccount = false;
@@ -89,8 +90,6 @@ var farmer = context.Farmers.Add(new Backend.Models.Farmer() {
 context.Certificates.Add(new Backend.Models.Certificate() {
     FarmerId = farmer.Entity.ID,
     Status = Backend.Models.CertificateStatus.VALID,
-    DateCreate = DateTime.UtcNow,
-    LastChanged = DateTime.UtcNow,
     SeedVariety = "Variety",
 });
 
@@ -141,7 +140,7 @@ app.UseIdentityServer();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseMiddleware<ContentTypeSwitchMiddleware>();
+//app.UseMiddleware<ContentTypeSwitchMiddleware>();
 app.MapControllers();
 
 

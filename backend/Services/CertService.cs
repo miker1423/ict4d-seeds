@@ -10,6 +10,9 @@ public class CertService : ICertService
 {
     private readonly FarmersDbContext _context;
     private readonly ICallerService _callerService;
+    private readonly int min = 0;
+    private readonly int max = 9999;
+    private readonly Random rnd = new();
     public CertService(FarmersDbContext context, ICallerService callerService)
     {
         _context = context;
@@ -18,6 +21,8 @@ public class CertService : ICertService
 
     public async Task<(bool, Certificate?)> CompleteRequest(Guid requestId, CertificateStatus status)
     {
+       uint GeneratePin() => (uint)rnd.Next(min, max);
+
         var cert = _context.CertRequests.FirstOrDefault(cert => cert.ID == requestId);
         if (cert is null) return (false, null);
         cert.Status = RequestStatus.FINISHED;
@@ -27,14 +32,10 @@ public class CertService : ICertService
             // no way to get to this guy/girl
             return (false, null);
         }
-        var name = farmer.Name ?? "farmer";
-        //await _callerService.CallNow(farmer.PhoneNumber, GetText(name, true));
         var newCert = await _context.Certificates.AddAsync(new Certificate() {
             FarmerId = farmer.ID,
             Status = status,
-            DateCreate = DateTime.UtcNow,
-            LastChanged = DateTime.UtcNow,
-            
+            PinNumber = GeneratePin(),
         });
         _context.CertRequests.Update(cert);
         await _context.SaveChangesAsync();
@@ -87,13 +88,5 @@ public class CertService : ICertService
         var _ = _context.Certificates.Update(certificate);
         var updated = await _context.SaveChangesAsync();
         return updated > 0;
-    }
-
-    private string GetText(string name, bool isValid)
-    {
-        var response = new VoiceResponse();
-        var validStr = isValid ? "valid" : "invalid";
-        response.Say($"Hello {name}, your certificate is now {validStr}");
-        return response.ToString();
     }
 }

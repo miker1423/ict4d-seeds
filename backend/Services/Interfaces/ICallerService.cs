@@ -6,5 +6,5 @@ namespace Backend.Services.Interfaces;
 
 public interface ICallerService 
 {
-    Task CallNow([Phone]string phone, string text);
+    Task CallNow([Phone]string phone, string url, bool isValid);
 }

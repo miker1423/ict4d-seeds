@@ -45,7 +45,7 @@ public class AccountController : ControllerBase
         var user = await _userManager.FindByNameAsync(loginInfo.UserName);
         var outputUser = new OutUserVM
         {
-            Name = user.Name,
+            FirstName = user.Name,
             UserName = user.UserName,
             ID = user.Id,
             Organization = user.Organization,
@@ -64,7 +64,7 @@ public class AccountController : ControllerBase
             Organization = user.Organization,
             PhoneNumber = user.PhoneNumber,
             UserName = user.UserName,
-            Name = user.Name,
+            Name = user.FirstName,
             Role = user.Role,
         };
         var result = await _userManager.CreateAsync(appUser, user.Password);
