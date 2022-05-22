@@ -31,7 +31,7 @@ interface InputUser {
 const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
   const [registered, setRegistered] = useState<boolean>(false);
   const {
-    register,
+    register, 
     handleSubmit,
     formState: { errors }
   } = useForm({
