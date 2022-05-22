@@ -8,7 +8,7 @@ namespace Backend.Controllers.Vxml;
 public class VoiceIncomingController : TwilioController {
 
     [HttpPost]
-    public TwiMLResultS Index(PhoneNumber from){
+    public TwiMLResult Index(PhoneNumber from){
         var response = new VoiceResponse();
         response.Say("Hello and Welcome to TeleCiden, we make communication between you and the Labs of Mali possible.");
         response.Pause(1); 
