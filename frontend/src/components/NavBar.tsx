@@ -14,6 +14,7 @@ const NavBar = ({
 }) => {
   const [admin, setAdmin] = useState<boolean>(false);
   const [activePage, setActivePage] = useState<string>('');
+  const logo = require('../images/logo.png');
 
   useEffect(() => {
     console.log('xx is role?', role);
@@ -50,7 +51,7 @@ const NavBar = ({
       }}
     >
       <ToolbarText className="toolbartext">
-        <Typography variant="h4" align="left" sx={{ mt: '30px' }}>
+        <Typography variant="h5" align="left" sx={{ mt: '40px' }}>
           <Link
             id="link"
             to={'#'}
@@ -60,6 +61,9 @@ const NavBar = ({
               );
             }}
           >
+            <span>
+              <img src={logo} style={{ width: '30px' }}></img>
+            </span>
             TéléCiden
           </Link>
         </Typography>
@@ -136,14 +140,6 @@ const ToolbarText = styled.div`
     position: absolute;
     font-size: 0.9em;
   }
-
-  @media screen and (max-width: 615px) {
-    display: block;
-    & > h4 {
-      font-size: 1.1em;
-      text-align: center;
-    }
-  }
 `;
 
 const MenuContainer = styled.div`
@@ -159,10 +155,6 @@ const MenuContainer = styled.div`
     top: 40px;
     font-size: 0.9em;
   }
-
-  @media screen and (max-width: 615px) {
-   display: block;
-
 `;
 
 export default NavBar;

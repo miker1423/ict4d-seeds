@@ -69,10 +69,11 @@ const RegisterCertificate = () => {
     console.log('xx data', input);
 
     const phonenumber = input.phoneno;
+    console.log('xx phone', phonenumber);
 
     FarmerServices.getFarmer(phonenumber).then((data) => {
       console.log('xx validfarmer?', data);
-      if (data.data.id === undefined) {
+      if ((data.data.id || data.data.phoneno) === undefined) {
         setValidFarmer(false);
 
         // CREATE NEW FARMER INNIT
@@ -96,6 +97,9 @@ const RegisterCertificate = () => {
       const certper = `${input.certperFrom.split('T')[0]} - ${
         input.certperTo.split('T')[0]
       }`;
+
+      console.log('xx date created', dateCreated);
+      console.log('xx certper', certper);
 
       const newCertificate: ICertificate = {
         phoneno: input.phoneno,
@@ -174,158 +178,158 @@ const RegisterCertificate = () => {
                           </Grid>
                         </Grid>
 
-                        {/* <Grid container>
-                        <Grid item xs={4}>
-                          <Typography>Seed Variety:</Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <TextField
-                            {...register('seedvar', {
-                              required: 'Seed variety is required',
-                              minLength: 5,
-                              pattern: {
-                                value: /^[A-Z,a-z,0-9\-/. ]+$/i,
-                                message: 'Please write a valid name'
-                              }
-                            })}
-                            type="text"
-                            label="Seed Variety Name"
-                            fullWidth
-                          />
-                          <ErrorMsg>
-                            {errors.seedvar?.message ||
-                              (errors.seedvar?.type === 'pattern' &&
-                                errors.seedvar?.message)}
-                          </ErrorMsg>
-                        </Grid>
-                      </Grid>
-
-                      <Grid container>
-                        <Grid item xs={4}>
-                          <Typography>Certification Period:</Typography>
-                        </Grid>
-                        <div style={{ display: 'inline-flex' }}>
+                        <Grid container>
+                          <Grid item xs={4}>
+                            <Typography>Seed Variety:</Typography>
+                          </Grid>
                           <Grid item xs={6}>
-                            <ToandFrom>From</ToandFrom>
                             <TextField
-                              {...register('certperFrom', {
-                                required: 'Certification period is required',
+                              {...register('seedvar', {
+                                required: 'Seed variety is required',
+                                minLength: 5,
                                 pattern: {
-                                  value: /^[0-9\- ]+$/i,
-                                  message: 'Please write a period'
+                                  value: /^[A-Z,a-z,0-9\-/. ]+$/i,
+                                  message: 'Please write a valid name'
                                 }
                               })}
-                              type="date"
-                              label="From"
-                              InputLabelProps={{ shrink: true }}
+                              type="text"
+                              label="Seed Variety Name"
                               fullWidth
                             />
+                            <ErrorMsg>
+                              {errors.seedvar?.message ||
+                                (errors.seedvar?.type === 'pattern' &&
+                                  errors.seedvar?.message)}
+                            </ErrorMsg>
                           </Grid>
+                        </Grid>
 
-                          <Grid item xs={6} sx={{ pl: 1 }}>
-                            <ToandFrom>To</ToandFrom>
+                        <Grid container>
+                          <Grid item xs={4}>
+                            <Typography>Certification Period:</Typography>
+                          </Grid>
+                          <div style={{ display: 'inline-flex' }}>
+                            <Grid item xs={6}>
+                              <ToandFrom>From</ToandFrom>
+                              <TextField
+                                {...register('certperFrom', {
+                                  required: 'Certification period is required',
+                                  pattern: {
+                                    value: /^[0-9\- ]+$/i,
+                                    message: 'Please write a period'
+                                  }
+                                })}
+                                type="date"
+                                label="From"
+                                InputLabelProps={{ shrink: true }}
+                                fullWidth
+                              />
+                            </Grid>
+
+                            <Grid item xs={6} sx={{ pl: 1 }}>
+                              <ToandFrom>To</ToandFrom>
+                              <TextField
+                                {...register('certperTo', {
+                                  required: 'Certification period is required',
+                                  pattern: {
+                                    value: /^[0-9\- ]+$/i,
+                                    message: 'Please write a period'
+                                  }
+                                })}
+                                type="date"
+                                label="To"
+                                InputLabelProps={{ shrink: true }}
+                                fullWidth
+                              />
+                            </Grid>
+                          </div>
+                          <div>
+                            {' '}
+                            <ErrorMsg>
+                              {errors.certperTo?.message ||
+                                errors.certperFrom?.message ||
+                                ((errors.certperTo?.type === 'pattern' ||
+                                  errors.certperFrom?.type === 'pattern') &&
+                                  errors.certperTo?.message) ||
+                                errors.certperFrom?.message}
+                            </ErrorMsg>
+                          </div>
+                        </Grid>
+
+                        <Grid container>
+                          <Grid item xs={4}>
+                            <Typography>Varietal Purity:</Typography>
+                          </Grid>
+                          <Grid item xs={4}>
                             <TextField
-                              {...register('certperTo', {
-                                required: 'Certification period is required',
+                              {...register('varpur', {
+                                required: 'Varietal Purity is required',
                                 pattern: {
-                                  value: /^[0-9\- ]+$/i,
-                                  message: 'Please write a period'
+                                  value: /^[0-9]+$/i,
+                                  message: 'Please input a percentage number'
                                 }
                               })}
-                              type="date"
-                              label="To"
-                              InputLabelProps={{ shrink: true }}
+                              type="number"
+                              label="Percentage %"
                               fullWidth
                             />
+                            <ErrorMsg>
+                              {errors.varpur?.message ||
+                                (errors.varpur?.type === 'pattern' &&
+                                  errors.varpur?.message)}
+                            </ErrorMsg>
                           </Grid>
-                        </div>
-                        <div>
-                          {' '}
-                          <ErrorMsg>
-                            {errors.certperTo?.message ||
-                              errors.certperFrom?.message ||
-                              ((errors.certperTo?.type === 'pattern' ||
-                                errors.certperFrom?.type === 'pattern') &&
-                                errors.certperTo?.message) ||
-                              errors.certperFrom?.message}
-                          </ErrorMsg>
-                        </div>
-                      </Grid>
+                        </Grid>
 
-                      <Grid container>
-                        <Grid item xs={4}>
-                          <Typography>Varietal Purity:</Typography>
+                        <Grid container>
+                          <Grid item xs={4}>
+                            <Typography>Germinative Faculty:</Typography>
+                          </Grid>
+                          <Grid item xs={4}>
+                            <TextField
+                              {...register('gerfac', {
+                                required: 'Germinative faculty is required',
+                                pattern: {
+                                  value: /^[0-9]+$/i,
+                                  message: 'Please input a percentage number'
+                                }
+                              })}
+                              type="number"
+                              label="Percentage %"
+                              fullWidth
+                            />
+                            <ErrorMsg>
+                              {errors.gerfac?.message ||
+                                (errors.gerfac?.type === 'pattern' &&
+                                  errors.gerfac?.message)}
+                            </ErrorMsg>
+                          </Grid>
                         </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('varpur', {
-                              required: 'Varietal Purity is required',
-                              pattern: {
-                                value: /^[0-9]+$/i,
-                                message: 'Please input a percentage number'
-                              }
-                            })}
-                            type="number"
-                            label="Percentage %"
-                            fullWidth
-                          />
-                          <ErrorMsg>
-                            {errors.varpur?.message ||
-                              (errors.varpur?.type === 'pattern' &&
-                                errors.varpur?.message)}
-                          </ErrorMsg>
-                        </Grid>
-                      </Grid>
 
-                      <Grid container>
-                        <Grid item xs={4}>
-                          <Typography>Germinative Faculty:</Typography>
+                        <Grid container>
+                          <Grid item xs={4}>
+                            <Typography>Batch Number:</Typography>
+                          </Grid>
+                          <Grid item xs={4}>
+                            <TextField
+                              {...register('batchno', {
+                                required: 'Batch number is required',
+                                pattern: {
+                                  value: /^[0-9]+$/i,
+                                  message: 'Please input a percentage number'
+                                }
+                              })}
+                              type="number"
+                              label="Batch number"
+                              fullWidth
+                            />
+                            <ErrorMsg>
+                              {errors.batchno?.message ||
+                                (errors.batchno?.type === 'pattern' &&
+                                  errors.batchno?.message)}
+                            </ErrorMsg>
+                          </Grid>
                         </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('gerfac', {
-                              required: 'Germinative faculty is required',
-                              pattern: {
-                                value: /^[0-9]+$/i,
-                                message: 'Please input a percentage number'
-                              }
-                            })}
-                            type="number"
-                            label="Percentage %"
-                            fullWidth
-                          />
-                          <ErrorMsg>
-                            {errors.gerfac?.message ||
-                              (errors.gerfac?.type === 'pattern' &&
-                                errors.gerfac?.message)}
-                          </ErrorMsg>
-                        </Grid>
-                      </Grid>
-
-                      <Grid container>
-                        <Grid item xs={4}>
-                          <Typography>Batch Number:</Typography>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('batchno', {
-                              required: 'Batch number is required',
-                              pattern: {
-                                value: /^[0-9]+$/i,
-                                message: 'Please input a percentage number'
-                              }
-                            })}
-                            type="number"
-                            label="Batch number"
-                            fullWidth
-                          />
-                          <ErrorMsg>
-                            {errors.batchno?.message ||
-                              (errors.batchno?.type === 'pattern' &&
-                                errors.batchno?.message)}
-                          </ErrorMsg>
-                        </Grid>
-                      </Grid> */}
 
                         <Grid container>
                           <Grid item xs={4}>

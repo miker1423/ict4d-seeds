@@ -53,13 +53,30 @@ export const getCertById = async (phone: ICertificate['phoneno']) => {
         id: cert.id,
         dateCreated: cert.dateCreate,
         seedvar: cert.seedvar,
-        status: cert.status
+        status: cert.status,
+        batchno: cert.batchno,
+        gerfac: cert.gerfac,
+        varpur: cert.varpur,
+        certper: cert.certper
       };
     })
     .catch((e) => console.log('xx error', e.response));
 
   return {
     data: certificate
+  };
+};
+
+export const download = async (id: number) => {
+  await axios
+    .get(`/Certificate/download/${id}`)
+    .then((res) => {
+      console.log('xx response', res);
+    })
+    .catch((e) => console.log('xx error', e.response));
+
+  return {
+    // data: certList
   };
 };
 
@@ -76,8 +93,11 @@ export const GetAllCerts = async () => {
           id: cert.id,
           dateCreated: cert.dateCreate,
           seedvar: cert.seedvar,
-          status: cert.status
-          // lastChanged: cert.lastChanged,
+          status: cert.status,
+          batchno: cert.batchno,
+          gerfac: cert.gerfac,
+          varpur: cert.varpur,
+          certper: cert.certper
         };
         certList.push(aCert);
       }
@@ -101,7 +121,8 @@ const CertificateServices = {
   create,
   GetAllCerts,
   getCertById,
-  deleteCert
+  deleteCert,
+  download
 };
 
 export default CertificateServices;

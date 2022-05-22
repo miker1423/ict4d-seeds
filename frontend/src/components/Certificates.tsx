@@ -17,9 +17,15 @@ const Certificates = ({
   deleteCert
 }: {
   certList: ICertificate[];
-  deleteCert?: (id: number) => void;
+  deleteCert: (id: number) => void;
 }) => {
   const [certificates, setCertList] = useState<ICertificate[]>(certList);
+
+  const downloadCert = (id: number) => {
+    CertificateServices.download(id).then((doc) => {
+      console.log('xx doc', doc);
+    });
+  };
 
   useEffect(() => {
     console.log('xx certlist', certList);
@@ -76,6 +82,14 @@ const Certificates = ({
                         Delete
                       </Button>
                     )}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      onClick={() => downloadCert(row.id ? row.id : 0)}
+                      variant="contained"
+                    >
+                      Download
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

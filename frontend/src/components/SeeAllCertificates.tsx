@@ -19,16 +19,18 @@ const SeeAllCertificates = () => {
 
   useEffect(() => {
     CertificateServices.GetAllCerts().then((data) => {
-      const certs = data.data;
-
-      setCertificates(data.data);
+      const certList = data.data;
+      const cert = certList.filter((row) => row.status !== 2);
+      setCertificates(cert);
     });
   }, []);
 
-  const deleteCert = (id?: number) => {
-    CertificateServices.deleteCert(id).then(() =>
-      console.log('xx has cert been deleted')
-    );
+  const deleteCert = (id: number) => {
+    if (id) {
+      CertificateServices.deleteCert(id).then(() =>
+        console.log('xx has cert been deleted')
+      );
+    }
   };
 
   return (
@@ -48,7 +50,12 @@ const SeeAllCertificates = () => {
                     </Typography>
                   </div>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid
+                  item
+                  className="tablecontainer"
+                  xs={12}
+                  style={{ marginLeft: '10px' }}
+                >
                   {certificates && (
                     <Certificates
                       certList={certificates}

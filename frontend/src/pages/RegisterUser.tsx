@@ -43,7 +43,7 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
       username: '',
       password: '',
       admin: false,
-      organization: ''
+      organization: userData && userData.org ? userData.org : ''
     }
   });
 
@@ -52,11 +52,18 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
   const handleOnSubmit = (data: InputUser) => {
     console.log('xx data', data);
 
+    let organization = '';
+    if (userData && userData.org) organization = userData.org;
+    // if (data.organization) organization = data.organization.toString();
     const role = data.admin ? 'admin' : '';
+
     const user: IUser = {
       phoneno: data.phoneno,
       role: role,
-      org: data.organization
+      org: organization,
+      firstname: data.firstname,
+      lastname: data.lastname,
+      middlename: data.middlename
     };
     const account: IAccount = {
       username: data.username,
@@ -124,49 +131,49 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
                         </ErrorMsg>
                       </Grid>
                       {/* Middle name */}
-                      {/* <Grid item xs={4}>
-                      <Typography> Middle name:</Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        {...register('middlename', {
-                          pattern: {
-                            value:
-                              /^[A-Za-zÁÀÈÉÊÂÒÖÏÌÍÓéèêëäâáàîïíìôöóò\- .]{2,}$/i,
-                            message: 'Please write a valid middlename'
-                          }
-                        })}
-                        label="Middle Name"
-                        fullWidth
-                      />
-                      <ErrorMsg>
-                        {errors.middlename?.type === 'pattern' &&
-                          errors.middlename?.message}
-                      </ErrorMsg>
-                    </Grid>
-                    {/* lastname */}
-                      {/* <Grid item xs={4}>
-                      <Typography> Last Name:</Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        {...register('lastname', {
-                          // required: 'Lastname is required',
-                          pattern: {
-                            value:
-                              /^[A-Za-zÁÀÈÉÊÂÒÖÏÌÍÓéèêëäâáàîïíìôöóò\- .]{2,}$/i,
-                            message: 'Please write a valid lastname'
-                          }
-                        })}
-                        label="Last Name"
-                        fullWidth
-                      />
-                      <ErrorMsg>
-                        {errors.lastname?.message ||
-                          (errors.lastname?.type === 'pattern' &&
-                            errors.lastname?.message)}
-                      </ErrorMsg>
-                    </Grid>{' '}  */}
+                      <Grid item xs={4}>
+                        <Typography> Middle name:</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          {...register('middlename', {
+                            pattern: {
+                              value:
+                                /^[A-Za-zÁÀÈÉÊÂÒÖÏÌÍÓéèêëäâáàîïíìôöóò\- .]{2,}$/i,
+                              message: 'Please write a valid middlename'
+                            }
+                          })}
+                          label="Middle Name"
+                          fullWidth
+                        />
+                        <ErrorMsg>
+                          {errors.middlename?.type === 'pattern' &&
+                            errors.middlename?.message}
+                        </ErrorMsg>
+                      </Grid>
+                      {/*lastname */}
+                      <Grid item xs={4}>
+                        <Typography> Last Name:</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          {...register('lastname', {
+                            // required: 'Lastname is required',
+                            pattern: {
+                              value:
+                                /^[A-Za-zÁÀÈÉÊÂÒÖÏÌÍÓéèêëäâáàîïíìôöóò\- .]{2,}$/i,
+                              message: 'Please write a valid lastname'
+                            }
+                          })}
+                          label="Last Name"
+                          fullWidth
+                        />
+                        <ErrorMsg>
+                          {errors.lastname?.message ||
+                            (errors.lastname?.type === 'pattern' &&
+                              errors.lastname?.message)}
+                        </ErrorMsg>
+                      </Grid>
                       {/* Username */}{' '}
                       <Grid item xs={4}>
                         <Typography> Username:</Typography>
@@ -215,6 +222,29 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
                               errors.password?.message)}
                         </ErrorMsg>
                       </Grid>
+                      <Grid container>
+                        <Grid item xs={4}>
+                          <Typography> Phone number:</Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField
+                            {...register('phoneno', {
+                              required: 'Phone number is required',
+                              pattern: {
+                                value: /^[0-9]+$/i,
+                                message: 'Please write a valid phone number'
+                              }
+                            })}
+                            label="Farmer Phone Number"
+                            fullWidth
+                          />
+                          <ErrorMsg>
+                            {errors.phoneno?.message ||
+                              (errors.phoneno?.type === 'pattern' &&
+                                errors.phoneno?.message)}
+                          </ErrorMsg>
+                        </Grid>
+                      </Grid>
                       {/* Organization */}
                       {/* Any checks for existing organizations? */}
                       <Grid item xs={4}>
@@ -223,6 +253,7 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
                       <Grid item xs={6}>
                         <TextField
                           {...register('organization', {})}
+                          required
                           value={userData?.org}
                           label="Organization"
                           InputLabelProps={{ shrink: true }}
@@ -249,9 +280,7 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
                       </Grid>
                       <Grid item xs={2} sx={{ textAlign: 'left' }}>
                         <Checkbox
-                          {...register('admin', {
-                            required: 'Role is required'
-                          })}
+                          {...register('admin', {})}
                           sx={{ padding: '0px', pt: '8px' }}
                         />
                         <ErrorMsg>{errors.admin?.message}</ErrorMsg>

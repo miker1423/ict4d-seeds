@@ -5,7 +5,9 @@ import React, { useState, useEffect } from 'react';
 import Certificates from '../components/Certificates';
 import PdfCreator from '../components/PdfCreator';
 import NavBar from '../components/NavBar';
-import { GetAllCerts } from '../backendServices/CertificateServices';
+import CertificateServices, {
+  GetAllCerts
+} from '../backendServices/CertificateServices';
 import RegisterUser from './RegisterUser';
 import ICertificate from '../interfaces/ICertificate';
 import IUser from '../interfaces/IUser';
@@ -36,9 +38,20 @@ const UnionUser = ({ userData }: { userData: IUser | undefined }) => {
   }, [validToken, token, userData]);
 
   const getCertificates = () => {
-    GetAllCerts().then((data) => {
-      setCertificates(data.data);
+    CertificateServices.GetAllCerts().then((data) => {
+      const certList = data.data;
+      const cert = certList.filter((row) => row.status !== 2);
+      setCertificates(cert);
     });
+  };
+
+  const deleteCert = (id: number) => {
+    console.log('xx ideleting id', id);
+    if (id) {
+      CertificateServices.deleteCert(id).then(() =>
+        console.log('xx has cert been deleted')
+      );
+    }
   };
 
   const setPage = (page: string) => {
@@ -106,10 +119,13 @@ const UnionUser = ({ userData }: { userData: IUser | undefined }) => {
                     <Grid item xs={8}>
                       <div
                         className="list-of-certificates"
-                        style={{ width: '100%' }}
+                        style={{ width: '100%', marginLeft: '10px' }}
                       >
                         {showTable && certificates && (
-                          <Certificates certList={certificates} />
+                          <Certificates
+                            certList={certificates}
+                            deleteCert={deleteCert}
+                          />
                         )}
                       </div>
                     </Grid>

@@ -12,11 +12,15 @@ export const create = async ({
   userData: IUser;
   userCreds: IAccount;
 }) => {
+  console.log('xx hfkdls', userData, userCreds);
   const json = {
+    firstname: userData.firstname,
+    lastname: userData.lastname,
+    middlename: userData.middlename,
     userName: userCreds.username,
     password: userCreds.password,
-    organization: userData.org,
-    phoneNumber: userData.phoneno,
+    org: userData.org,
+    phoneno: userData.phoneno,
     role: userData.role
   };
 
