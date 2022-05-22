@@ -24,8 +24,9 @@ public class VoiceController : TwilioController
     [HttpGet("[action]")]
     public IActionResult Index()
     {
-        var path = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}/audio/EN/IntroductionEN.wav";
-        _callerService.CallNow("+31683139714", path, true);
+        var basePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}";
+        var path = $"{basePath}/audio/EN/IntroductionEN.wav";
+        _callerService.CallNow("+31683139714", path, true, basePath);
         return Ok();
     }
 
