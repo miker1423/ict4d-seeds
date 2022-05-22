@@ -39,7 +39,7 @@ export const Login = async ({
   setUserData
 }: {
   userData: IAccount;
-  setUserData: React.Dispatch<React.SetStateAction<IUser | undefined>>;
+  setUserData?: React.Dispatch<React.SetStateAction<IUser | undefined>>;
 }) => {
   const json = JSON.stringify({
     userName: userData.username,
@@ -58,15 +58,9 @@ export const Login = async ({
     })
     .then((res) => {
       token = res.data.token;
-      org = res.data.user.organization;
+      org = res.data.user.org;
       role = res.data.user.role;
-      console.log('xx res status', res.statusText);
-
-      setUserData({
-        token: token,
-        org: org,
-        role: role
-      });
+      console.log('xx res status', res);
     })
     .catch((e) => console.log('xx error', e.response));
 
