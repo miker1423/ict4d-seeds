@@ -50,9 +50,7 @@ public class CallerService : ICallerService
         };
 
         var response = new VoiceResponse();
-        response.Append(gather)
-            .Play(new Uri(url))
-            .Redirect();
+        response = response.Play(new Uri(url)).Append(gather);
 
         return response.ToString();
     }
