@@ -171,12 +171,12 @@ namespace backend.Controllers.Vxml
                     case "1":
                         if(lang.Equals("EN")){lang="NO";}
                         else {lang="EN";}
-                        response.Redirect(new Uri("/voice/StatusReveal?lang="+lang, UriKind.Relative));
+                        response.Redirect(new Uri("/voice?lang="+lang, UriKind.Relative));
                         break;
                     case "2":
                         if(lang.Equals("EN")){lang="EN";}
                         else {lang="NO";}
-                        response.Redirect(new Uri("/voice/EndCall?lang="+lang, UriKind.Relative));
+                        response.Redirect(new Uri("/voice?lang="+lang, UriKind.Relative));
                         break;
                     default:
                         response.Say("I'm sorry, that choice does not work").Pause();
