@@ -45,7 +45,8 @@ public class CallerService : ICallerService
         {
             Input = new List<Gather.InputEnum> { Gather.InputEnum.Dtmf },
             NumDigits = 1,
-            Action = new Uri($"{basePath}/voice/en")
+            Action = new Uri($"{basePath}/voice/en"),
+            Method = Twilio.Http.HttpMethod.Post,
         };
         gather = gather.Append(new Play(new Uri(url)));
 
