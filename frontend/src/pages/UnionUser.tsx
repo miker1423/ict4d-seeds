@@ -5,10 +5,10 @@ import React, { useState, useEffect } from 'react';
 import Certificates from '../components/Certificates';
 import PdfCreator from '../components/PdfCreator';
 import NavBar from '../components/NavBar';
-import IUser from '../interfaces/IUser';
 import { GetAllCerts } from '../backendServices/CertificateServices';
-import ICertificate from '../interfaces/ICertificate';
 import RegisterUser from './RegisterUser';
+import ICertificate from '../interfaces/ICertificate';
+import IUser from '../interfaces/IUser';
 
 const UnionUser = ({ userData }: { userData: IUser | undefined }) => {
   const [showTable, setShowTable] = useState<boolean>(false);

@@ -43,9 +43,8 @@ const Certificates = ({
                 <TableCell align="right">Varietal Purity</TableCell>
                 <TableCell align="right">Certification period</TableCell>
                 <TableCell align="right">Date created</TableCell>
-                <TableCell align="right">Last Changed</TableCell>
                 <TableCell align="right">Certified</TableCell>
-                <TableCell align="right">PDFlinks</TableCell>
+                {/* <TableCell align="right">PDFlinks</TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -56,19 +55,18 @@ const Certificates = ({
                     '&:last-child td, &:last-child th': { border: 0 }
                   }}
                 >
-                  <TableCell component="th" scope="row">
-                    {row.phoneno}
+                  <TableCell align="right">{row.phoneno}</TableCell>
+                  <TableCell align="right">{row.seedvar}</TableCell>
+                  <TableCell align="right">{row.batchno}</TableCell>
+                  <TableCell align="right">{row.gerfac}</TableCell>
+                  <TableCell align="right">{row.varpur}</TableCell>
+                  <TableCell align="right">{row.certper}</TableCell>
+                  <TableCell align="right">
+                    {row.dateCreated?.split('T')[0]}
                   </TableCell>
-                  {/* <TableCell align="right">{row.seedvar}</TableCell>
-              <TableCell align="right">{row.batchno}</TableCell>
-              <TableCell align="right">{row.germfac}</TableCell>
-              <TableCell align="right">{row.varpur}</TableCell>
-              <TableCell align="right">{row.certificationp}</TableCell>
-              <TableCell align="right">{row.dateCreated?.split('T')[0]}</TableCell> */}
-                  {/* <TableCell align="right">
-                {row.certified ? 'Yes' : 'No'}
-              </TableCell> */}
-                  {/* <TableCell align="right"><Link id="pdfGen" to="PdfCreator">pog</Link></TableCell> */}
+                  <TableCell align="right">
+                    {row.status === 0 ? 'Yes' : 'No'}
+                  </TableCell>
                   <TableCell>
                     {deleteCert && (
                       <Button

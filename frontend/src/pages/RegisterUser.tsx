@@ -31,7 +31,7 @@ interface InputUser {
 const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
   const [registered, setRegistered] = useState<boolean>(false);
   const {
-    register, 
+    register,
     handleSubmit,
     formState: { errors }
   } = useForm({
@@ -97,33 +97,34 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
                   handleOnSubmit(data);
                 })}
               >
-                <Grid container xs={10} spacing={2} sx={{ gap: 1, mb: 2 }}>
-                  <Grid container sx={{ gap: 1 }}>
-                    <Grid item xs={4}>
-                      {/* First name */}
-                      <Typography> First name:</Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        {...register('firstname', {
-                          required: 'Firstname is required',
-                          pattern: {
-                            value:
-                              /^[A-Za-zÁÀÈÉÊÂÒÖÏÌÍÓéèêëäâáàîïíìôöóò\- .]{2,}$/i,
-                            message: 'Please write a valid firstname'
-                          }
-                        })}
-                        label="First Name"
-                        fullWidth
-                      />
-                      <ErrorMsg>
-                        {errors.firstname?.message ||
-                          (errors.firstname?.type === 'pattern' &&
-                            errors.firstname?.message)}
-                      </ErrorMsg>
-                    </Grid>
-                    {/* Middle name */}
-                    {/* <Grid item xs={4}>
+                <div className="form-container">
+                  <Grid container xs={10} spacing={2} sx={{ gap: 1, mb: 2 }}>
+                    <Grid container sx={{ gap: 1 }}>
+                      <Grid item xs={4}>
+                        {/* First name */}
+                        <Typography> First name:</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          {...register('firstname', {
+                            required: 'Firstname is required',
+                            pattern: {
+                              value:
+                                /^[A-Za-zÁÀÈÉÊÂÒÖÏÌÍÓéèêëäâáàîïíìôöóò\- .]{2,}$/i,
+                              message: 'Please write a valid firstname'
+                            }
+                          })}
+                          label="First Name"
+                          fullWidth
+                        />
+                        <ErrorMsg>
+                          {errors.firstname?.message ||
+                            (errors.firstname?.type === 'pattern' &&
+                              errors.firstname?.message)}
+                        </ErrorMsg>
+                      </Grid>
+                      {/* Middle name */}
+                      {/* <Grid item xs={4}>
                       <Typography> Middle name:</Typography>
                     </Grid>
                     <Grid item xs={6}>
@@ -144,7 +145,7 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
                       </ErrorMsg>
                     </Grid>
                     {/* lastname */}
-                    {/* <Grid item xs={4}>
+                      {/* <Grid item xs={4}>
                       <Typography> Last Name:</Typography>
                     </Grid>
                     <Grid item xs={6}>
@@ -166,100 +167,103 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
                             errors.lastname?.message)}
                       </ErrorMsg>
                     </Grid>{' '}  */}
-                    {/* Username */}{' '}
-                    <Grid item xs={4}>
-                      <Typography> Username:</Typography>
+                      {/* Username */}{' '}
+                      <Grid item xs={4}>
+                        <Typography> Username:</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          {...register('username', {
+                            required: 'Username is required',
+                            pattern: {
+                              value: /^[A-Za-z0-9\-\_.]{4,}$/i,
+                              message:
+                                'Please write a valid username. It must be at least 4 characters and can contain only letters, numbers and the characters -, _ and .'
+                            }
+                          })}
+                          label="Username"
+                          fullWidth
+                        />
+                        <ErrorMsg>
+                          {errors.username?.message ||
+                            (errors.username?.type === 'pattern' &&
+                              errors.username?.message)}
+                        </ErrorMsg>
+                      </Grid>
+                      {/* Password */}{' '}
+                      <Grid item xs={4}>
+                        <Typography> Password:</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          {...register('password', {
+                            required: 'Password is required',
+                            pattern: {
+                              value:
+                                /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\_\W]).{8,}/i,
+                              message:
+                                'Passoword must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one special character and one number'
+                            }
+                          })}
+                          type="password"
+                          label="Password"
+                          fullWidth
+                        />
+                        <ErrorMsg>
+                          {errors.password?.message ||
+                            (errors.password?.type === 'pattern' &&
+                              errors.password?.message)}
+                        </ErrorMsg>
+                      </Grid>
+                      {/* Organization */}
+                      {/* Any checks for existing organizations? */}
+                      <Grid item xs={4}>
+                        <Typography> Organization:</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          {...register('organization', {})}
+                          value={userData?.org}
+                          label="Organization"
+                          InputLabelProps={{ shrink: true }}
+                          disabled
+                          fullWidth
+                        />
+                        <ErrorMsg>
+                          {errors.organization?.message ||
+                            (errors.organization?.type === 'pattern' &&
+                              errors.organization?.message)}
+                        </ErrorMsg>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        {...register('username', {
-                          required: 'Username is required',
-                          pattern: {
-                            value: /^[A-Za-z0-9\-\_.]{4,}$/i,
-                            message:
-                              'Please write a valid username. It must be at least 4 characters and can contain only letters, numbers and the characters -, _ and .'
-                          }
-                        })}
-                        label="Username"
-                        fullWidth
-                      />
-                      <ErrorMsg>
-                        {errors.username?.message ||
-                          (errors.username?.type === 'pattern' &&
-                            errors.username?.message)}
-                      </ErrorMsg>
+
+                    {/* Admin? */}
+                    <Grid container>
+                      <Grid item xs={4}>
+                        <Typography sx={{ marginTop: '0px' }}>
+                          Admin?
+                        </Typography>
+                      </Grid>
+                      <Grid item sx={{ textAlign: 'right', pt: 1, pr: 2 }}>
+                        Yes
+                      </Grid>
+                      <Grid item xs={2} sx={{ textAlign: 'left' }}>
+                        <Checkbox
+                          {...register('admin', {
+                            required: 'Role is required'
+                          })}
+                          sx={{ padding: '0px', pt: '8px' }}
+                        />
+                        <ErrorMsg>{errors.admin?.message}</ErrorMsg>
+                      </Grid>
                     </Grid>
-                    {/* Password */}{' '}
-                    <Grid item xs={4}>
-                      <Typography> Password:</Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        {...register('password', {
-                          required: 'Password is required',
-                          pattern: {
-                            value:
-                              /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\_\W]).{8,}/i,
-                            message:
-                              'Passoword must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one special character and one number'
-                          }
-                        })}
-                        type="password"
-                        label="Password"
-                        fullWidth
-                      />
-                      <ErrorMsg>
-                        {errors.password?.message ||
-                          (errors.password?.type === 'pattern' &&
-                            errors.password?.message)}
-                      </ErrorMsg>
-                    </Grid>
-                    {/* Organization */}
-                    {/* Any checks for existing organizations? */}
-                    <Grid item xs={4}>
-                      <Typography> Organization:</Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        {...register('organization', {})}
-                        value={userData?.org}
-                        label="Organization"
-                        InputLabelProps={{ shrink: true }}
-                        disabled
-                        fullWidth
-                      />
-                      <ErrorMsg>
-                        {errors.organization?.message ||
-                          (errors.organization?.type === 'pattern' &&
-                            errors.organization?.message)}
-                      </ErrorMsg>
-                    </Grid>
+                    {/* grid container */}
                   </Grid>
 
-                  {/* Admin? */}
-                  <Grid container>
-                    <Grid item xs={4}>
-                      <Typography sx={{ marginTop: '0px' }}>Admin?</Typography>
-                    </Grid>
-                    <Grid item sx={{ textAlign: 'right', pt: 1, pr: 2 }}>
-                      Yes
-                    </Grid>
-                    <Grid item xs={2} sx={{ textAlign: 'left' }}>
-                      <Checkbox
-                        {...register('admin', {
-                          required: 'Role is required'
-                        })}
-                        sx={{ padding: '0px', pt: '8px' }}
-                      />
-                      <ErrorMsg>{errors.admin?.message}</ErrorMsg>
-                    </Grid>
-                  </Grid>
-                  {/* grid container */}
-                </Grid>
-
-                <Button variant="contained" type="submit">
-                  Register
-                </Button>
+                  <Button variant="contained" type="submit">
+                    Register
+                  </Button>
+                </div>
               </Box>
             </div>
           </Grid>

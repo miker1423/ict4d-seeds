@@ -19,6 +19,8 @@ const SeeAllCertificates = () => {
 
   useEffect(() => {
     CertificateServices.GetAllCerts().then((data) => {
+      const certs = data.data;
+
       setCertificates(data.data);
     });
   }, []);

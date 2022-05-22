@@ -4,11 +4,11 @@ import { Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import LaboSemUser from './LaboSemUser';
 import styled from 'styled-components';
-import IAccount from '../interfaces/IAccount';
-import IUser from '../interfaces/IUser';
 import UserServices from '../backendServices/UserService';
 import UnionUser from './UnionUser';
 import LoadingComp from '../components/LoadingComp';
+import IAccount from '../interfaces/IAccount';
+import IUser from '../interfaces/IUser';
 
 const LogIn = () => {
   const [username, setusername] = useState<string>();

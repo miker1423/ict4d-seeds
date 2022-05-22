@@ -9,7 +9,11 @@
   width: 100%;
 }
 
-
+@media (min-width: 600px) {
+  .css-1oqqzyl-MuiContainer-root{
+    padding: 0px;
+  }
+}
 
 .form-container{
   display:inline-block;
@@ -44,7 +48,7 @@
 #table-container{
   
   animation-name: moveUp;
-  animation-duration: 0.6s;
+  animation-duration: 0.4s;
   animation-iteration-count: 1; 
   animation-timing-function: ease-in-out;
 }
@@ -61,7 +65,7 @@
 
 .title-container2 {
   animation-name: moveUp;
-  animation-duration: 0.8s;
+  animation-duration: 2s;
   animation-iteration-count: 1; 
   animation-timing-function: ease-in-out;
   text-align: -webkit-center;
@@ -103,44 +107,13 @@
   box-shadow: inset -1px -6px 11px -1px forestgreen;  
 }
 
-header{
-  background-color: pink;
-}
-
 @media screen and (max-width: 615px) {
   .MuiPaper-root.MuiPaper-elevation.MuiAppBar-root.MuiAppBar-colorPrimary{
     height: 20vh;
   }
-}
-
-@media (min-width: 600px) {
-  .css-1oqqzyl-MuiContainer-root{
-    padding: 0px;
-  }
-}
-
-@media(max-width: 490px){
-   h1.css-o2w69a-MuiTypography-root{
-     font-size: 4.7rem;
-  }
-  .sc-kDDrLX.iwHmNK > * {
-    font-size: 15px;
-  }
-
-  .sc-papXJ {
-    width: 350px;
-  }
 
 }
 
-@media(max-width: 400px){
-  h1.css-o2w69a-MuiTypography-root{
-    font-size: 4rem;
- }
-
- div.title-container > a > button {
-   font-size: 12px;
- }
-
+header{
+  background-color: pink;
 }
-

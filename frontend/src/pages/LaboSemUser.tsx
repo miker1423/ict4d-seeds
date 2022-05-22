@@ -4,10 +4,10 @@ import { Link, Navigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import React, { useState, useEffect } from 'react';
 import LoadingComp from '../components/LoadingComp';
-import IUser from '../interfaces/IUser';
 import RegisterCertificate from '../components/RegisterCertificate';
 import SeeAllCertificates from '../components/SeeAllCertificates';
 import RegisterUser from './RegisterUser';
+import IUser from '../interfaces/IUser';
 
 const LaboSemUser = ({ userData }: { userData: IUser | undefined }) => {
   const [validToken, setValidToken] = useState<boolean>(false);

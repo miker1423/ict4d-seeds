@@ -148,32 +148,33 @@ const RegisterCertificate = () => {
                       handleOnSubmit(data);
                     })}
                   >
-                    <Grid container xs={10} spacing={2} sx={{ gap: 1 }}>
-                      <Grid container>
-                        <Grid item xs={4}>
-                          <Typography> Farmer's phone number:</Typography>
+                    <div className="form-container">
+                      <Grid container xs={10} spacing={2} sx={{ gap: 1 }}>
+                        <Grid container>
+                          <Grid item xs={4}>
+                            <Typography> Farmer's phone number:</Typography>
+                          </Grid>
+                          <Grid item xs={6}>
+                            <TextField
+                              {...register('phoneno', {
+                                required: 'Phone number is required',
+                                pattern: {
+                                  value: /^[0-9]+$/i,
+                                  message: 'Please write a valid phone number'
+                                }
+                              })}
+                              label="Farmer Phone Number"
+                              fullWidth
+                            />
+                            <ErrorMsg>
+                              {errors.phoneno?.message ||
+                                (errors.phoneno?.type === 'pattern' &&
+                                  errors.phoneno?.message)}
+                            </ErrorMsg>
+                          </Grid>
                         </Grid>
-                        <Grid item xs={6}>
-                          <TextField
-                            {...register('phoneno', {
-                              required: 'Phone number is required',
-                              pattern: {
-                                value: /^[0-9]+$/i,
-                                message: 'Please write a valid phone number'
-                              }
-                            })}
-                            label="Farmer Phone Number"
-                            fullWidth
-                          />
-                          <ErrorMsg>
-                            {errors.phoneno?.message ||
-                              (errors.phoneno?.type === 'pattern' &&
-                                errors.phoneno?.message)}
-                          </ErrorMsg>
-                        </Grid>
-                      </Grid>
 
-                      {/* <Grid container>
+                        {/* <Grid container>
                         <Grid item xs={4}>
                           <Typography>Seed Variety:</Typography>
                         </Grid>
@@ -326,27 +327,28 @@ const RegisterCertificate = () => {
                         </Grid>
                       </Grid> */}
 
-                      <Grid container>
-                        <Grid item xs={4}>
-                          <Typography sx={{ marginTop: '0px' }}>
-                            Certified:
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={2} sx={{ textAlign: 'left' }}>
-                          <Checkbox
-                            {...register('certified', {
-                              required: 'Certification is required'
-                            })}
-                            sx={{ padding: '0px', pt: '8px' }}
-                          />
-                          <ErrorMsg>{errors.certified?.message}</ErrorMsg>
+                        <Grid container>
+                          <Grid item xs={4}>
+                            <Typography sx={{ marginTop: '0px' }}>
+                              Certified:
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={2} sx={{ textAlign: 'left' }}>
+                            <Checkbox
+                              {...register('certified', {
+                                required: 'Certification is required'
+                              })}
+                              sx={{ padding: '0px', pt: '8px' }}
+                            />
+                            <ErrorMsg>{errors.certified?.message}</ErrorMsg>
+                          </Grid>
                         </Grid>
                       </Grid>
-                    </Grid>
 
-                    <Button variant="contained" type="submit">
-                      Register
-                    </Button>
+                      <Button variant="contained" type="submit">
+                        Register
+                      </Button>
+                    </div>
                   </Box>
                 </div>
               </Grid>
