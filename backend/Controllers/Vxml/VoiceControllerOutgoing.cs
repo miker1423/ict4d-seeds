@@ -133,7 +133,8 @@ namespace backend.Controllers.Vxml
         [HttpPost]
         public TwiMLResult EndCall(string lang="EN"){
             var response = new VoiceResponse();
-
+            
+            response.Hangup();
             return TwiML(response);
         }
         
