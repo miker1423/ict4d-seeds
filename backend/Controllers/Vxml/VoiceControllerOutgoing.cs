@@ -64,7 +64,7 @@ namespace backend.Controllers.Vxml
                         response.Redirect(new Uri("/voice/StatusReveal?lang="+lang, UriKind.Relative));
                         break;
                     case "2":
-                        response.Redirect(new Uri("/voice/EndCall?lang="+lang, UriKind.Relative));
+                        response.Redirect(new Uri("/voice/EndCallRecord?lang="+lang, UriKind.Relative));
                         break;
                     case "3":
                         response.Redirect(new Uri("/voice/LangChange?lang="+lang, UriKind.Relative));
@@ -122,18 +122,85 @@ namespace backend.Controllers.Vxml
             }
 
             if(status.Equals(CertificateStatus.VALID)){
-                response.Play(PositiveUri);
+                response.Play(PositiveUri).Pause(4);
             } else {
-                response.Play(NegativeUri);
+                response.Play(NegativeUri).Pause(4);
+            }
+            response.Redirect(new Uri("/voice/EndCall?lang="+lang, UriKind.Relative));
+
+            return TwiML(response);
+        }
+        
+        [HttpPost]
+        public TwiMLResult EndCallRecord(string lang="EN"){
+            var response = new VoiceResponse();
+            
+            Uri RecordPrompt = new Uri("");
+            if(lang.Equals("EN")){
+                RecordPrompt = new Uri("http://7819-187-188-63-71.ngrok.io/audio/English/WrongCallEN.wav");
+            }
+            else if(lang.Equals("NO")) {
+                RecordPrompt = new Uri("http://7819-187-188-63-71.ngrok.io/audio/Nowegian/WrongCallNO.wav");
+            }
+            else {
+                //TODO: ERROR HANDLING
+                RecordPrompt = new Uri("http://7819-187-188-63-71.ngrok.io/audio/English/ResponseGratitudeEN.wav");
+                response.Hangup();
+            }
+            
+            response.Gather(
+            numDigits: 1, action: new Uri("/voice/Record?="+lang, UriKind.Relative)
+            ).Play(RecordPrompt).Pause(10); //takes numbs and moves on
+
+            response.Redirect(new Uri("/voice/EndCallRecord?lang="+lang, UriKind.Relative));
+            
+            return TwiML(response);
+        }
+
+        [HttpPost]
+        public TwiMLResult Record(VoiceRequest req, string lang="EN"){
+            var response = new VoiceResponse();
+            
+            Uri GratitudeUri = new Uri("");
+
+                        Uri RecordPrompt = new Uri("");
+            if(lang.Equals("EN")){
+                GratitudeUri = new Uri("http://7819-187-188-63-71.ngrok.io/audio/English/ResponseGratitudeEN.wav");
+            }
+            else if(lang.Equals("NO")) {
+                GratitudeUri = new Uri("http://7819-187-188-63-71.ngrok.io/audio/Nowegian/ResponseGratitudeNO.wav");
+            }
+            else {
+                //TODO: ERROR HANDLING
+                RecordPrompt = new Uri("http://7819-187-188-63-71.ngrok.io/audio/English/ResponseGratitudeEN.wav");
+                response.Hangup();
             }
 
+            if(!string.IsNullOrEmpty(req.Digits)){    
+                switch(req.Digits){
+                    case "1":
+                        break;
+                    case "2":
+                        response.Redirect(new Uri("/voice/EndCall?lang="+lang, UriKind.Relative));
+                        break;
+                    default:
+                        response.Say("Thank you").Pause(2);
+                        response.Hangup();
+                        
+                        break;
+                }
+            }
+            response.Record(timeout: 10, transcribe: true);
+            //do something with response.ToString();
+            response.Play(GratitudeUri).Pause(2);
+            response.Redirect(new Uri("/voice/EndCall?lang="+lang, UriKind.Relative));
             return TwiML(response);
         }
 
         [HttpPost]
         public TwiMLResult EndCall(string lang="EN"){
             var response = new VoiceResponse();
-            
+            response.Say("Thank you for your time").Pause(3);
             response.Hangup();
             return TwiML(response);
         }
