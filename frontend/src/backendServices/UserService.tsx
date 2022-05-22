@@ -34,13 +34,7 @@ export const create = async ({
   return {};
 };
 
-export const Login = async ({
-  userData,
-  setUserData
-}: {
-  userData: IAccount;
-  setUserData?: React.Dispatch<React.SetStateAction<IUser | undefined>>;
-}) => {
+export const Login = async (userData: IAccount) => {
   const json = JSON.stringify({
     userName: userData.username,
     password: userData.password

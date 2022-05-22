@@ -8,6 +8,7 @@ import IAccount from '../interfaces/IAccount';
 import IUser from '../interfaces/IUser';
 import UserServices from '../backendServices/UserService';
 import UnionUser from './UnionUser';
+import LoadingComp from '../components/LoadingComp';
 
 const LogIn = () => {
   const [username, setusername] = useState<string>();
@@ -33,21 +34,9 @@ const LogIn = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log('xx userdata?!?!', userData);
-    if (userData) {
-      if (!userData.org || userData.org === undefined || userData.org === '') {
-        setUserData({
-          token: userData.token,
-          org: 'org',
-          role: userData.role
-        });
-      }
-    }
-  }, [userData]);
-
   // set session items
   useEffect(() => {
+    console.log('xx user', userData);
     if (userData && userData && loginToken && loginToken !== '') {
       sessionStorage.setItem('token', loginToken);
       sessionStorage.setItem('role', userData.role);
@@ -91,28 +80,21 @@ const LogIn = () => {
 
   const handleFormSubmit = () => {
     regExCheck();
+
     if (!wrongCreds) {
       const credentials: IAccount = {
         username: username ? username : '',
         password: pw ? pw : ''
       };
 
-      UserServices.Login({
-        userData: credentials,
-        setUserData: setUserData
-      }).then((data) => {
-        let userinf: IUser = { token: '', org: 'org', role: '' };
+      UserServices.Login(credentials).then((data) => {
         if (data.data.token === '') {
           setWrongCreds(true);
         } else {
-          userinf = data.data;
-          // setWrongCreds(false);
-          // console.log('xx userdata', data);
-          // setUserData(() => data.data);
-          // setLoginToken(() => data.data.token);
-        }
-        if (userinf) {
-          console.log('xx userinf', userinf);
+          setWrongCreds(false);
+          console.log('xx userdata from api call', data.data);
+          setUserData(data.data);
+          setLoginToken(data.data.token);
         }
       });
     }
@@ -120,11 +102,19 @@ const LogIn = () => {
 
   return (
     <div className="App">
-      {userData && userData.org.toLowerCase() === 'labosem' && (
-        <LaboSemUser userData={userData} />
-      )}
+      {!loginToken && userData && <LoadingComp />}
+      {loginToken &&
+        isLoggedIn &&
+        userData &&
+        userData.org.toLowerCase() === 'labosem' && (
+          <LaboSemUser userData={userData} />
+        )}
 
-      {userData && <UnionUser userData={userData} />}
+      {loginToken &&
+        isLoggedIn &&
+        userData &&
+        userData.org.toLowerCase() !== 'labosem' &&
+        userData.org !== '' && <UnionUser userData={userData} />}
       {!loginToken && !userData && (
         <div className="body-container">
           <Grid className="frontpage-grid" container spacing={2}>
