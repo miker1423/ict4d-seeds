@@ -5,7 +5,7 @@ import axios from '../http-common';
 // APIs endpoints
 
 // create certificate
-export const create = (certData: ICertificate) => {
+export const create = async (certData: ICertificate) => {
   const json = `{
     "farmerId": ${certData.farmerId},
     "status": ${certData.status},
@@ -15,7 +15,7 @@ export const create = (certData: ICertificate) => {
   }`;
   const data = JSON.parse(json);
 
-  axios
+  await axios
     .put('/Certificate', data, {
       headers: { 'content-type': 'application/json' }
     })
@@ -32,11 +32,35 @@ export const create = (certData: ICertificate) => {
 // };
 
 // Get a users certificate by id
-export const getCertById = (id: ICertificate['farmerId']) => {
-  axios
+export const getCertById = async (id: ICertificate['farmerId']) => {
+  let certificate: ICertificate = {
+    id: 0,
+    dateCreated: '',
+    seedvar: '',
+    status: 1,
+    lastChanged: '',
+    farmerId: ''
+  };
+
+  await axios
     .get(`/Certificate/${id}`)
-    .catch((e) => console.log('xx error', e.response))
-    .then((res) => console.log('xx create res', res));
+    .then((res) => {
+      console.log('xx create res', res);
+      const cert = res.data;
+      certificate = {
+        id: cert.id,
+        dateCreated: cert.dateCreate,
+        seedvar: cert.seedvar,
+        status: cert.status,
+        lastChanged: cert.lastChanged,
+        farmerId: cert.farmerId
+      };
+    })
+    .catch((e) => console.log('xx error', e.response));
+
+  return {
+    data: certificate
+  };
 };
 
 // Get all certificates
@@ -48,7 +72,6 @@ export const GetAllCerts = async () => {
     .get(`/Certificate`)
     .then((res) => {
       for (let cert of res.data) {
-        console.log('xx res.data', res.data);
         const aCert: ICertificate = {
           id: cert.id,
           dateCreated: cert.dateCreate,
@@ -62,18 +85,17 @@ export const GetAllCerts = async () => {
     })
     .catch((e) => console.log('xx error', e.response));
 
-  console.log('xx certlist', certList[0]);
   return {
     data: certList
   };
 };
 
 // delete certificate
-export const deleteCert = (id: ICertificate['id']) => {
-  axios
+export const deleteCert = async (id: ICertificate['id']) => {
+  await axios
     .delete(`/Certificate/${id}`)
-    .catch((e) => console.log('xx error', e.response))
-    .then((res) => console.log('xx create res', res));
+    .then((res) => console.log('xx delete', res))
+    .catch((e) => console.log('xx error', e.response));
 };
 
 const CertificateServices = {

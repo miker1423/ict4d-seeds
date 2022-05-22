@@ -16,6 +16,7 @@ const NavBar = ({
   const [activePage, setActivePage] = useState<string>('');
 
   useEffect(() => {
+    console.log('xx is role?', role);
     if (role && role === 'admin') setAdmin(true);
     else setAdmin(false);
     // setActivePage(page);
@@ -79,7 +80,21 @@ const NavBar = ({
             </MenuItem>
           </Link>
           {admin && (
-            <Link id="link" to="#">
+            <Link id="link" to="#" onClick={() => handlePage('reguser')}>
+              <MenuItem selected={activePage === 'reguser' ? true : false}>
+                Register user
+              </MenuItem>
+            </Link>
+          )}
+        </MenuContainer>
+        <MenuContainer
+          className="menu-container"
+          style={{
+            display: user.toLowerCase() !== 'labosem' ? 'flex' : 'none'
+          }}
+        >
+          {admin && (
+            <Link id="link" to="#" onClick={() => handlePage('reguser')}>
               <MenuItem selected={activePage === 'reguser' ? true : false}>
                 Register user
               </MenuItem>

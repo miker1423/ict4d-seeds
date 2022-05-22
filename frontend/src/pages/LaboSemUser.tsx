@@ -7,6 +7,7 @@ import LoadingComp from '../components/LoadingComp';
 import IUser from '../interfaces/IUser';
 import RegisterCertificate from '../components/RegisterCertificate';
 import SeeAllCertificates from '../components/SeeAllCertificates';
+import RegisterUser from './RegisterUser';
 
 const LaboSemUser = ({ userData }: { userData: IUser | undefined }) => {
   const [validToken, setValidToken] = useState<boolean>(false);
@@ -43,11 +44,18 @@ const LaboSemUser = ({ userData }: { userData: IUser | undefined }) => {
           <Grid className="frontpage-grid" container spacing={2}>
             {/* NAV BAR */}
             <Grid item xs={12}>
-              <NavBar user={userData?.org || ''} setPage={setPage} />
+              <NavBar
+                user={userData?.org || ''}
+                setPage={setPage}
+                role={userData?.role}
+              />
             </Grid>
 
             {currPage === 'regcer' && <RegisterCertificate />}
             {currPage === 'seecer' && <SeeAllCertificates />}
+            {currPage === 'reguser' &&
+              userData &&
+              userData.role === 'admin' && <RegisterUser userData={userData} />}
             {currPage === 'labosemHome' && (
               <Grid item xs={12} style={{ paddingTop: '0px' }}>
                 <div className="front">

@@ -2,7 +2,7 @@ import { Grid, AppBar, Typography, Button } from '@mui/material';
 import styled from 'styled-components';
 import Certificates from '../components/Certificates';
 import React, { useEffect, useState } from 'react';
-import { GetAllCerts } from '../backendServices/CertificateServices';
+import CertificateServices from '../backendServices/CertificateServices';
 import ICertificate from '../interfaces/ICertificate';
 
 const SeeAllCertificates = () => {
@@ -17,11 +17,16 @@ const SeeAllCertificates = () => {
   }, [validToken, token]);
 
   useEffect(() => {
-    GetAllCerts().then((data) => {
+    CertificateServices.GetAllCerts().then((data) => {
       setCertificates(data.data);
-      console.log('xx gotte certs', data.data);
     });
   }, []);
+
+  const deleteCert = (id?: number) => {
+    CertificateServices.deleteCert(id).then(() =>
+      console.log('xx has cert been deleted')
+    );
+  };
 
   return (
     <>
@@ -41,7 +46,12 @@ const SeeAllCertificates = () => {
                   </div>
                 </Grid>
                 <Grid item xs={12}>
-                  {certificates && <Certificates certList={certificates} />}
+                  {certificates && (
+                    <Certificates
+                      certList={certificates}
+                      deleteCert={deleteCert}
+                    />
+                  )}
                 </Grid>
               </div>
             </Grid>

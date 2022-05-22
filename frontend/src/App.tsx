@@ -21,13 +21,13 @@ const App = () => {
             element={<LaboSemUser userData={undefined} />}
           />
           <Route path="/union" element={<UnionUser userData={undefined} />} />
-          <Route
+          {/* <Route
             path="/registercertificate"
             element={<RegisterCertificate />}
           />
           <Route path="/seeallcertificates" element={<SeeAllCertificates />} />
 
-          <Route path="/registeruser" element={<RegisterUser />} />
+          <Route path="/registeruser" element={<RegisterUser />} /> */}
         </Routes>
       </BrowserRouter>
 

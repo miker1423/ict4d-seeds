@@ -8,6 +8,7 @@ import NavBar from '../components/NavBar';
 import IUser from '../interfaces/IUser';
 import { GetAllCerts } from '../backendServices/CertificateServices';
 import ICertificate from '../interfaces/ICertificate';
+import RegisterUser from './RegisterUser';
 
 const UnionUser = ({ userData }: { userData: IUser | undefined }) => {
   const [showTable, setShowTable] = useState<boolean>(false);
@@ -17,13 +18,14 @@ const UnionUser = ({ userData }: { userData: IUser | undefined }) => {
   const [token, setToken] = useState(userData ? userData.token : '');
   const [login, setLogin] = useState<boolean>(false);
   const [certificates, setCertificates] = useState<ICertificate[]>();
+  const [currPage, setCurrPage] = useState<string>('unionHome');
 
   useEffect(() => {
     const currToken = sessionStorage.getItem('token');
     if (currToken !== '' && currToken !== null) setToken(currToken);
     if (token !== '' && token !== null) setValidToken(true);
+    console.log('xx userdata', userData);
 
-    console.log('xx validtoken in Union?', validToken);
     if (!validToken) {
       const timer = setTimeout(() => {
         console.log('xx You will now be logged out');
@@ -31,13 +33,16 @@ const UnionUser = ({ userData }: { userData: IUser | undefined }) => {
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [validToken, token]);
+  }, [validToken, token, userData]);
 
   const getCertificates = () => {
     GetAllCerts().then((data) => {
       setCertificates(data.data);
-      console.log('xx gotte certs', data.data);
     });
+  };
+
+  const setPage = (page: string) => {
+    setCurrPage(page);
   };
 
   const handleClick = () => {
@@ -52,71 +57,79 @@ const UnionUser = ({ userData }: { userData: IUser | undefined }) => {
       >
         <Grid className="frontpage-grid" container spacing={2}>
           <Grid item xs={12}>
-            <NavBar user={userData?.org || ''} />
+            <NavBar
+              user={userData?.org || ''}
+              role={userData?.role}
+              setPage={setPage}
+            />
           </Grid>
+          {currPage === 'reguser' && userData && userData.role === 'admin' && (
+            <RegisterUser userData={userData} />
+          )}
+          {currPage === 'unionHome' && (
+            <Grid container xs={12} style={{ paddingTop: '0px' }}>
+              <div className="front">
+                <div
+                  className="title-container2"
+                  style={{ textAlign: 'left', marginLeft: '10px' }}
+                >
+                  <Grid container sx={{ pl: '30px', pr: '10px' }}>
+                    <Grid item xs={4}>
+                      <Typography
+                        variant="h1"
+                        sx={{ color: 'hsla(0, 0%, 15%);', fontSize: '4.6em' }}
+                      >
+                        Welcome
+                      </Typography>
+                      <br />
+                      <Typography sx={{ width: '300px' }}>
+                        Press the button to see and download certificates.
+                      </Typography>
 
-          <Grid container xs={12} style={{ paddingTop: '0px' }}>
-            <div className="front">
-              <div
-                className="title-container2"
-                style={{ textAlign: 'left', marginLeft: '10px' }}
-              >
-                <Grid container sx={{ pl: '30px', pr: '10px' }}>
-                  <Grid item xs={4}>
-                    <Typography
-                      variant="h1"
-                      sx={{ color: 'hsla(0, 0%, 15%);', fontSize: '4.6em' }}
-                    >
-                      Welcome
-                    </Typography>
-                    <br />
-                    <Typography sx={{ width: '300px' }}>
-                      Press the button to see and download certificates.
-                    </Typography>
-
-                    <Button
-                      variant="contained"
-                      sx={{
-                        mt: '20px',
-                        justifyContent: 'left'
-                      }}
-                      onClick={() => {
-                        handleClick();
-                        getCertificates();
-                      }}
-                    >
-                      {showTable ? 'Hide' : 'See'} certificates
-                    </Button>
-                    {/* <Button variant="contained" onClick={handleDocument}>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          mt: '20px',
+                          justifyContent: 'left'
+                        }}
+                        onClick={() => {
+                          handleClick();
+                          getCertificates();
+                        }}
+                      >
+                        {showTable ? 'Hide' : 'See'} certificates
+                      </Button>
+                      {/* <Button variant="contained" onClick={handleDocument}>
                       See Document
                     </Button> */}
+                    </Grid>
+                    <Grid item xs={8}>
+                      <div
+                        className="list-of-certificates"
+                        style={{ width: '100%' }}
+                      >
+                        {showTable && certificates && (
+                          <Certificates certList={certificates} />
+                        )}
+                      </div>
+                    </Grid>
+                    <Grid item xs={8}>
+                      <div className="document" style={{ width: '100%' }}>
+                        {
+                          showDocument
+                          //  && (
+                          //   <PDFViewer>
+                          //     <PdfCreator />
+                          //   </PDFViewer>
+                          // )
+                        }
+                      </div>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={8}>
-                    <div
-                      className="list-of-certificates"
-                      style={{ width: '100%' }}
-                    >
-                      {showTable && certificates && (
-                        <Certificates certList={certificates} />
-                      )}
-                    </div>
-                  </Grid>
-                  <Grid item xs={8}>
-                    <div className="document" style={{ width: '100%' }}>
-                      {
-                        showDocument
-                        //  && (
-                        //   <PDFViewer>
-                        //     <PdfCreator />
-                        //   </PDFViewer>
-                        // )
-                      }
-                    </div>
-                  </Grid>
-                </Grid>
+                </div>
               </div>
-            </div>
-          </Grid>
+            </Grid>
+          )}
         </Grid>
       </div>
     </div>

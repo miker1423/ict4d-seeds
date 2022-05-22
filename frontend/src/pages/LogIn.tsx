@@ -17,15 +17,6 @@ const LogIn = () => {
   const [loginToken, setLoginToken] = useState<string>('');
   const [isLoggedIn, setisLoggedIn] = useState<boolean>(false);
   const [userData, setUserData] = useState<IUser>();
-
-  // const [sessionToken, setSessionToken] = useState<string>('');
-  // const [sessionRole, setSessionRole] = useState<string>('');
-  // const [sessionOrg, setSessionOrg] = useState<string>('');
-
-  // const token = sessionStorage.getItem('token');
-  // const role = sessionStorage.getItem('role');
-  // const org = sessionStorage.getItem('organization');
-
   // Either user is logged in as labosem user, any union user, or is not a valid login
 
   useEffect(() => {
@@ -34,9 +25,6 @@ const LogIn = () => {
     const org = sessionStorage.getItem('organization');
 
     if (token && role && org && (token && role && org) !== '') {
-      // setSessionToken(token);
-      // setSessionOrg(org);
-      // setSessionRole(role);
       setUserData({
         token: token,
         org: org,
@@ -46,13 +34,6 @@ const LogIn = () => {
   }, []);
 
   useEffect(() => {
-    // if (
-    //   userData
-    // )
-    //   setLoginToken(userData.token);
-    //   setisLoggedIn(true);
-    // } else {
-
     if (userData && userData.token) {
       sessionStorage.setItem('token', userData.token);
       sessionStorage.setItem('role', userData.role);
@@ -60,7 +41,6 @@ const LogIn = () => {
       setisLoggedIn(true);
       setLoginToken(userData.token);
     }
-    // }
   }, [userData]);
 
   useEffect(() => {
@@ -82,8 +62,6 @@ const LogIn = () => {
     }
   });
 
-  if (unionUser) return <Navigate to="/union" />;
-
   const regExCheck = () => {
     const usernameRegex = /^[A-Za-z0-9\-\_.]{4,}$/i;
     // const pwRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\_\W]).{8,}/i;
@@ -99,14 +77,7 @@ const LogIn = () => {
   };
 
   const handleFormSubmit = () => {
-    const inputusername = username;
-    const inputPw = pw;
-    if (inputusername === 'unionUser' && inputPw === 'union') {
-      setWrongCreds(false);
-      setUnionUser(true);
-    }
     regExCheck();
-
     if (!wrongCreds) {
       const credentials: IAccount = {
         username: username ? username : '',
