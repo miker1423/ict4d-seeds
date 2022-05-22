@@ -24,7 +24,7 @@ public class CallerService : ICallerService
         _cache = cache;
         TwilioClient.Init(sid, token);
     }
-    public async System.Threading.Tasks.Task CallNow([Phone]string phone, string url, bool isValid)
+    public async System.Threading.Tasks.Task CallNow([Phone]string phone, string url, bool isValid, string basePath)
     {
         var toNumber = new PhoneNumber(phone);
 
@@ -34,18 +34,18 @@ public class CallerService : ICallerService
             Phone = phone,
             State = 0
         });
-        var text = GetText(url, isValid);
+        var text = GetText(url, basePath);
         var response = await CallResource.CreateAsync(twiml: text, to: toNumber, from: _callerPhone);
         return;
     }
 
-    private string GetText(string url, bool isValid)
+    private string GetText(string url, string basePath)
     {
         var gather = new Gather()
         {
             Input = new List<Gather.InputEnum> { Gather.InputEnum.Dtmf },
             NumDigits = 1,
-            Action = new Uri("/voice/en", UriKind.Relative)
+            Action = new Uri($"{basePath}/voice/en")
         };
         gather = gather.Append(new Play(new Uri(url)));
 
@@ -54,9 +54,4 @@ public class CallerService : ICallerService
 
         return response.ToString();
     }
-}
-
-readonly ref struct MyStruct
-{
-
 }
