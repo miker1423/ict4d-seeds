@@ -4,6 +4,7 @@ import Certificates from '../components/Certificates';
 import React, { useEffect, useState } from 'react';
 import CertificateServices from '../backendServices/CertificateServices';
 import ICertificate from '../interfaces/ICertificate';
+import LoadingComp from './LoadingComp';
 
 const SeeAllCertificates = () => {
   const [validToken, setValidToken] = useState<boolean>(false);
@@ -52,6 +53,7 @@ const SeeAllCertificates = () => {
                       deleteCert={deleteCert}
                     />
                   )}
+                  {!certificates && <LoadingComp />}
                 </Grid>
               </div>
             </Grid>
