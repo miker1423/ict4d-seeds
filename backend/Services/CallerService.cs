@@ -41,17 +41,22 @@ public class CallerService : ICallerService
 
     private string GetText(string url, bool isValid)
     {
-        var input = Gather.InputEnum.Dtmf;
         var gather = new Gather()
         {
-            Input = new List<Gather.InputEnum> { input },
+            Input = new List<Gather.InputEnum> { Gather.InputEnum.Dtmf },
             NumDigits = 1,
             Action = new Uri("/voice/en", UriKind.Relative)
         };
+        gather = gather.Append(new Play(new Uri(url)));
 
         var response = new VoiceResponse();
-        response = response.Play(new Uri(url)).Append(gather);
+        response.Append(gather);
 
         return response.ToString();
     }
+}
+
+readonly ref struct MyStruct
+{
+
 }
