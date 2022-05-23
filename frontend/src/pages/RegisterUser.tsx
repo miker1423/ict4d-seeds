@@ -238,7 +238,7 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
                                 message: 'Please write a valid phone number'
                               }
                             })}
-                            label="Farmer Phone Number"
+                            label="Phone Number"
                             fullWidth
                           />
                           <ErrorMsg>
