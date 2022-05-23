@@ -23,6 +23,7 @@ interface InputCert {
   gerfac: number;
   batchno: number;
   certified: boolean;
+  organization: string;
 }
 
 const RegisterCertificate = () => {
@@ -46,7 +47,8 @@ const RegisterCertificate = () => {
       varpur: 0,
       gerfac: 0,
       batchno: 0,
-      certified: false
+      certified: false,
+      organization: ''
       /**
        * isValid,
        * dateCreated,
@@ -100,6 +102,7 @@ const RegisterCertificate = () => {
 
       console.log('xx date created', dateCreated);
       console.log('xx certper', certper);
+      console.log('xx org', input.organization);
 
       const newCertificate: ICertificate = {
         phoneno: input.phoneno,
@@ -109,7 +112,8 @@ const RegisterCertificate = () => {
         seedvar: input.seedvar,
         varpur: input.varpur,
         gerfac: input.gerfac,
-        batchno: input.batchno
+        batchno: input.batchno,
+        organization: input.organization
       };
 
       CertificateServices.create(newCertificate).then((data) => {
@@ -340,6 +344,35 @@ const RegisterCertificate = () => {
                           <Grid container>
                             <Grid item xs={4}>
                               <Typography sx={{ marginTop: '0px' }}>
+                                Organization:
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={6} sx={{ textAlign: 'left' }}>
+                              <TextField
+                                {...register('organization', {
+                                  required: 'Organization is required',
+                                  pattern: {
+                                    value: /^[A-Za-z0-9]+$/i,
+                                    message:
+                                      'Please input a valid organization name'
+                                  }
+                                })}
+                                type="text"
+                                label="Organization"
+                                fullWidth
+                                sx={{ padding: '0px', pt: '8px' }}
+                              />{' '}
+                              <ErrorMsg>
+                                {errors.organization?.message ||
+                                  (errors.organization?.type === 'pattern' &&
+                                    errors.organization?.message)}
+                              </ErrorMsg>
+                            </Grid>
+                          </Grid>
+
+                          <Grid container>
+                            <Grid item xs={4}>
+                              <Typography sx={{ marginTop: '0px' }}>
                                 Certified:
                               </Typography>
                             </Grid>
@@ -348,7 +381,7 @@ const RegisterCertificate = () => {
                                 {...register('certified', {
                                   required: 'Certification is required'
                                 })}
-                                sx={{ padding: '0px', pt: '8px' }}
+                                sx={{ padding: '0px' }}
                               />
                               <ErrorMsg>{errors.certified?.message}</ErrorMsg>
                             </Grid>

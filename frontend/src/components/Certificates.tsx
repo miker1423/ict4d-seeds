@@ -7,7 +7,6 @@ import {
   TableBody,
   Button
 } from '@mui/material';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
 import React, { useEffect, useState } from 'react';
 import CertificateServices from '../backendServices/CertificateServices';
@@ -25,6 +24,10 @@ const Certificates = ({
   const downloadCert = (id: number) => {
     CertificateServices.download(id).then((doc) => {
       console.log('xx doc', doc);
+      window.open(
+        `https://seed-cert.azurewebsites.net/api/certificate/download/${id}`,
+        '_blank'
+      );
     });
   };
 
@@ -53,9 +56,9 @@ const Certificates = ({
                   <div className="v-line"></div>
                   <TableCell align="center">Batch no.</TableCell>
                   <div className="v-line"></div>
-                  <TableCell align="center">Germinative Faculty</TableCell>
+                  <TableCell align="center">Germinative Faculty(%)</TableCell>
                   <div className="v-line"></div>
-                  <TableCell align="center">Varietal Purity</TableCell>
+                  <TableCell align="center">Varietal Purity(%)</TableCell>
                   <div className="v-line"></div>
                   <TableCell align="center">Certification period</TableCell>
                   <div className="v-line"></div>

@@ -8,17 +8,23 @@ import axios from '../http-common';
 export const create = async (certData: ICertificate) => {
   // create needs phoneno
   const json = {
+    id: certData.id,
+    dateCreated: certData.dateCreated,
+    seedvar: certData.seedvar,
     status: certData.status,
-    dateCreate: certData.dateCreated,
-    lastChanged: certData.lastChanged,
-    seedvar: certData.seedvar
+    batchno: certData.batchno,
+    gerfac: certData.gerfac,
+    varpur: certData.varpur,
+    certper: certData.certper,
+    phoneno: certData.phoneno,
+    organization: certData.organization
   };
 
   const data = json;
 
   let response = undefined;
   await axios
-    .put('/Certificate', data, {
+    .post('/Certificate/Create', data, {
       headers: { 'content-type': 'application/json' }
     })
     .then((res) => {
@@ -39,8 +45,13 @@ export const getCertById = async (phone: ICertificate['phoneno']) => {
     id: 0,
     dateCreated: '',
     seedvar: '',
-    status: 1,
-    lastChanged: ''
+    status: 0,
+    batchno: 0,
+    gerfac: 0,
+    varpur: 0,
+    certper: '',
+    phoneno: '',
+    organization: ''
     // phone
   };
 
@@ -58,7 +69,7 @@ export const getCertById = async (phone: ICertificate['phoneno']) => {
         gerfac: cert.gerfac,
         varpur: cert.varpur,
         certper: cert.certper,
-        phoneno: phone,
+        phoneno: cert.phoneno,
         organization: cert.organization
       };
     })
@@ -93,13 +104,15 @@ export const GetAllCerts = async () => {
       for (let cert of res.data) {
         const aCert: ICertificate = {
           id: cert.id,
-          dateCreated: cert.dateCreate,
+          dateCreated: cert.dateCreated,
           seedvar: cert.seedvar,
           status: cert.status,
           batchno: cert.batchno,
           gerfac: cert.gerfac,
           varpur: cert.varpur,
-          certper: cert.certper
+          certper: cert.certper,
+          phoneno: cert.phoneno,
+          organization: cert.organization
         };
         certList.push(aCert);
       }

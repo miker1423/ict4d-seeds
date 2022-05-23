@@ -98,9 +98,6 @@
   }
 } */
 
-.submit-bottom{
-  margin-bottom:10px;
-}
 
 .MuiTypography-root.MuiTypography-h5.css-kp2qzz-MuiTypography-root{
   padding-bottom: 20px;
@@ -160,6 +157,7 @@ header{
 
 .v-line2{
   border-left: 1.5px solid lightgrey;
-  height:70px;
+  height:60px;
+  margin-top:20px;
 }
 
