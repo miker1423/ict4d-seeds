@@ -148,7 +148,6 @@ public class CertificateController : ControllerBase
     private static string GetHtml(Certificate cert, string basePath)
     {
         var date = DateTime.UtcNow.Date;
-        var random = new Random();
         var html = $@"
 <html>
 <body>
@@ -180,18 +179,18 @@ public class CertificateController : ControllerBase
             <br>
             <p>Certification period: {date:dd/MM/yyyy} - {date.AddYears(1):dd/MM/yyyy}</p>
             <br>
-            <p>Cert.Identification: 000523</p>
+            <p>Cert.Identification: {cert.ID}</p>
         </div>
         <div class=""right_text"" style=""
         text-align:right;
         margin-top: 10%;
         font-size: large;
         "">
-        <p>Batch number: {random.Next(14564, 18467)} </p>
+        <p>Batch number: {cert.BatchNO} </p>
         <br>
-        <p>Germification Factor: {random.Next(80, 100)}%</p>
+        <p>Germification Factor: {cert.GerFac}%</p>
         <br>
-        <p>Variatal Purity: {random.Next(80, 100)}%</p>
+        <p>Variatal Purity: {cert.VarPur}%</p>
         </div>
     </div>
 </div></body></html>";

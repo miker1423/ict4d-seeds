@@ -19,7 +19,7 @@ public class CertService : ICertService
         _callerService = callerService;
     }
 
-    public async Task<(bool, Certificate?)> CompleteRequest(Guid requestId, CertificateStatus status)
+    public async Task<(bool, Certificate?)> CompleteRequest(Guid requestId, CertificateStatus status, CertificateVM vm)
     {
        uint GeneratePin() => (uint)rnd.Next(min, max);
 
@@ -35,7 +35,14 @@ public class CertService : ICertService
         var newCert = await _context.Certificates.AddAsync(new Certificate() {
             FarmerId = farmer.ID,
             Status = status,
-            PinNumber = GeneratePin(),
+            CertPer = vm.CertPer,
+            BatchNO = vm.BatchNO,
+            Organization = vm.Organization,
+            VarPur = vm.VarPur,
+            GerFac = vm.GerFac,
+            DateCreated = DateTime.Now.Date.ToString("dd/MM/yyyy"),
+            SeedVariety = vm.SeedVar,
+            LastChanged = DateTime.Now.Date.ToString("dd/MM/yyyy"),
         });
         _context.CertRequests.Update(cert);
         await _context.SaveChangesAsync();

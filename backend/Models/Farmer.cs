@@ -28,8 +28,27 @@ public class FarmerVM
 public class CertificateVM 
 {
     [Phone]
+    [JsonPropertyName("phoneno")]
     public string? PhoneNumber { get; set; }
     public bool IsValid { get; set; }
+    [JsonPropertyName("seedvar")]
+    public string? SeedVar { get; set; }
+    [JsonPropertyName("certper")]
+    public string? CertPer { get; set; }
+    [JsonPropertyName("varpur")]
+    public uint? VarPur { get; set; }
+    [JsonPropertyName("gerfac")]
+    public uint? GerFac { get; set; }
+    [JsonPropertyName("batchno")]
+    public uint? BatchNO { get; set; }
+    [JsonPropertyName("dateCreated")]
+    public string? DateCreated { get; set; }
+    [JsonPropertyName("lastChanged")]
+    public string? LastChanged { get; set; }
+    [JsonPropertyName("status")]
+    public uint? Status { get; set; }
+    [JsonPropertyName("organization")]
+    public string? Organization { get; set; }
 }
 
 public enum RequestStatus 
@@ -62,7 +81,20 @@ public class Certificate
     public CertificateStatus Status { get; set; }
     [JsonPropertyName("seedvar")]
     public string? SeedVariety { get; set; }
-    public uint PinNumber { get; set; }
+    [JsonPropertyName("certper")]
+    public string? CertPer { get; set; }
+    [JsonPropertyName("varpur")]
+    public uint? VarPur { get; set; }
+    [JsonPropertyName("gerfac")]
+    public uint? GerFac { get; set; }
+    [JsonPropertyName("batchno")]
+    public uint? BatchNO { get; set; }
+    [JsonPropertyName("dateCreated")]
+    public string? DateCreated { get; set; }
+    [JsonPropertyName("lastChanged")]
+    public string? LastChanged { get; set; }
+    [JsonPropertyName("organization")]
+    public string? Organization { get; set; }
 }
 
 public class UserVM

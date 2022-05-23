@@ -93,7 +93,10 @@ var farmer = context.Farmers.Add(new Backend.Models.Farmer() {
 context.Certificates.Add(new Backend.Models.Certificate() {
     FarmerId = farmer.Entity.ID,
     Status = Backend.Models.CertificateStatus.VALID,
-    SeedVariety = "Variety",
+    SeedVariety = "Maice",
+    BatchNO = 12,
+    VarPur = 80,
+    GerFac = 28,
 });
 
 JUMP_SEED:
