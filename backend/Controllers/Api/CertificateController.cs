@@ -59,7 +59,7 @@ public class CertificateController : ControllerBase
         var status = certVM.IsValid ? CertificateStatus.VALID : CertificateStatus.INVALID;
         var basePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}";
         var callTask = _callerService.CallNow(certVM.PhoneNumber, certVM.IsValid, basePath);
-        var (success, newCert) = await _certService.CompleteRequest(cert.ID, status);
+        var (success, newCert) = await _certService.CompleteRequest(cert.ID, status, certVM);
         await callTask;
         if(!success)
             return BadRequest("The farmer does not have a phone number");
