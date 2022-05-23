@@ -118,13 +118,10 @@ const LogIn = () => {
 
   return (
     <div className="App">
-      {!loginToken && userData && <LoadingComp />}
-      {loginToken &&
-        isLoggedIn &&
-        userData &&
-        userData.org.toLowerCase() === 'labosem' && (
-          <LaboSemUser userData={userData} />
-        )}
+      {/* {!loginToken && userData && <LoadingComp />} */}
+      {userData && userData.org.toLowerCase() === 'labosem' && (
+        <LaboSemUser userData={userData} />
+      )}
 
       {loginToken &&
         isLoggedIn &&
