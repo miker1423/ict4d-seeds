@@ -47,7 +47,8 @@ const NavBar = ({
         color: 'white',
         backgroundColor: '#3ca341',
         paddingLeft: 16,
-        alignContent: 'bottom'
+        alignContent: 'bottom',
+        height: '20vh'
       }}
     >
       <ToolbarText className="toolbartext">

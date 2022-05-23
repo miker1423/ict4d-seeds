@@ -36,10 +36,7 @@ const SeeAllCertificates = () => {
   return (
     <>
       {validToken && (
-        <div
-          className="body-container"
-          style={{ height: '100vh', overflow: 'hidden' }}
-        >
+        <div className="body-container" style={{ height: '100vh' }}>
           <Grid className="frontpage-grid" container spacing={2}>
             <Grid item xs={12} style={{ paddingTop: '0px' }}>
               <div className="main" style={{ padding: '10px' }}>

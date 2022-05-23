@@ -20,6 +20,11 @@
   display:block;
   background: rgba(255, 255, 255, 0.6);
   width: 100%;
+  margin: 7px 0px 0px 14px;
+}
+
+#form-container-child{
+  padding-top: 20px;
 }
 
 .body-container{
@@ -77,14 +82,24 @@
 #certificate-form{
   box-sizing: border-box;
   display: table;
+  margin-bottom: 10px;
 }
 
-@media screen and (max-height: 499px) {
+#main-child{
+  padding-right: 10px;
+  margin-left: 15px;
+}
+
+/* @media screen and (max-height: 499px) {
   #certificate-form{
   min-width: 100%;
     max-width: 100%;
     zoom: 65%;
   }
+} */
+
+.submit-bottom{
+  margin-bottom:10px;
 }
 
 .MuiTypography-root.MuiTypography-h5.css-kp2qzz-MuiTypography-root{
@@ -123,7 +138,6 @@
 }
 
 .MuiPaper-root.MuiPaper-elevation{
-  height: 15vh;
   box-shadow: inset -1px -6px 11px -1px forestgreen;  
 }
 
@@ -137,3 +151,15 @@
 header{
   background-color: pink;
 }
+
+.v-line{
+  border-left: 1.5px solid black;
+  height: 55px;
+  margin-top:  10px;
+}
+
+.v-line2{
+  border-left: 1.5px solid lightgrey;
+  height:70px;
+}
+

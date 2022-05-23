@@ -1,5 +1,7 @@
+import { CircularProgress } from '@mui/material';
+
 const LoadingComp = () => {
-  return <h3>Loading...</h3>;
+  return <CircularProgress color="success" />;
 };
 
 export default LoadingComp;

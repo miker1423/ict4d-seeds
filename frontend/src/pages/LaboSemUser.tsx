@@ -39,7 +39,7 @@ const LaboSemUser = ({ userData }: { userData: IUser | undefined }) => {
       {validToken && (
         <div
           className="body-container"
-          style={{ height: '100vh', overflow: 'hidden' }}
+          style={{ height: '100vh' /*overflow: 'hidden'*/ }}
         >
           <Grid className="frontpage-grid" container spacing={2}>
             {/* NAV BAR */}

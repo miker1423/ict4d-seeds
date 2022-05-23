@@ -1,4 +1,11 @@
-import { Box, Typography, TextField, Button, Grid } from '@mui/material';
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  CircularProgress
+} from '@mui/material';
 import React, { useState, useEffect, useMemo } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -17,6 +24,7 @@ const LogIn = () => {
   const [loginToken, setLoginToken] = useState<string>('');
   const [isLoggedIn, setisLoggedIn] = useState<boolean>(false);
   const [userData, setUserData] = useState<IUser>();
+  const [showLoading, setShowLoading] = useState<boolean>(false);
   // Either user is logged in as labosem user, any union user, or is not a valid login
 
   // get session items
@@ -75,10 +83,15 @@ const LogIn = () => {
       setWrongCreds(false);
     } else {
       setWrongCreds(true);
+      setShowLoading(false);
     }
   };
 
   const handleFormSubmit = () => {
+    if (!userData) {
+      setShowLoading(true);
+    }
+
     regExCheck();
 
     if (!wrongCreds) {
@@ -96,6 +109,8 @@ const LogIn = () => {
           setUserData(data.data);
           setLoginToken(data.data.token);
         }
+
+        setShowLoading(false);
       });
     }
   };
@@ -136,7 +151,7 @@ const LogIn = () => {
                     <SignInTextFields>
                       <TextField
                         {...register('username', {
-                          required: 'username is required',
+                          required: 'Username is required',
                           minLength: 5,
                           pattern: /^[A-Za-z0-9\_\-.]{5,30}$/i
                           // message: 'Please write a valid username' more for when registering
@@ -158,7 +173,7 @@ const LogIn = () => {
                       <TextField
                         {...register('password', {
                           required: 'Password is required',
-                          minLength: 8,
+                          minLength: 5,
                           pattern:
                             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{70}$/
                         })}
@@ -188,6 +203,19 @@ const LogIn = () => {
                     </Button>
                     <Grid container sx={{ marginTop: '10px' }}>
                       <Grid item xs>
+                        <span
+                          style={{
+                            display: showLoading ? 'block' : 'none',
+                            fontSize: '1em'
+                          }}
+                        >
+                          Signing in... <br />
+                          <CircularProgress
+                            color="success"
+                            size={25}
+                            sx={{ mt: 1 }}
+                          />
+                        </span>
                         <span
                           style={{
                             display: wrongCreds ? 'block' : 'none',

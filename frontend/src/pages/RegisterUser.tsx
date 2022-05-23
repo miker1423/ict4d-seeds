@@ -76,13 +76,10 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
   };
 
   return (
-    <div
-      className="body-container"
-      style={{ height: '100vh', overflow: 'hidden' }}
-    >
+    <div className="body-container" style={{ height: '100vh' }}>
       <Grid className="frontpage-grid" container spacing={2}>
         <div className="main">
-          <Grid item xs={12} sx={{ paddingTop: '0px' }}>
+          <Grid item xs={12} sx={{ paddingTop: '0px' }} id="main-child">
             {registered && (
               <div className="front-certificate">
                 <Typography variant="h5">User has been registered</Typography>
@@ -105,7 +102,13 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
                 })}
               >
                 <div className="form-container">
-                  <Grid container xs={10} spacing={2} sx={{ gap: 1, mb: 2 }}>
+                  <Grid
+                    id="form-container-child"
+                    container
+                    xs={10}
+                    spacing={2}
+                    sx={{ gap: 1, mb: 2 }}
+                  >
                     <Grid container sx={{ gap: 1 }}>
                       <Grid item xs={4}>
                         {/* First name */}
@@ -289,7 +292,13 @@ const RegisterUser = ({ userData }: { userData: IUser | undefined }) => {
                     {/* grid container */}
                   </Grid>
 
-                  <Button variant="contained" type="submit">
+                  <Button
+                    sx={{
+                      marginBottom: '10px'
+                    }}
+                    variant="contained"
+                    type="submit"
+                  >
                     Register
                   </Button>
                 </div>

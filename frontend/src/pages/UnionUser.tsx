@@ -64,10 +64,7 @@ const UnionUser = ({ userData }: { userData: IUser | undefined }) => {
 
   return (
     <div className="App">
-      <div
-        className="body-container"
-        style={{ height: '100vh', overflow: 'hidden' }}
-      >
+      <div className="body-container" style={{ height: '100vh' }}>
         <Grid className="frontpage-grid" container spacing={2}>
           <Grid item xs={12}>
             <NavBar
