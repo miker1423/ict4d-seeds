@@ -135,7 +135,7 @@ public class CertificateController : ControllerBase
             Objects = { objectSettings }
         };
         var file = _converter.Convert(pdf);
-        return File(file, "application/pdf", fileName);
+        return File(file, "application/pdf", $"{fileName}.pdf");
     }
 
     [HttpDelete("{id}")]
