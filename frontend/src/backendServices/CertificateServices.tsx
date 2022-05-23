@@ -57,7 +57,8 @@ export const getCertById = async (phone: ICertificate['phoneno']) => {
         batchno: cert.batchno,
         gerfac: cert.gerfac,
         varpur: cert.varpur,
-        certper: cert.certper
+        certper: cert.certper,
+        phoneno: phone
       };
     })
     .catch((e) => console.log('xx error', e.response));
