@@ -108,6 +108,27 @@ _ = manager.CreateAsync(new AppUser() {
     Organization = "VU",
 }, "whatever").ConfigureAwait(false);
 
+_ = manager.CreateAsync(new AppUser()
+{
+    Email = "basic@email.com",
+    UserName = "Labosem_User",
+    PhoneNumber = "234567890",
+    Name = "Labosem User",
+    Role = "admin",
+    Organization = "VU",
+
+}, "Password123@").ConfigureAwait(false);
+_ = manager.CreateAsync(new AppUser()
+{
+    Email = "basic@email.com",
+    UserName = "Union_User",
+    PhoneNumber = "234567890",
+    Name = "Labosem User",
+    Role = "admin",
+    Organization = "VU",
+
+}, "Password123@").ConfigureAwait(false);
+
 context.SaveChanges();
 
 JUMP_USER:
