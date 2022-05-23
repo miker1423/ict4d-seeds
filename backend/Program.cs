@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using IdentityServer4.Models;
 using IdentityServer4;
 using IdentityServer4.Services;
+using DinkToPdf.Contracts;
+using DinkToPdf;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +74,7 @@ builder.Services.Configure<IdentityOptions>(options => {
     options.Password.RequireLowercase = false;
     options.Password.RequireDigit = false;
 });
+builder.Services.AddSingleton<IConverter>(new SynchronizedConverter(new PdfTools()));
 builder.Services.AddScoped<ICallerService, CallerService>();
 builder.Services.AddScoped<ICertService, CertService>();
 builder.Services.AddScoped<IFarmerService, FarmerService>();
