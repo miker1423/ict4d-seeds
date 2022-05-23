@@ -102,14 +102,14 @@ context.Certificates.Add(new Backend.Models.Certificate() {
 JUMP_SEED:
 using var manager = scope.ServiceProvider.GetService<UserManager<AppUser>>();
 if (manager is null || context is null) goto JUMP_USER;
-_ = manager.CreateAsync(new AppUser() {
-    Email ="basic@email.com",
-    UserName = "fatima",
-    PhoneNumber = "234567890",
-    Name = "Fatima",
-    Role = "admin",
-    Organization = "VU",
-}, "whatever").ConfigureAwait(false);
+// _ = manager.CreateAsync(new AppUser() {
+//     Email ="basic@email.com",
+//     UserName = "fatima",
+//     PhoneNumber = "234567890",
+//     Name = "Fatima",
+//     Role = "admin",
+//     Organization = "VU",
+// }, "whatever").ConfigureAwait(false);
 
 _ = manager.CreateAsync(new AppUser()
 {
