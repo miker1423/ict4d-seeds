@@ -24,7 +24,7 @@ public class CallerService : ICallerService
         _cache = cache;
         TwilioClient.Init(sid, token);
     }
-    public async System.Threading.Tasks.Task CallNow([Phone]string phone, string url, bool isValid, string basePath)
+    public async System.Threading.Tasks.Task CallNow([Phone]string phone, bool isValid, string basePath)
     {
         var toNumber = new PhoneNumber(phone);
 
@@ -34,25 +34,30 @@ public class CallerService : ICallerService
             Phone = phone,
             State = 0
         });
-        var text = GetText(url, basePath);
+        var text = GetText(basePath);
         var response = await CallResource.CreateAsync(twiml: text, to: toNumber, from: _callerPhone);
         return;
     }
 
-    private string GetText(string url, string basePath)
+    public VoiceResponse GetResponse(string basePath)
     {
         var gather = new Gather()
         {
-            Input = new List<Gather.InputEnum> { Gather.InputEnum.Dtmf },
             NumDigits = 1,
             Action = new Uri($"{basePath}/voice/en"),
-            Method = Twilio.Http.HttpMethod.Post,
+            Timeout = 2,
         };
-        gather = gather.Append(new Play(new Uri(url)));
-
+        gather.Play(new Uri($"{basePath}/audio/en/MenuEN.wav"));
         var response = new VoiceResponse();
+        response.Play(new Uri($"{basePath}/audio/en/IntroductionEN.wav"));
         response.Append(gather);
+        response.Redirect(new Uri($"{basePath}/voice/loop"));
+        return response;
+    }
 
+    public string GetText(string basePath)
+    {
+        var response = GetResponse(basePath);
         return response.ToString();
     }
 }

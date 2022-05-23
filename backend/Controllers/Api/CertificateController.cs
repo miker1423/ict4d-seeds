@@ -53,8 +53,7 @@ public class CertificateController : ControllerBase
         var cert = await _certService.CreateRequest(farmer.ID);
         var status = certVM.IsValid ? CertificateStatus.VALID : CertificateStatus.INVALID;
         var basePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}";
-        var path = $"{basePath}/audio/EN/IntroductionEN.wav";
-        var callTask = _callerService.CallNow(certVM.PhoneNumber, path, certVM.IsValid, path);
+        var callTask = _callerService.CallNow(certVM.PhoneNumber, certVM.IsValid, basePath);
         var (success, newCert) = await _certService.CompleteRequest(cert.ID, status);
         await callTask;
         if(!success)

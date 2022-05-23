@@ -25,9 +25,16 @@ public class VoiceController : TwilioController
     public IActionResult Index()
     {
         var basePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}";
-        var path = $"{basePath}/audio/EN/IntroductionEN.wav";
-        _callerService.CallNow("+31683139714", path, true, basePath);
+        _callerService.CallNow("+31683139714", true, basePath);
         return Ok();
+    }
+
+    [HttpPost("[action]")]
+    public TwiMLResult Loop()
+    {
+        var basePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}";
+        var response = _callerService.GetResponse(basePath);
+        return TwiML(response);
     }
 
     [HttpPost("[action]")]
@@ -40,22 +47,23 @@ public class VoiceController : TwilioController
 
     private TwiMLResult LangIndependent(VoiceRequest request, string lang)
     {
+        var basePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}";
         var response = new VoiceResponse();
         var item = _cache.Get<CertCacheItem>(request.From);
-        if (string.IsNullOrWhiteSpace(request.Digits))
+        if (!string.IsNullOrWhiteSpace(request.Digits))
         {
             switch (request.Digits)
             {
                 case "1":
-                    var audio = (item?.IsValid ?? false) ? "Approved" : "Rejected";
-                    response.Play(new Uri($"/audio/{lang}/{audio}Certification{lang}.wav", UriKind.Relative));
+                    var audio = (item?.IsValid ?? true) ? "Approved" : "Rejected";
+                    response.Play(new Uri($"{basePath}/audio/{lang}/{audio}Certification{lang}.wav"));
                     break;
                 case "2":
-                    var otherLang = lang == "EN" ? "NO" : "EN";
-                    response.Redirect(new Uri($"/voice/{otherLang}", UriKind.Relative));
+                    response.Play(new Uri($"{basePath}/audio/{lang}/WrongCall{lang}.wav"));                    
                     break;
                 case "3":
-                    response.Play(new Uri($"/audio/{lang}/WrongCall{lang}.wav", UriKind.Relative));
+                    var otherLang = lang == "EN" ? "NO" : "EN";
+                    response.Redirect(new Uri($"{basePath}/voice/{otherLang}"));
                     break;
                 default:
                     break;
@@ -63,7 +71,10 @@ public class VoiceController : TwilioController
         } 
         else
         {
-            response.Play(new Uri($"/audio/Introduction{lang}.wav", UriKind.Relative));
+            response.Gather(numDigits: 1, action: new Uri($"{basePath}/voice/en"))
+                    .Play(new Uri($"{basePath}/audio/en/MenuEN.wav"));
+
+            response.Redirect(new Uri($"{basePath}/voice/loop"));
         }
 
         return TwiML(response);
