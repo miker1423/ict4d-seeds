@@ -1,0 +1,157 @@
+@startuml "backend-classdiagram"
+
+package Services {
+    package Interfaces {
+        interface ICallerService {
+            +Task CallNow()
+        }
+        interface ICertService {
+            +List<Certificate> GetCertificates()
+            +Task<CertRequest> CreateRequest(Guid farmerId)
+            +Task<(bool, Certificate?)> CompleteRequest(Guid requestId, CertificateStatus status)
+            +List<Certificate> HasValidCert(Guid farmerId)
+            +Task<(bool, Certificate?)> Invalidate(Guid certId)
+            +List<Certificate>? GetByFarmer([Phone]string phone)
+            +Certificate? GetById(Guid id)
+        }
+        interface IFarmerService {
+            +List<Farmer> GetFarmers()
+            +Farmer? FindByPhone([Phone]string phone)
+            +Task<Farmer> Create(FarmerVM farmer)
+            +bool Exists(Guid id)
+        }
+    }
+    class FarmerService {
+        -FarmersDbContext _context
+        +FarmerService(FarmersDbContext context)
+    }
+
+    class CertService {
+        -FarmersDbContext _context
+        -ICallerService _callerService
+        +CertService(FarmersDbContext context, ICallerService callerService)
+    }
+
+    class CallerService {
+        -PhoneNumber _callerPhone
+        +CallerService(IConfiguration configuration)
+    }
+}
+
+package Controllers {
+    package Api {
+        class CertificateController {
+            -ILogger<CertificateController> _logger
+            -ICertService _certService
+            -IFarmerService _farmerService
+            +CertificateController(ILogger<CertificateController> logger, ICertService certService, IFarmerService farmerService)
+            +IActionResult Get() 
+            +Task<IActionResult> Create([FromBody]CertificateVM certVM)
+            +IActionResult Get([FromRoute][Phone]string phone)
+            +IActionResult Get([FromRoute]Guid id)
+            +Task<IActionResult> Remove([FromRoute]Guid id)
+        }
+
+        class FarmersController {
+            -ILogger<FarmersController> _logger
+            -IFarmerService _farmerService
+            -ICertService _certService
+            +FarmersController(ILogger<FarmersController> logger, ICertService certService, IFarmerService farmerService)
+            +IActionResult Get() 
+            +Task<IActionResult> Create([FromBody]FarmerVM farmer)
+            +Task<IActionResult> StartCertProcess([FromRoute]Guid id)
+        }
+    }
+
+    class HomeController {
+        -ILogger<HomeController> _logger
+        +HomeController(ILogger<HomeController> logger)
+        +IActionResult Index()
+        +IActionResult Main()
+        +IActionResult Error()
+    }
+
+    class ValidityController {
+        -ILogger<ValidityController> _logger
+        -IFarmerService _farmerService
+        -ICertService _certService
+        +ValidityController(ILogger<ValidityController> logger, IFarmerService farmerService, ICertService certService)
+        +IActionResult Index([FromQuery]string phone)
+    }
+}
+
+package Data {
+    class FarmersDbContext {
+        +DbSet<Farmer> Farmers
+        +DbSet<CertRequest> CertRequests
+        +DbSet<Certificate> Certificates
+        +FarmersDbContext(DbContextOptions<FarmersDbContext> contextOptions)
+    }
+}
+
+package Models {
+    class Farmer {
+        +Guid ID
+        +string? PhoneNumber
+        +string? Name
+        +string SelectedLang
+    }
+
+    class FarmerVM {
+        +string? PhoneNumber
+        +string? Name
+    }
+
+    class CertificateVM {
+        +string? PhoneNumber
+        +bool IsValid
+    }
+
+    enum RequestStatus {
+        CREATED,
+        PROCESS,
+        FINISHED
+    }
+
+    class CertRequest {
+        +Guid ID
+        +Guid FarmerId
+        +RequestStatus Status
+    }
+    enum CertificateStatus {
+        VALID,
+        INVALID,
+        REVOKED
+    }
+    
+    class Certificate {
+        +Guid ID
+        +Guid FarmerId
+        +CertificateStatus Status
+    }
+}
+
+FarmersDbContext o-- Farmer
+FarmersDbContext o-- CertRequest
+FarmersDbContext o-- Certificate
+
+CertRequest o-- RequestStatus
+Certificate o-- CertificateStatus
+
+ValidityController o-- IFarmerService
+ValidityController o-- ICertService
+
+CertificateController o-- ICertService
+CertificateController o-- IFarmerService
+
+FarmersController o-- IFarmerService
+FarmersController o-- ICertService
+
+FarmerService o-- FarmersDbContext
+CertService o-- FarmersDbContext
+CertService o-- ICallerService
+ICertService *-- CertService
+IFarmerService *-- FarmerService
+ICallerService *-- CallerService
+
+@enduml

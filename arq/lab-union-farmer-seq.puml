@@ -14,5 +14,21 @@ ws -> Union : Inform the union through \n(email, sms, phone?)
 Union -> ws : Inform the farmers \n(outgoing call)
 ws -> Farmer : Call them
 
+@enduml
+
+@startuml "API process"
+
+actor frontend
+actor backend
+
+frontend -> backend : create farmer (/api/farmer/create)
+backend -> frontend : Farmer with created ID 
+frontend -> backend : start cert process (/api/farmer/start)
+backend -> frontend : Cert request plus ID
+...
+== in the lab ==
+frontend -> backend : seeds are validated
+
+
 
 @enduml

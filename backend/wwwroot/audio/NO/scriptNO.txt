@@ -1,0 +1,25 @@
+Hei og velkommen til TeleCiden, vi ringer angående statusen på sertifikasjonen
+av frøene dine. 
+
+Trykk på 1 for å fortsette,
+Trykk 2 hvis vi har ringt feil
+Trykk 3 for å bytte språk, press 3 to change language, appuyez sur TROIS
+pour changer de langue.
+
+-......
+Hei, vi ringer angående statusen på certifikasjonen din.
+Trykk på 1 for å fortsette,
+Trykk 2 hvis vi har ringt feil
+Trykk 3 for å bytte språk, press 3 to change language, appuyez sur TROIS
+pour changer de langue.
+
+Frø eksemplaret ditt har blitt godkjent! Du kan komme til fagforeningen
+for å hente sertifikatet.
+Husk å ta med kvitteringen på søknaden din.
+Ha det godt!
+
+Frø eksemplaret ditt har dessverre ikke blitt godkjent. Du kan besøke
+fagforeningen for å høre om hvorfor, og hva som kan gjøres med det.
+
+Do you want the conversation in English? Press 1
+Voulez-vous la conversation en Francais? Appuyez sur DEUX.

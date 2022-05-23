@@ -10,14 +10,19 @@ public class CertService : ICertService
 {
     private readonly FarmersDbContext _context;
     private readonly ICallerService _callerService;
+    private readonly int min = 0;
+    private readonly int max = 9999;
+    private readonly Random rnd = new();
     public CertService(FarmersDbContext context, ICallerService callerService)
     {
         _context = context;
         _callerService = callerService;
     }
 
-    public async Task<(bool, Certificate?)> CompleteRequest(Guid requestId, CertificateStatus status)
+    public async Task<(bool, Certificate?)> CompleteRequest(Guid requestId, CertificateStatus status, CertificateVM vm)
     {
+       uint GeneratePin() => (uint)rnd.Next(min, max);
+
         var cert = _context.CertRequests.FirstOrDefault(cert => cert.ID == requestId);
         if (cert is null) return (false, null);
         cert.Status = RequestStatus.FINISHED;
@@ -27,11 +32,17 @@ public class CertService : ICertService
             // no way to get to this guy/girl
             return (false, null);
         }
-        var name = farmer.Name ?? "farmer";
-        //await _callerService.CallNow(farmer.PhoneNumber, GetText(name, true));
         var newCert = await _context.Certificates.AddAsync(new Certificate() {
             FarmerId = farmer.ID,
-            Status = status
+            Status = status,
+            CertPer = vm.CertPer,
+            BatchNO = vm.BatchNO,
+            Organization = vm.Organization,
+            VarPur = vm.VarPur,
+            GerFac = vm.GerFac,
+            DateCreated = DateTime.Now.Date.ToString("dd/MM/yyyy"),
+            SeedVariety = vm.SeedVar,
+            LastChanged = DateTime.Now.Date.ToString("dd/MM/yyyy"),
         });
         _context.CertRequests.Update(cert);
         await _context.SaveChangesAsync();
@@ -79,11 +90,10 @@ public class CertService : ICertService
         return (true, cert);
     }
 
-    private string GetText(string name, bool isValid)
+    public async Task<bool> Update(Certificate certificate)
     {
-        var response = new VoiceResponse();
-        var validStr = isValid ? "valid" : "invalid";
-        response.Say($"Hello {name}, your certificate is now {validStr}");
-        return response.ToString();
+        var _ = _context.Certificates.Update(certificate);
+        var updated = await _context.SaveChangesAsync();
+        return updated > 0;
     }
 }

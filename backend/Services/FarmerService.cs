@@ -26,7 +26,7 @@ public class FarmerService : IFarmerService
     }
 
     public bool Exists(Guid id)
-        => _context.Farmers.Count(farmer => farmer.ID == id) > 0;
+        => _context.Farmers.FirstOrDefault(farmer => farmer.ID == id) != null;
 
     public Farmer? FindByPhone([Phone] string phone)
         => _context.Farmers.FirstOrDefault(farmer => farmer.PhoneNumber == phone);

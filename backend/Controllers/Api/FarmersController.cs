@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Backend.Models;
 using Backend.Services.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Controllers.Api;
 
@@ -29,12 +30,21 @@ public class FarmersController : ControllerBase
         return Ok(farmers);
     }
     
-    [HttpPost("create")]
+    [HttpPost("[action]")]
     public async Task<IActionResult> Create([FromBody]FarmerVM farmer)
     {
         _logger.LogDebug("Received farmer", farmer);
         var newFarmer = await _farmerService.Create(farmer);
         return CreatedAtAction(null, newFarmer.ID, newFarmer);
+    }
+
+    [HttpGet("[action]/{phone}")]
+    public IActionResult Find([FromRoute][Phone]string? phone) 
+    {
+        if(phone is null || string.IsNullOrWhiteSpace(phone))
+            return BadRequest("No phone provided");
+        var farmer = _farmerService.FindByPhone(phone);
+        return Ok(farmer);
     }
 
     [HttpGet("start/{id}")]
