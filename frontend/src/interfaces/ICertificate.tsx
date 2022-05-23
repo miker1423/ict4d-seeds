@@ -1,5 +1,5 @@
 export default interface ICertificate {
-  id?: number;
+  id?: string;
   phoneno?: string;
   seedvar?: string;
   certper?: string;

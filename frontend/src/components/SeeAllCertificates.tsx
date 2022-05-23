@@ -25,7 +25,7 @@ const SeeAllCertificates = () => {
     });
   }, []);
 
-  const deleteCert = (id: number) => {
+  const deleteCert = (id: string) => {
     if (id) {
       CertificateServices.deleteCert(id).then(() =>
         console.log('xx has cert been deleted')

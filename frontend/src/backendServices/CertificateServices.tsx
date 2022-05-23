@@ -36,7 +36,7 @@ export const create = async (certData: ICertificate) => {
 // Get a users certificate by id
 export const getCertById = async (phone: ICertificate['phoneno']) => {
   let certificate: ICertificate = {
-    id: 0,
+    id: "",
     dateCreated: '',
     seedvar: '',
     status: 1,
@@ -67,7 +67,7 @@ export const getCertById = async (phone: ICertificate['phoneno']) => {
   };
 };
 
-export const download = async (id: number) => {
+export const download = async (id: string) => {
   await axios
     .get(`/Certificate/download/${id}`)
     .then((res) => {

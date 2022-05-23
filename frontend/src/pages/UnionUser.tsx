@@ -45,7 +45,7 @@ const UnionUser = ({ userData }: { userData: IUser | undefined }) => {
     });
   };
 
-  const deleteCert = (id: number) => {
+  const deleteCert = (id: string) => {
     console.log('xx ideleting id', id);
     if (id) {
       CertificateServices.deleteCert(id).then(() =>

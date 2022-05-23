@@ -17,14 +17,15 @@ const Certificates = ({
   deleteCert
 }: {
   certList: ICertificate[];
-  deleteCert: (id: number) => void;
+  deleteCert: (id: string) => void;
 }) => {
   const [certificates, setCertList] = useState<ICertificate[]>(certList);
 
-  const downloadCert = (id: number) => {
-    CertificateServices.download(id).then((doc) => {
-      console.log('xx doc', doc);
-    });
+  const downloadCert = (id: string) => {
+    window.location.href =`https://seed-cert.azurewebsites.net/api/certificate/download/${id}`
+    // CertificateServices.download(id).then((doc) => {
+    //   console.log('xx doc', doc);
+    // });
   };
 
   useEffect(() => {
@@ -77,7 +78,7 @@ const Certificates = ({
                     {deleteCert && (
                       <Button
                         variant="contained"
-                        onClick={() => deleteCert(row.id ? row.id : 0)}
+                        onClick={() => deleteCert(row.id ? row.id : "")}
                       >
                         Delete
                       </Button>
@@ -85,7 +86,7 @@ const Certificates = ({
                   </TableCell>
                   <TableCell>
                     <Button
-                      onClick={() => downloadCert(row.id ? row.id : 0)}
+                      onClick={() => downloadCert(row.id ? row.id : "")}
                       variant="contained"
                     >
                       Download
