@@ -101,7 +101,8 @@ const LogIn = () => {
       };
 
       UserServices.Login(credentials).then((data) => {
-        if (data.data.token === '') {
+        console.log('xx datadtatda', data);
+        if (data.data.token === '' || data.data.token === undefined) {
           setWrongCreds(true);
         } else {
           setWrongCreds(false);

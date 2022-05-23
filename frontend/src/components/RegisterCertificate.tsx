@@ -90,37 +90,35 @@ const RegisterCertificate = () => {
       setValidFarmer(true);
     });
 
-    if (validFarmer) {
-      console.log('xx valid!');
+    console.log('xx valid!');
 
-      // create variables
-      const stat = input.certified ? 0 : 1;
-      const dateCreated = new Date().toISOString().split('T')[0];
-      const certper = `${input.certperFrom.split('T')[0]} - ${
-        input.certperTo.split('T')[0]
-      }`;
+    // create variables
+    const stat = input.certified ? 0 : 1;
+    const dateCreated = new Date().toISOString().split('T')[0];
+    const certper = `${input.certperFrom.split('T')[0]} - ${
+      input.certperTo.split('T')[0]
+    }`;
 
-      console.log('xx date created', dateCreated);
-      console.log('xx certper', certper);
-      console.log('xx org', input.organization);
+    console.log('xx date created', dateCreated);
+    console.log('xx certper', certper);
+    console.log('xx org', input.organization);
 
-      const newCertificate: ICertificate = {
-        phoneno: input.phoneno,
-        status: stat,
-        dateCreated: dateCreated,
-        certper: certper,
-        seedvar: input.seedvar,
-        varpur: input.varpur,
-        gerfac: input.gerfac,
-        batchno: input.batchno,
-        organization: input.organization
-      };
+    const newCertificate: ICertificate = {
+      phoneno: input.phoneno,
+      status: stat,
+      dateCreated: dateCreated,
+      certper: certper,
+      seedvar: input.seedvar,
+      varpur: input.varpur,
+      gerfac: input.gerfac,
+      batchno: input.batchno,
+      organization: input.organization
+    };
 
-      CertificateServices.create(newCertificate).then((data) => {
-        console.log('xx created cert', data);
-        setRegistered(true);
-      });
-    }
+    CertificateServices.create(newCertificate).then((data) => {
+      console.log('xx created cert', data);
+      setRegistered(true);
+    });
   };
 
   return (
